@@ -12,12 +12,12 @@ class RegisterProvider extends ChangeNotifier {
   bool get isPasswordValid =>
       passwordController.text == password2Controller.text &&
       (passwordController.text.length > 6 || passwordController.text.isEmpty);
-  DateTime birthday;
-  DateTime get birthdayValue => birthday;
-  bool get isAdult => DateTime.now().year - birthday.year >= 18;
-  List<Graduation> graduations;
-  Gender gender;
-  Gender get genderValue => gender;
+  DateTime? birthday;
+  DateTime? get birthdayValue => birthday;
+  bool get isAdult => DateTime.now().year - birthday!.year >= 18;
+  List<Graduation>? graduations;
+  Gender? gender;
+  Gender? get genderValue => gender;
 
   Future<void> register(String userName, String password, String email) async {
     Map dadosLogin = {
@@ -27,5 +27,11 @@ class RegisterProvider extends ChangeNotifier {
       "gender": gender,
       "userGraduations": graduations
     };
+    notifyListeners();
+  }
+
+  @override
+  void notifyListeners() {
+    super.notifyListeners();
   }
 }

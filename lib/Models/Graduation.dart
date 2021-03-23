@@ -1,6 +1,6 @@
 class Graduation {
-  int id;
-  String courseName;
+  int? id;
+  String? courseName;
 
   Graduation({this.id, this.courseName});
 
