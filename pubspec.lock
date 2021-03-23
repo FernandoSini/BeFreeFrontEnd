@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0"
+  auto_size_text:
+    dependency: transitive
+    description:
+      name: auto_size_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0-nullsafety.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -69,6 +76,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_holo_date_picker:
+    dependency: "direct main"
+    description:
+      name: flutter_holo_date_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0-nullsafety.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -80,7 +94,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.0"
+    version: "0.13.1"
   http_parser:
     dependency: transitive
     description:
@@ -155,7 +169,7 @@ packages:
       name: stomp_dart_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.8"
+    version: "0.4.1"
   stream_channel:
     dependency: transitive
     description:
@@ -204,7 +218,7 @@ packages:
       name: web_socket_channel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "2.0.0"
 sdks:
-  dart: ">=2.12.0-0.0 <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.16.0"
