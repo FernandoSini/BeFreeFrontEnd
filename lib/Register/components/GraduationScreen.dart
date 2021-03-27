@@ -18,7 +18,6 @@ class GraduationScreen extends StatefulWidget {
 }
 
 class _GraduationScreenState extends State<GraduationScreen> {
- 
   @override
   void didChangeDependencies() {
     Provider.of<RegisterProvider>(context).fetchGraduations();
@@ -68,15 +67,13 @@ class _GraduationScreenState extends State<GraduationScreen> {
               child: FutureBuilder(
                 future: registerProvider.fetchGraduations(),
                 builder: (context, AsyncSnapshot snapshot) {
-                  // //"fazendo a api funcionar"
-                  // registerProvider.fetchGraduations();
                   if (snapshot.hasData) {
                     List<Graduation?> graduation = snapshot.data;
                     print(graduation.length);
                     return DropdownButtonFormField<Graduation?>(
                       value: registerProvider.yourGraduationSelected == null
                           ? null
-                          : registerProvider.yourGraduationSelected,
+                          : graduation.firstWhere((element) => element?.id == registerProvider.yourGraduationSelected?.id),
                       elevation: 0,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(

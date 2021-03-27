@@ -67,7 +67,7 @@ class RegisterProvider extends ChangeNotifier {
         List jsonData = jsonDecode(response.body);
 
         graduationList = jsonData.map((e) => Graduation.fromJson(e)).toList();
-
+        notifyListeners();
         return graduationList;
       } else {
         throw Future.error(

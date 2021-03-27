@@ -1,8 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.be_free_front">
+    
    <application
         android:label="be_free_front"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
+        <meta-data android:name="io.flutter.network-policy"
+        android:resource="@xml/network_security_config"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
