@@ -1,7 +1,6 @@
-
-
 import 'package:be_free_front/Models/Gender.dart';
 import 'package:be_free_front/Providers/RegisterProvider.dart';
+import 'package:be_free_front/Register/components/GraduationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -69,8 +68,7 @@ class GenderScreen extends StatelessWidget {
                   //   print("name: ${registerProvider.genderValue}");
                   // },
                   onChanged: (dynamic value) {
-                    registerProvider.gender = value;
-                    registerProvider.notifyListeners();
+                    registerProvider.setGender(value);
                   },
                 ),
               ),
@@ -99,8 +97,7 @@ class GenderScreen extends StatelessWidget {
                   //   print("${registerProvider.genderValue}}");
                   // },
                   onChanged: (dynamic value) {
-                    registerProvider.gender = value;
-                    registerProvider.notifyListeners();
+                    registerProvider.setGender(value);
                   },
                 ),
               ),
@@ -132,12 +129,41 @@ class GenderScreen extends StatelessWidget {
                   //       "${registerProvider.genderValue}");
                   // },
                   onChanged: (dynamic value) {
-                    registerProvider.gender = value;
-                    registerProvider.notifyListeners();
+                    registerProvider.setGender(value);
                   },
                 ),
               ),
             ),
+            const SizedBox(
+              height: 30,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              margin: EdgeInsets.only(left: 50, right: 50),
+              height: 55,
+              child: ElevatedButton(
+                child: Text(
+                  "Next",
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xff9a00e6),
+                  elevation: 5,
+                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => GraduationScreen(),
+                    ),
+                  );
+                }, /* ??
+                    null, */
+              ),
+            )
           ],
         ),
       ),

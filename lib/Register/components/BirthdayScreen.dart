@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 class BirthdayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -47,6 +46,7 @@ class BirthdayScreen extends StatelessWidget {
               height: 60,
             ),
             Container(
+              margin: EdgeInsets.only(left: 35, right: 35),
               child: Consumer<RegisterProvider>(
                 builder: (_, registerProvider, __) => DatePickerWidget(
                   pickerTheme: DateTimePickerTheme(
@@ -58,8 +58,7 @@ class BirthdayScreen extends StatelessWidget {
                   // dateFormat: "dd/MMMM/yyyy",
                   lastDate: DateTime.now(),
                   onChange: (DateTime newDate, _) {
-                    registerProvider.birthday = newDate;
-                    registerProvider.notifyListeners();
+                    registerProvider.setBirthiday(newDate);
                   },
                 ),
               ),
@@ -68,7 +67,8 @@ class BirthdayScreen extends StatelessWidget {
               height: 30,
             ),
             Container(
-              width: MediaQuery.of(context).size.width * 0.9,
+              width: MediaQuery.of(context).size.width * 0.8,
+              margin: EdgeInsets.only(left: 50, right: 50),
               height: 55,
               child: ElevatedButton(
                 child: Text(
