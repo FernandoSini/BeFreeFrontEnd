@@ -1,7 +1,6 @@
 import 'package:be_free_front/Providers/LoginProvider.dart';
 import 'package:be_free_front/Providers/RegisterProvider.dart';
 import 'package:be_free_front/Register/components/BirthdayScreen.dart';
-import 'package:be_free_front/Register/components/Fernando.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/date_picker_theme.dart';
