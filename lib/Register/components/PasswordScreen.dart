@@ -39,6 +39,19 @@ class PasswordScreen extends StatelessWidget {
                 ),
               ),
             ),
+            // const SizedBox(
+            //   height: 30,
+            // ),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                "Type your password: ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
             Container(
               margin: EdgeInsets.only(left: 25, right: 25),
               child: TextFormField(
