@@ -8,6 +8,7 @@ import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
+  TextEditingController userNameController = TextEditingController(text: "");
   @override
   Widget build(BuildContext context) {
     // final registerProvider = Provider.of<RegisterProvider>(context);
@@ -60,7 +61,7 @@ class RegisterScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(color: Color(0xFF9a00e6)),
                     ),
-                    
+
                     focusedBorder: OutlineInputBorder(
                       gapPadding: 5,
                       borderRadius: BorderRadius.circular(10),
@@ -71,7 +72,10 @@ class RegisterScreen extends StatelessWidget {
                     ),
                   ),
                   keyboardType: TextInputType.text,
-                  controller: registerProvider.userNameController,
+                  controller: userNameController,
+                  onChanged: (value) {
+                    registerProvider.setUsername(value);
+                  },
                 ),
               ),
             ),

@@ -8,6 +8,10 @@ import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:provider/provider.dart';
 
 class PasswordScreen extends StatelessWidget {
+
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController password2Controller = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final registerProvider = Provider.of<RegisterProvider>(context);
@@ -83,7 +87,10 @@ class PasswordScreen extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
-                controller: registerProvider.passwordController,
+                controller: passwordController,
+                onChanged: (value) {
+                  registerProvider.setPassword1(value);
+                },
               ),
             ),
             const SizedBox(
@@ -120,7 +127,10 @@ class PasswordScreen extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
-                controller: registerProvider.password2Controller,
+                controller: password2Controller,
+                onChanged: (value) {
+                  registerProvider.setPassword2(value);
+                },
               ),
             ),
             const SizedBox(

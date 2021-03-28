@@ -7,18 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterProvider extends ChangeNotifier {
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController password2Controller = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  String userName = "";
+  String password1 = "";
+  String password2 = "";
+  String email = "";
   bool get isPasswordValid =>
-      passwordController.text == password2Controller.text &&
-      (passwordController.text.length > 6 || passwordController.text.isEmpty);
+      password1 == password2 && (password1.length > 6 || password1.isEmpty);
   String get newPasswordError {
-    if (passwordController.text.isNotEmpty &&
-        passwordController.text.length < 6) {
+    if (password1.isNotEmpty && password1.length < 6) {
       return "Password too short";
-    } else if (passwordController.text != password2Controller.text) {
+    } else if (password1 != password2) {
       return "Passwords must be the same";
     } else {
       return "";
@@ -87,7 +85,7 @@ class RegisterProvider extends ChangeNotifier {
 
   void setYourGraduation(value) {
     yourGraduationSelected = value;
-    print("$graduationData" + userNameController.text);
+    print("$graduationData" + "$userName");
     notifyListeners();
   }
 
@@ -108,6 +106,21 @@ class RegisterProvider extends ChangeNotifier {
 
   void setError(newValue) {
     error = newValue;
+    notifyListeners();
+  }
+
+  void setPassword1(newValue) {
+    password1 = newValue;
+    notifyListeners();
+  }
+
+  void setPassword2(newValue) {
+    password2 = newValue;
+    notifyListeners();
+  }
+
+  void setUsername(newValue) {
+    userName = newValue;
     notifyListeners();
   }
 }

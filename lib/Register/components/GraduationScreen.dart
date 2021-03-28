@@ -88,7 +88,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
                               ? null
                               : graduation.firstWhere((element) =>
                                   element?.id ==
-                                  registerProvider.yourGraduationSelected?.id),
+                                  registerProvider.graduationData?.id),
                           elevation: 0,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -198,29 +198,33 @@ class _GraduationScreenState extends State<GraduationScreen> {
               width: MediaQuery.of(context).size.width * 0.8,
               margin: EdgeInsets.only(left: 50, right: 50),
               height: 55,
-              child: ElevatedButton(
-                child: Text(
-                  "Skip this step",
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xff9a00e6),
-                  elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+              child: Consumer<RegisterProvider>(
+                  builder: (_, registerProvider, __) {
+                return ElevatedButton(
+                  child: Text(
+                    "Skip this step",
+                    style: TextStyle(color: Colors.white),
                   ),
-                ),
-                onPressed: null ??
-                    () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => PasswordScreen(),
-                        ),
-                      );
-                    },
-              ),
-            ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xff9a00e6),
+                    elevation: 5,
+                    // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: null ??
+                      () {
+                        registerProvider.setYourGraduation(null);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => PasswordScreen(),
+                          ),
+                        );
+                      },
+                );
+              }),
+            )
           ],
         ),
       ),
