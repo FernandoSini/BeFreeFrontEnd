@@ -12,7 +12,6 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     Timer(
       Duration(seconds: 5),
       () {
@@ -23,6 +22,7 @@ class _SplashState extends State<Splash> {
         );
       },
     );
+    super.didChangeDependencies();
   }
 
   @override

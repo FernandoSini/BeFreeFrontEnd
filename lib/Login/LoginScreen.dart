@@ -1,10 +1,28 @@
+import 'package:be_free_front/Home/HomeScreen.dart';
 import 'package:be_free_front/Providers/LoginProvider.dart';
 import 'package:be_free_front/Register/RegisterScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController usernameController = TextEditingController(text: "");
+
+  TextEditingController passwordController = TextEditingController(text: "");
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   if (Provider.of<LoginProvider>(context).isLogged) {
+  //     Navigator.of(context)
+  //         .pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
@@ -82,7 +100,10 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 keyboardType: TextInputType.text,
-                controller: loginProvider.userNameController,
+                controller: usernameController,
+                onChanged: (value) {
+                  loginProvider.setUserName(value);
+                },
               ),
             ),
             const SizedBox(
@@ -119,7 +140,10 @@ class LoginScreen extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
-                controller: loginProvider.passwordController,
+                controller: passwordController,
+                onChanged: (value) {
+                  loginProvider.setPassword(value);
+                },
               ),
             ),
             const SizedBox(
@@ -130,10 +154,14 @@ class LoginScreen extends StatelessWidget {
               margin: EdgeInsets.only(left: 25, right: 25),
               height: 55,
               child: TextButton(
-                child: Text(
-                  "Login",
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: loginProvider.isLoading
+                    ? CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      )
+                    : Text(
+                        "Login",
+                        style: TextStyle(color: Colors.white),
+                      ),
                 style: TextButton.styleFrom(
                   elevation: 5,
                   backgroundColor: Color(0xff9a00e6),
@@ -141,7 +169,14 @@ class LoginScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  loginProvider.login(
+                      loginProvider.userNameData, loginProvider.passwordData);
+                  if (loginProvider.isLogged) {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => HomeScreen()));
+                  }
+                },
               ),
             ),
             const SizedBox(
