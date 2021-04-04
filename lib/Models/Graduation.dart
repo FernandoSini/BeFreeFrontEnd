@@ -15,4 +15,9 @@ class Graduation {
     data['courseName'] = this.courseName;
     return data;
   }
+
+  // @override
+  // String toString() {
+  //   return "graduation:{ id:$id, courseName:$courseName}";
+  // }
 }

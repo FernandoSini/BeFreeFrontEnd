@@ -7,6 +7,7 @@ import 'Image.dart';
 
 class User {
   String? idUser;
+  String? avatar;
   String? userName;
   String? firstName;
   String? lastName;
@@ -23,6 +24,7 @@ class User {
 
   User(
       {this.idUser,
+      this.avatar,
       this.userName,
       this.firstName,
       this.lastName,
@@ -39,6 +41,7 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     idUser = json['id_user'];
+    avatar = json['avatar'];
     userName = json['user_name'];
     firstName = json['first_name'];
     lastName = json['last_name'];
@@ -48,31 +51,31 @@ class User {
     usertype = json['usertype'];
     if (json['userGraduations'] != null) {
       userGraduations = <Graduation>[];
-      json['userGraduations'].forEach((v) {
-        userGraduations?.add(new Graduation.fromJson(v));
+      json['userGraduations']?.forEach((v) {
+        userGraduations!.add(new Graduation.fromJson(v));
       });
     }
     if (json['matches'] != null) {
       matches = <Match>[];
-      json['matches'].forEach((v) {
+      json['matches']!.forEach((v) {
         matches?.add(new Match.fromJson(v));
       });
     }
     if (json['likesSended'] != null) {
       likesSended = <Like>[];
-      json['likesSended'].forEach((v) {
+      json['likesSended']!.forEach((v) {
         likesSended?.add(new Like.fromJson(v));
       });
     }
     if (json['likeReceived'] != null) {
       likeReceived = <Like>[];
-      json['likeReceived'].forEach((v) {
+      json['likeReceived']!.forEach((v) {
         likeReceived?.add(new Like.fromJson(v));
       });
     }
     if (json['images'] != null) {
       images = <Image>[];
-      json['images'].forEach((v) {
+      json['images']!.forEach((v) {
         images?.add(new Image.fromJson(v));
       });
     }
@@ -82,6 +85,7 @@ class User {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_user'] = this.idUser;
+    data['avatar'] = this.avatar;
     data['user_name'] = this.userName;
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
@@ -89,6 +93,7 @@ class User {
     data['birthday'] = this.birthday;
     data['email'] = this.email;
     data['usertype'] = this.usertype;
+    data['token'] = this.token;
     if (this.userGraduations != null) {
       data['userGraduations'] =
           this.userGraduations?.map((v) => v.toJson()).toList();
@@ -105,7 +110,13 @@ class User {
     if (this.images != null) {
       data['images'] = this.images?.map((v) => v.toJson()).toList();
     }
-    data['token'] = this.token;
+
     return data;
   }
+
+  // @override
+  //   String toString() {
+  //     return "Username: $userName, lastName: $lastName, firstName:$firstName,id:$idUser, Usertype:$usertype, Gender:$gender, Email: $email, Birthday:$birthday, Graduations:${userGraduations}";
+  //   }
+
 }

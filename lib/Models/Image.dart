@@ -15,4 +15,9 @@ class Image {
     data['image_link'] = this.imageLink;
     return data;
   }
+
+  // @override
+  // String toString() {
+  //   return "Image:{ id:$imageId, imageLink:$imageLink}";
+  // }
 }

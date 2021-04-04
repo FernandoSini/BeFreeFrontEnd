@@ -1,33 +1,23 @@
-import 'package:be_free_front/Home/HomeScreen.dart';
 import 'package:be_free_front/Providers/LoginProvider.dart';
-import 'package:be_free_front/Register/RegisterScreen.dart';
+import 'package:be_free_front/Providers/RegisterProvider.dart';
+import 'package:be_free_front/Screens/Register/components/BirthdayScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_holo_date_picker/date_picker_theme.dart';
+import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
+class PasswordScreen extends StatelessWidget {
 
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController usernameController = TextEditingController(text: "");
-
-  TextEditingController passwordController = TextEditingController(text: "");
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   if (Provider.of<LoginProvider>(context).isLogged) {
-  //     Navigator.of(context)
-  //         .pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
-  //   }
-  // }
-
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController password2Controller = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final loginProvider = Provider.of<LoginProvider>(context);
+    final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -41,50 +31,46 @@ class _LoginScreenState extends State<LoginScreen> {
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              margin: EdgeInsets.only(top: 30),
+              margin: EdgeInsets.only(bottom: 30),
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
                 style: TextStyle(
                   fontFamily: "Segoe",
                   color: Color(0xFF9a00e6),
-                  fontWeight: FontWeight.bold,
                   fontSize: 50,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            // const SizedBox(
+            //   height: 30,
+            // ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(bottom: 30),
               child: Text(
-                loginProvider.hasError ? loginProvider.errorData : "",
-                // "flemissajkdhasjkdhas",
-                style: TextStyle(color: Colors.red),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+                "Type your password: ",
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 50,
             ),
             Container(
               margin: EdgeInsets.only(left: 25, right: 25),
               child: TextFormField(
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 30, right: 30),
-                  labelText: "Username",
+                  labelText: "Password",
                   // counterStyle: TextStyle(
                   //   color: Color(0xff9a00e6),
                   // ),
                   labelStyle: TextStyle(
                     color: Color(0xff9a00e6),
                   ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Color(0xff9a00e6))),
+                  // border: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(15),
+                  // ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Color(0xFF9a00e6)),
@@ -99,10 +85,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                keyboardType: TextInputType.text,
-                controller: usernameController,
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: true,
+                controller: passwordController,
                 onChanged: (value) {
-                  loginProvider.setUserName(value);
+                  registerProvider.setPassword1(value);
                 },
               ),
             ),
@@ -114,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: TextFormField(
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 30, right: 30),
-                  labelText: "Password",
+                  labelText: "Validate your password",
                   // counterStyle: TextStyle(
                   //   color: Color(0xff9a00e6),
                   // ),
@@ -140,42 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
-                controller: passwordController,
+                controller: password2Controller,
                 onChanged: (value) {
-                  loginProvider.setPassword(value);
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 80,
-            ),
-            Container(
-              // width: MediaQuery.of(context).size.width * 0.8,
-              margin: EdgeInsets.only(left: 25, right: 25),
-              height: 55,
-              child: TextButton(
-                child: loginProvider.isLoading
-                    ? CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(Colors.white),
-                      )
-                    : Text(
-                        "Login",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                style: TextButton.styleFrom(
-                  elevation: 5,
-                  backgroundColor: Color(0xff9a00e6),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                onPressed: () {
-                  loginProvider.login(
-                      loginProvider.userNameData, loginProvider.passwordData);
-                  if (loginProvider.isLogged) {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => HomeScreen()));
-                  }
+                  registerProvider.setPassword2(value);
                 },
               ),
             ),
@@ -183,31 +137,33 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 30,
             ),
             Container(
+              width: MediaQuery.of(context).size.width * 0.8,
               margin: EdgeInsets.only(left: 25, right: 25),
               height: 55,
-              child: TextButton(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
+              child: ElevatedButton(
+                child: Text(
+                  "Next",
+                  style: TextStyle(color: Colors.white),
                 ),
-                style: TextButton.styleFrom(
+                style: ElevatedButton.styleFrom(
+                  onSurface: Color(0xff9a00e6),
+                  primary: Color(0xff9a00e6),
                   elevation: 5,
-                  backgroundColor: Color(0xff9a00e6),
+                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => RegisterScreen(),
-                    ),
-                  );
-                },
+                onPressed: !registerProvider.isPasswordValid
+                    ? null
+                    : () {
+                        // Navigator.of(context).push(
+                        //   MaterialPageRoute(
+                        //     builder: (_) => Fernando(),
+                        //   ),
+                        // );
+                      }, /* ??
+                    null, */
               ),
             )
           ],

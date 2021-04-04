@@ -1,23 +1,34 @@
+import 'package:be_free_front/Screens/Home/HomeScreen.dart';
 import 'package:be_free_front/Providers/LoginProvider.dart';
-import 'package:be_free_front/Providers/RegisterProvider.dart';
-import 'package:be_free_front/Register/components/BirthdayScreen.dart';
+import 'package:be_free_front/Screens/Register/RegisterScreen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_holo_date_picker/date_picker_theme.dart';
-import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:provider/provider.dart';
 
-class PasswordScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController password2Controller = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController usernameController = TextEditingController(text: "");
+
+  TextEditingController passwordController = TextEditingController(text: "");
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   if (Provider.of<LoginProvider>(context).isLogged) {
+  //     Navigator.of(context)
+  //         .pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final registerProvider = Provider.of<RegisterProvider>(context);
+    final loginProvider = Provider.of<LoginProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -31,46 +42,50 @@ class PasswordScreen extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 30),
+              margin: EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
                 style: TextStyle(
                   fontFamily: "Segoe",
                   color: Color(0xFF9a00e6),
-                  fontSize: 50,
                   fontWeight: FontWeight.bold,
+                  fontSize: 50,
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 30,
-            // ),
+            const SizedBox(
+              height: 20,
+            ),
             Container(
               alignment: Alignment.center,
+              margin: EdgeInsets.only(bottom: 30),
               child: Text(
-                "Type your password: ",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                loginProvider.hasError ? loginProvider.errorData : "",
+                // "flemissajkdhasjkdhas",
+                style: TextStyle(color: Colors.red),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             const SizedBox(
-              height: 50,
+              height: 20,
             ),
             Container(
               margin: EdgeInsets.only(left: 25, right: 25),
               child: TextFormField(
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 30, right: 30),
-                  labelText: "Password",
+                  labelText: "Username",
                   // counterStyle: TextStyle(
                   //   color: Color(0xff9a00e6),
                   // ),
                   labelStyle: TextStyle(
                     color: Color(0xff9a00e6),
                   ),
-                  // border: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(15),
-                  // ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Color(0xff9a00e6))),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Color(0xFF9a00e6)),
@@ -85,11 +100,10 @@ class PasswordScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                controller: passwordController,
+                keyboardType: TextInputType.text,
+                controller: usernameController,
                 onChanged: (value) {
-                  registerProvider.setPassword1(value);
+                  loginProvider.setUserName(value);
                 },
               ),
             ),
@@ -101,7 +115,7 @@ class PasswordScreen extends StatelessWidget {
               child: TextFormField(
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 30, right: 30),
-                  labelText: "Validate your password",
+                  labelText: "Password",
                   // counterStyle: TextStyle(
                   //   color: Color(0xff9a00e6),
                   // ),
@@ -127,9 +141,43 @@ class PasswordScreen extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
-                controller: password2Controller,
+                controller: passwordController,
                 onChanged: (value) {
-                  registerProvider.setPassword2(value);
+                  loginProvider.setPassword(value);
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 80,
+            ),
+            Container(
+              // width: MediaQuery.of(context).size.width * 0.8,
+              margin: EdgeInsets.only(left: 25, right: 25),
+              height: 55,
+              child: TextButton(
+                child: loginProvider.isLoading
+                    ? CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      )
+                    : Text(
+                        "Login",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                style: TextButton.styleFrom(
+                  elevation: 5,
+                  backgroundColor: Color(0xff9a00e6),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: () async {
+                  var userData = await loginProvider.login(
+                      loginProvider.userNameData, loginProvider.passwordData);
+                  if (loginProvider.isLogged) {
+                    print(userData.toString());
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => HomeScreen(userData: userData,)));
+                  }
                 },
               ),
             ),
@@ -137,33 +185,31 @@ class PasswordScreen extends StatelessWidget {
               height: 30,
             ),
             Container(
-              width: MediaQuery.of(context).size.width * 0.8,
               margin: EdgeInsets.only(left: 25, right: 25),
               height: 55,
-              child: ElevatedButton(
-                child: Text(
-                  "Next",
-                  style: TextStyle(color: Colors.white),
+              child: TextButton(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Register',
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                style: ElevatedButton.styleFrom(
-                  onSurface: Color(0xff9a00e6),
-                  primary: Color(0xff9a00e6),
+                style: TextButton.styleFrom(
                   elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
+                  backgroundColor: Color(0xff9a00e6),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: !registerProvider.isPasswordValid
-                    ? null
-                    : () {
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(
-                        //     builder: (_) => Fernando(),
-                        //   ),
-                        // );
-                      }, /* ??
-                    null, */
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => RegisterScreen(),
+                    ),
+                  );
+                },
               ),
             )
           ],

@@ -10,9 +10,8 @@ class Match {
   Match.fromJson(Map<String, dynamic> json) {
     matchId = json['match_id'];
     hisHerId = json['hisHer_id'];
-    youUser = json['you_user'] != null
-        ? new User.fromJson(json['you_user'])
-        : null;
+    youUser =
+        json['you_user'] != null ? new User.fromJson(json['you_user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -24,4 +23,9 @@ class Match {
     }
     return data;
   }
+
+  // @override
+  // String toString() {
+  //   return "Match:{ id:$matchId, hisHerId:$hisHerId, youUser:$youUser }";
+  // }
 }

@@ -1,5 +1,5 @@
 import 'package:be_free_front/Providers/RegisterProvider.dart';
-import 'package:be_free_front/Register/components/GenderScreen.dart';
+import 'package:be_free_front/Screens/Register/components/GenderScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_picker_theme.dart';

@@ -1,6 +1,6 @@
 import 'package:be_free_front/Models/Gender.dart';
 import 'package:be_free_front/Providers/RegisterProvider.dart';
-import 'package:be_free_front/Register/components/GraduationScreen.dart';
+import 'package:be_free_front/Screens/Register/components/GraduationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';

@@ -12,9 +12,8 @@ class Like {
     userSendLike = json['userSendLike'] != null
         ? new User.fromJson(json['userSendLike'])
         : null;
-    userLiked = json['userLiked'] != null
-        ? new User.fromJson(json['userLiked'])
-        : null;
+    userLiked =
+        json['userLiked'] != null ? new User.fromJson(json['userLiked']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -28,4 +27,9 @@ class Like {
     }
     return data;
   }
+
+  // @override
+  // String toString() {
+  //   return "idLike:$idLike, UserSendLike:${userSendLike.toString()}, UserReceivedLike:${userLiked.toString()}";
+  // }
 }

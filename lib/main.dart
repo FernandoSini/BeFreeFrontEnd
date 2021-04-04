@@ -1,6 +1,7 @@
 import 'package:be_free_front/Providers/LoginProvider.dart';
 import 'package:be_free_front/Providers/RegisterProvider.dart';
-import 'package:be_free_front/Splash/Splash.dart';
+import 'package:be_free_front/Providers/UserProvider.dart';
+import 'package:be_free_front/Screens/Splash/Splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => LoginProvider()),
         ChangeNotifierProvider(create: (context) => RegisterProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider())
       ],
       child: MyApp(),
     ),
