@@ -150,6 +150,7 @@ class HomeScreen extends StatelessWidget {
             ),
       extendBody: true,
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: true,
       // backgroundColor: Colors.transparent,
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -161,7 +162,9 @@ class HomeScreen extends StatelessWidget {
             allowImplicitScrolling: true,
             itemBuilder: (_, index) {
               return Container(
-                child: Column(
+                child: ListView(
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.only(bottom: 50),
                   children: [
                     Stack(
                       clipBehavior: Clip.none,

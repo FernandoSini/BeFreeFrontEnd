@@ -41,11 +41,12 @@ class UserProvider extends ChangeNotifier {
         "gender": user.gender!,
         "email": user.email!,
         "avatar": user.avatar == null ? "null" : user.avatar!,
-        "images": user.images?.toList(),
-        "userGraduations": user.userGraduations?.toList(),
-        "matches": user.matches?.toList(),
-        "likeReceived": user.likeReceived?.toList(),
-        "likesSended": user.likesSended?.toList(),
+        //esta dando bugs nesses aqui
+        // "images": user.images?.toList(),
+        // "userGraduations": user.userGraduations?.toList(),
+        // "matches": user.matches?.toList(),
+        // "likeReceived": user.likeReceived?.toList(),
+        // "likesSended": user.likesSended?.toList(),
         "token": user.token!,
       };
       userData.forEach((key, value) async {
