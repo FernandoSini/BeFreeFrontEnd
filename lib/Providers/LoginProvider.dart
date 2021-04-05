@@ -55,7 +55,7 @@ class LoginProvider extends ChangeNotifier {
       setLoading(false);
       error = true;
       errorText = e.toString();
-      return Future.error(errorText);
+      throw Future.error(errorText);
     }
     // setLoading(false);
   }

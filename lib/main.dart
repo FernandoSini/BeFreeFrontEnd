@@ -1,3 +1,4 @@
+import 'package:be_free_front/Providers/ListUsersProvider.dart';
 import 'package:be_free_front/Providers/LoginProvider.dart';
 import 'package:be_free_front/Providers/RegisterProvider.dart';
 import 'package:be_free_front/Providers/UserProvider.dart';
@@ -11,7 +12,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => LoginProvider()),
         ChangeNotifierProvider(create: (context) => RegisterProvider()),
-        ChangeNotifierProvider(create: (context) => UserProvider())
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => ListUsersProvider())
       ],
       child: MyApp(),
     ),

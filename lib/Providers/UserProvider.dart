@@ -65,11 +65,11 @@ class UserProvider extends ChangeNotifier {
           "gender": user.gender!,
           "email": user.email!,
           "avatar": user.avatar == null ? "null" : user.avatar!,
-          "images": user.images!.toList().toString(),
-          "userGraduations": user.userGraduations!.toList().toString(),
-          "matches": user.matches!.toList().toString(),
-          "likeReceived": user.likeReceived!.toList().toString(),
-          "likesSended": user.likesSended!.toList().toString(),
+          "images": user.images!.toList().asMap().toString(),
+          "userGraduations": user.userGraduations!.toList().asMap().toString(),
+          "matches": user.matches!.toList().asMap().toString(),
+          "likeReceived": user.likeReceived!.toList().asMap().toString(),
+          "likesSended": user.likesSended!.toList().asMap().toString(),
           "token": user.token!,
         };
         universal.window.sessionStorage.addEntries(userData.entries);

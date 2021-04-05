@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Providers/UserProvider.dart';
+import 'package:be_free_front/Screens/Base/BaseScreen.dart';
 import 'package:be_free_front/Screens/Home/HomeScreen.dart';
 import 'package:be_free_front/Screens/Login/LoginScreen.dart';
 import 'package:flutter/foundation.dart';
@@ -45,7 +46,7 @@ class _SplashState extends State<Splash> {
             () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (_) => HomeScreen(
+                  builder: (_) => BaseScreen(
                     userData: user,
                   ),
                 ),
@@ -95,7 +96,7 @@ class _SplashState extends State<Splash> {
             () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (_) => HomeScreen(
+                  builder: (_) => BaseScreen(
                     userData: user,
                   ),
                 ),
