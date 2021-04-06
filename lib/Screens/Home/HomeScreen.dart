@@ -232,29 +232,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: Color(0xFF9a00e6),
                                       ),
                                     ),
-                                    Consumer<UserProvider>(
-                                        builder: (_, userProvider, __) {
-                                      return ClipPath(
-                                        clipper: OvalBottomBorderClipper(),
-                                        child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.72,
-                                          // color: Colors.blue,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/avatars/avatar2.png"),
-                                              /* userData?.avatar != null ? NetworkImage(
-                                          "${userData?.images?.first.imageLink}"
-                                          /* "https://wmodelgroup.com/wp-content/uploads/2018/10/Jenyffer-Wiggers-500x625.jpg" */):AssetImage("assets/avatars/avatar.png"), */
-                                              fit: BoxFit.cover,
-                                            ),
+                                    ClipPath(
+                                      clipper: OvalBottomBorderClipper(),
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.72,
+                                        // color: Colors.blue,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: listUserProvider
+                                                        .userList?[index]
+                                                        .avatar !=
+                                                    null
+                                                ? NetworkImage(
+                                                    "${listUserProvider.userList?[index].avatar}")
+                                                : AssetImage(
+                                                        "assets/avatars/avatar.png")
+                                                    as ImageProvider,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                      );
-                                    })
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -315,10 +315,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (_) => ProfileScreen(
-                                          user: context
-                                              .read<ListUsersProvider>()
-                                              .userList?[index],
-                                        ),
+                                            user: listUserProvider
+                                                .userList?[index]),
                                       ),
                                     );
                                   },
@@ -344,20 +342,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
-                          Consumer<UserProvider>(
-                            builder: (_, userProvider, __) {
-                              return Container(
-                                color: Colors.transparent,
-                                margin: EdgeInsets.only(top: 40),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "${userProvider.user?.userName} ${userProvider.user?.lastName}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25),
-                                ),
-                              );
-                            },
+                          Container(
+                            color: Colors.transparent,
+                            margin: EdgeInsets.only(top: 40),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "${listUserProvider.userList?[index].userName} ${listUserProvider.userList?[index].lastName}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 25),
+                            ),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 15),
@@ -384,369 +377,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }
-          // } else if (constraints.maxHeight <= 900 &&
-          //     constraints.maxHeight >= 800) {
-          //   return PageView.builder(
-          //     pageSnapping: true,
-          //     physics: BouncingScrollPhysics(),
-          //     allowImplicitScrolling: true,
-          //     itemBuilder: (_, index) {
-          //       return Container(
-          //         child: Column(
-          //           children: [
-          //             Stack(
-          //               clipBehavior: Clip.none,
-          //               children: [
-          //                 Container(
-          //                   child: Stack(
-          //                     children: [
-          //                       ClipPath(
-          //                         clipper: OvalBottomBorderClipper(),
-          //                         child: Container(
-          //                           height: MediaQuery.of(context).size.height *
-          //                               0.73,
-          //                           color: Color(0xFF9a00e6),
-          //                         ),
-          //                       ),
-          //                       ClipPath(
-          //                         clipper: OvalBottomBorderClipper(),
-          //                         child: Container(
-          //                           height: MediaQuery.of(context).size.height *
-          //                               0.72,
-          //                           // color: Colors.blue,
-          //                           decoration: BoxDecoration(
-          //                             image: DecorationImage(
-          //                               image: AssetImage(
-          //                                   "assets/avatars/avatar2.png"),
-          //                               /* userData?.avatar != null ? NetworkImage(
-          //                               "${userData?.images?.first.imageLink}"
-          //                               /* "https://wmodelgroup.com/wp-content/uploads/2018/10/Jenyffer-Wiggers-500x625.jpg" */):AssetImage("assets/avatars/avatar.png"), */
-          //                               fit: BoxFit.cover,
-          //                             ),
-          //                           ),
-          //                         ),
-          //                       ),
-          //                     ],
-          //                   ),
-          //                 ),
-          //                 Positioned(
-          //                   top: 550,
-          //                   left: 75,
-          //                   // bottom: 500,
-          //                   child: ElevatedButton(
-          //                     child: Icon(
-          //                       Icons.close_rounded,
-          //                       size: 35,
-          //                     ),
-          //                     style: ElevatedButton.styleFrom(
-          //                         shape: CircleBorder(),
-          //                         minimumSize: Size(60, 60),
-          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
-          //                     onPressed: () {},
-          //                   ),
-          //                 ),
-          //                 Positioned(
-          //                   top: 550,
-          //                   left: 280,
-          //                   // bottom: 500,
-          //                   child: ElevatedButton(
-          //                     child: Icon(
-          //                       Icons.favorite,
-          //                       size: 35,
-          //                       color: Colors.pink[100],
-          //                     ),
-          //                     style: ElevatedButton.styleFrom(
-          //                         shape: CircleBorder(),
-          //                         minimumSize: Size(60, 60),
-          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
-          //                     onPressed: () {},
-          //                   ),
-          //                 ),
-          //                 Positioned(
-          //                   top: 570,
-          //                   left: 180,
-          //                   // bottom: 500,
-          //                   child: ElevatedButton(
-          //                     child: Icon(
-          //                       Icons.email_rounded,
-          //                       size: 35,
-          //                       color: Colors.yellowAccent[200],
-          //                     ),
-          //                     style: ElevatedButton.styleFrom(
-          //                         shape: CircleBorder(),
-          //                         minimumSize: Size(60, 60),
-          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
-          //                     onPressed: () {},
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //             Container(
-          //               color: Colors.transparent,
-          //               margin: EdgeInsets.only(top: 40),
-          //               alignment: Alignment.center,
-          //               child: Text(
-          //                 "${userData?.userName} ${userData?.userGraduations?.first.courseName}",
-          //                 style: TextStyle(
-          //                     fontWeight: FontWeight.bold, fontSize: 25),
-          //               ),
-          //             ),
-          //             Container(
-          //               margin: EdgeInsets.only(top: 15),
-          //               alignment: Alignment.center,
-          //               child: Text(
-          //                 "${userData?.birthday}",
-          //                 style: TextStyle(
-          //                     fontWeight: FontWeight.bold, fontSize: 20),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //   );
-          // } else if (constraints.maxHeight >= 700 &&
-          //     constraints.maxHeight < 800) {
-          //   return PageView.builder(
-          //     pageSnapping: true,
-          //     physics: BouncingScrollPhysics(),
-          //     allowImplicitScrolling: true,
-          //     itemBuilder: (_, index) {
-          //       return Container(
-          //         child: Column(
-          //           children: [
-          //             Stack(
-          //               clipBehavior: Clip.none,
-          //               children: [
-          //                 Container(
-          //                   child: Stack(
-          //                     children: [
-          //                       ClipPath(
-          //                         clipper: OvalBottomBorderClipper(),
-          //                         child: Container(
-          //                           height: MediaQuery.of(context).size.height *
-          //                               0.73,
-          //                           color: Color(0xFF9a00e6),
-          //                         ),
-          //                       ),
-          //                       ClipPath(
-          //                         clipper: OvalBottomBorderClipper(),
-          //                         child: Container(
-          //                           height: MediaQuery.of(context).size.height *
-          //                               0.72,
-          //                           // color: Colors.blue,
-          //                           decoration: BoxDecoration(
-          //                             image: DecorationImage(
-          //                               image: AssetImage(
-          //                                   "assets/avatars/avatar2.png"),
-          //                               /* userData?.avatar != null ? NetworkImage(
-          //                               "${userData?.images?.first.imageLink}"
-          //                               /* "https://wmodelgroup.com/wp-content/uploads/2018/10/Jenyffer-Wiggers-500x625.jpg" */):AssetImage("assets/avatars/avatar.png"), */
-          //                               fit: BoxFit.cover,
-          //                             ),
-          //                           ),
-          //                         ),
-          //                       ),
-          //                     ],
-          //                   ),
-          //                 ),
-          //                 Positioned(
-          //                   top: 510,
-          //                   left: 80,
-          //                   // bottom: 500,
-          //                   child: ElevatedButton(
-          //                     child: Icon(
-          //                       Icons.close_rounded,
-          //                       size: 35,
-          //                     ),
-          //                     style: ElevatedButton.styleFrom(
-          //                         shape: CircleBorder(),
-          //                         minimumSize: Size(60, 60),
-          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
-          //                     onPressed: () {},
-          //                   ),
-          //                 ),
-          //                 Positioned(
-          //                   top: 510,
-          //                   left: 270,
-          //                   // bottom: 500,
-          //                   child: ElevatedButton(
-          //                     child: Icon(
-          //                       Icons.favorite,
-          //                       size: 35,
-          //                       color: Colors.pink[100],
-          //                     ),
-          //                     style: ElevatedButton.styleFrom(
-          //                         shape: CircleBorder(),
-          //                         minimumSize: Size(60, 60),
-          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
-          //                     onPressed: () {},
-          //                   ),
-          //                 ),
-          //                 Positioned(
-          //                   top: 540,
-          //                   left: 175,
-          //                   // bottom: 500,
-          //                   child: ElevatedButton(
-          //                     child: Icon(
-          //                       Icons.email_rounded,
-          //                       size: 35,
-          //                       color: Colors.yellowAccent[200],
-          //                     ),
-          //                     style: ElevatedButton.styleFrom(
-          //                         shape: CircleBorder(),
-          //                         minimumSize: Size(60, 60),
-          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
-          //                     onPressed: () {},
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //             Container(
-          //               color: Colors.transparent,
-          //               margin: EdgeInsets.only(top: 40),
-          //               alignment: Alignment.center,
-          //               child: Text(
-          //                 "${userData?.userName} ${userData?.userGraduations?.first.courseName}",
-          //                 style: TextStyle(
-          //                     fontWeight: FontWeight.bold, fontSize: 25),
-          //               ),
-          //             ),
-          //             Container(
-          //               margin: EdgeInsets.only(top: 15),
-          //               alignment: Alignment.center,
-          //               child: Text(
-          //                 "${userData?.birthday}",
-          //                 style: TextStyle(
-          //                     fontWeight: FontWeight.bold, fontSize: 20),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //   );
-          // } else {
-          //   return PageView.builder(
-          //     pageSnapping: true,
-          //     physics: BouncingScrollPhysics(),
-          //     allowImplicitScrolling: true,
-          //     itemBuilder: (_, index) {
-          //       return Container(
-          //         child: Column(
-          //           children: [
-          //             Stack(
-          //               clipBehavior: Clip.none,
-          //               children: [
-          //                 Container(
-          //                   child: Stack(
-          //                     children: [
-          //                       ClipPath(
-          //                         clipper: OvalBottomBorderClipper(),
-          //                         child: Container(
-          //                           height: MediaQuery.of(context).size.height *
-          //                               0.73,
-          //                           color: Color(0xFF9a00e6),
-          //                         ),
-          //                       ),
-          //                       ClipPath(
-          //                         clipper: OvalBottomBorderClipper(),
-          //                         child: Container(
-          //                           height: MediaQuery.of(context).size.height *
-          //                               0.72,
-          //                           // color: Colors.blue,
-          //                           decoration: BoxDecoration(
-          //                             image: DecorationImage(
-          //                               image: AssetImage(
-          //                                   "assets/avatars/avatar2.png"),
-          //                               /* userData?.avatar != null ? NetworkImage(
-          //                               "${userData?.images?.first.imageLink}"
-          //                               /* "https://wmodelgroup.com/wp-content/uploads/2018/10/Jenyffer-Wiggers-500x625.jpg" */):AssetImage("assets/avatars/avatar.png"), */
-          //                               fit: BoxFit.cover,
-          //                             ),
-          //                           ),
-          //                         ),
-          //                       ),
-          //                     ],
-          //                   ),
-          //                 ),
-          //                 Positioned(
-          //                   top: 450,
-          //                   left: 75,
-          //                   // bottom: 500,
-          //                   child: ElevatedButton(
-          //                     child: Icon(
-          //                       Icons.close_rounded,
-          //                       size: 35,
-          //                     ),
-          //                     style: ElevatedButton.styleFrom(
-          //                         shape: CircleBorder(),
-          //                         minimumSize: Size(60, 60),
-          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
-          //                     onPressed: () {},
-          //                   ),
-          //                 ),
-          //                 Positioned(
-          //                   top: 450,
-          //                   left: 280,
-          //                   // bottom: 500,
-          //                   child: ElevatedButton(
-          //                     child: Icon(
-          //                       Icons.favorite,
-          //                       size: 35,
-          //                       color: Colors.pink[100],
-          //                     ),
-          //                     style: ElevatedButton.styleFrom(
-          //                         shape: CircleBorder(),
-          //                         minimumSize: Size(60, 60),
-          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
-          //                     onPressed: () {},
-          //                   ),
-          //                 ),
-          //                 Positioned(
-          //                   top: 470,
-          //                   left: 180,
-          //                   // bottom: 500,
-          //                   child: ElevatedButton(
-          //                     child: Icon(
-          //                       Icons.email_rounded,
-          //                       size: 35,
-          //                       color: Colors.yellowAccent[200],
-          //                     ),
-          //                     style: ElevatedButton.styleFrom(
-          //                         shape: CircleBorder(),
-          //                         minimumSize: Size(60, 60),
-          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
-          //                     onPressed: () {},
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //             Container(
-          //               color: Colors.transparent,
-          //               margin: EdgeInsets.only(top: 40),
-          //               alignment: Alignment.center,
-          //               child: Text(
-          //                 "${userData?.userName} ${userData?.userGraduations?.first.courseName}",
-          //                 style: TextStyle(
-          //                     fontWeight: FontWeight.bold, fontSize: 25),
-          //               ),
-          //             ),
-          //             Container(
-          //               margin: EdgeInsets.only(top: 15),
-          //               alignment: Alignment.center,
-          //               child: Text(
-          //                 "${userData?.birthday}",
-          //                 style: TextStyle(
-          //                     fontWeight: FontWeight.bold, fontSize: 20),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //   );
-          // }
         },
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:be_free_front/Models/User.dart';
+import 'package:be_free_front/Screens/Events/EventsScreen.dart';
 import 'package:be_free_front/Screens/Home/HomeScreen.dart';
 import 'package:be_free_front/Screens/Profile/EditProfile.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +23,10 @@ class _BaseScreenState extends State<BaseScreen> {
       HomeScreen(
         userData: widget.userData,
       ),
-      EditProfile()
+      EventsScreen(),
+      EditProfile(
+        userData: widget.userData,
+      ),
     ];
     return Scaffold(
       body: screens[page],
@@ -72,6 +76,15 @@ class _BaseScreenState extends State<BaseScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.emoji_events_outlined),
+                    label: "",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: CircleAvatar(
+                      backgroundImage: widget.userData?.avatar != null
+                          ? NetworkImage("${widget.userData?.avatar}")
+                          : AssetImage("assets/avatars/avatar2.png")
+                              as ImageProvider,
+                    ),
                     label: "",
                   ),
                 ],

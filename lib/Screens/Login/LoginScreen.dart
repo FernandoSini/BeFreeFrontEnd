@@ -1,3 +1,4 @@
+import 'package:be_free_front/Screens/Base/BaseScreen.dart';
 import 'package:be_free_front/Screens/Home/HomeScreen.dart';
 import 'package:be_free_front/Providers/LoginProvider.dart';
 import 'package:be_free_front/Screens/Register/RegisterScreen.dart';
@@ -174,9 +175,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   var userData = await loginProvider.login(
                       loginProvider.userNameData, loginProvider.passwordData);
                   if (loginProvider.isLogged) {
-                    print(userData.toString());
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => HomeScreen(userData: userData,)));
+                      MaterialPageRoute(
+                        builder: (_) => BaseScreen(
+                          userData: userData,
+                        ),
+                      ),
+                    );
                   }
                 },
               ),

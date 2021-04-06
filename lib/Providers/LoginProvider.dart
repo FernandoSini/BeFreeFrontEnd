@@ -11,7 +11,7 @@ class LoginProvider extends ChangeNotifier {
   String password = "";
   String get userNameData => username;
   String get passwordData => password;
-  User userData = User();
+  User? userData = User();
   String errorText = "";
   String get errorData => errorText;
   bool isLoggedIn = false;
@@ -38,6 +38,7 @@ class LoginProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         setLoggedIn(true);
         var body = jsonDecode(response.body);
+
         print(body["likesSended"]);
         print(body["likeReceived"]);
         setUser(User.fromJson(body));
@@ -62,6 +63,7 @@ class LoginProvider extends ChangeNotifier {
 
   void setUser(userValue) {
     userData = userValue;
+    notifyListeners();
   }
 
   void setLoading(value) {

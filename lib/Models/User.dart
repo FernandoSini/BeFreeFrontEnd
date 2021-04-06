@@ -51,8 +51,8 @@ class User {
     usertype = json['usertype'];
     if (json['userGraduations'] != null) {
       userGraduations = <Graduation>[];
-      json['userGraduations']?.forEach((v) {
-        userGraduations!.add(new Graduation.fromJson(v));
+      json['userGraduations']!.forEach((v) {
+        userGraduations?.add(new Graduation.fromJson(v));
       });
     }
     if (json['matches'] != null) {
