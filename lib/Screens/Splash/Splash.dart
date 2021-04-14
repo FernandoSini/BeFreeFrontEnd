@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:be_free_front/Models/EventOwner.dart';
 import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Providers/UserProvider.dart';
 import 'package:be_free_front/Screens/Base/BaseScreen.dart';
+import 'package:be_free_front/Screens/EventOwner/Base/BaseScreenEventOwner.dart';
 import 'package:be_free_front/Screens/Home/HomeScreen.dart';
 import 'package:be_free_front/Screens/Login/LoginScreen.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:universal_html/controller.dart';
 import 'package:universal_html/html.dart' as universal;
 
 import 'package:provider/provider.dart';
@@ -24,38 +27,69 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   final storage = new FlutterSecureStorage();
   // final LocalStorage localStorage = new LocalStorage("userData");
+  //
   @override
   void didChangeDependencies() async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
       var token = await storage.read(key: "token");
       var data = await storage.readAll();
+      var eventOwnerToken = await storage.read(key: "event_owner_token");
 
-      if (token != null) {
-        print("proxima tela1:" + data.toString());
-        print("token1:" + token.toString());
-        if (!JwtDecoder.isExpired(token)) {
-          // await storage.deleteAll();
-          print("token não expirou");
-          Map<String, dynamic> fromLocalToUser = {};
-          fromLocalToUser.addEntries(data.entries);
-          User? user = User.fromJson(fromLocalToUser);
-
-          Timer(
-            Duration(seconds: 5),
-            () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => BaseScreen(
-                    userData: user,
+      if (await storage.containsKey(key: "token")) {
+        if (token != null) {
+          if (!JwtDecoder.isExpired(token)) {
+            // await storage.deleteAll();
+            print("token não expirou");
+            Map<String, dynamic> fromLocalToUser = {};
+            fromLocalToUser.addEntries(data.entries);
+            User? user = User.fromJson(fromLocalToUser);
+            Timer(
+              Duration(seconds: 5),
+              () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => BaseScreen(
+                      userData: user,
+                    ),
                   ),
-                ),
-              );
-            },
-          );
+                );
+              },
+            );
+          } else {
+            Map<String, String> userData = {
+              "id_user": "",
+              "user_name": "",
+              "first_name": "",
+              "last_name": "",
+              "birthday": "",
+              "gender": "",
+              "email": "",
+              "avatar": "",
+              "images": "",
+              "userGraduations": "",
+              "matches": "",
+              "likeReceived": "",
+              "likesSended": "",
+              "token": "",
+            };
+            userData.keys.forEach((element) async {
+              print(element);
+              await storage.delete(key: element);
+            });
+            Timer(
+              Duration(seconds: 3),
+              () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => LoginScreen(),
+                  ),
+                );
+              },
+            );
+          }
         } else {
-          await storage.deleteAll();
-          print("token expirou");
+          print("object");
           Timer(
             Duration(seconds: 3),
             () {
@@ -67,19 +101,43 @@ class _SplashState extends State<Splash> {
             },
           );
         }
+      } else if (await storage.containsKey(key: "event_owner_token")) {
+        if (eventOwnerToken != null) {
+          if (!JwtDecoder.isExpired(eventOwnerToken)) {
+            print(data);
+            Map<String, dynamic> fromLocalToUser = {};
+            fromLocalToUser.addEntries(data.entries);
+            EventOwner? eventOwner = EventOwner.fromJson(fromLocalToUser);
+            Timer(Duration(seconds: 3), () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (_) =>
+                      BaseScreenEventOwner(eventOwner: eventOwner)));
+            });
+          } else {
+            Map<String, String> eventOwnerData = {
+              "event_owner_id": "",
+              "event_owner_name": "",
+              "document_number": "",
+              "event_owner_email": "",
+              "event_owner_avatar": "",
+              "events": "",
+              "event_owner_token": ""
+            };
+            eventOwnerData.keys.forEach((element) async {
+              await storage.delete(key: element);
+            });
+            Timer(Duration(seconds: 3), () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => LoginScreen()));
+            });
+          }
+        }
       } else {
-        print("proxima tela 2: " + data.toString());
-        print("token2:" + token.toString());
-        Timer(
-          Duration(seconds: 5),
-          () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => LoginScreen(),
-              ),
-            );
-          },
-        );
+        await storage.deleteAll();
+        Timer(Duration(seconds: 3), () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => LoginScreen()));
+        });
       }
     } else {
       if (universal.window.localStorage.containsKey("token")) {
@@ -132,8 +190,8 @@ class _SplashState extends State<Splash> {
           },
         );
       }
+      super.didChangeDependencies();
     }
-    super.didChangeDependencies();
   }
 
   @override

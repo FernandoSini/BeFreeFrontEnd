@@ -1,5 +1,8 @@
+import 'package:be_free_front/Providers/EventOwnerProvider.dart';
 import 'package:be_free_front/Providers/ListUsersProvider.dart';
+import 'package:be_free_front/Providers/LoginEventOwnerProvider.dart';
 import 'package:be_free_front/Providers/LoginProvider.dart';
+import 'package:be_free_front/Providers/RegisterEventOwnerProvider.dart';
 import 'package:be_free_front/Providers/RegisterProvider.dart';
 import 'package:be_free_front/Providers/UserProvider.dart';
 import 'package:be_free_front/Screens/Splash/Splash.dart';
@@ -13,7 +16,11 @@ void main() {
         ChangeNotifierProvider(create: (context) => LoginProvider()),
         ChangeNotifierProvider(create: (context) => RegisterProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        ChangeNotifierProvider(create: (context) => ListUsersProvider())
+        ChangeNotifierProvider(create: (context) => ListUsersProvider()),
+        ChangeNotifierProvider(
+            create: (context) => RegisterEventOwnerProvider()),
+        ChangeNotifierProvider(create: (context) => LoginEventOwnerProvider()),
+        ChangeNotifierProvider(create: (context) => EventOwnerProvider()),
       ],
       child: MyApp(),
     ),

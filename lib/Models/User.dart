@@ -15,6 +15,7 @@ class User {
   String? birthday;
   String? email;
   String? usertype;
+  String? about;
   List<Graduation>? userGraduations;
   List<Match>? matches;
   List<Like>? likesSended;
@@ -32,6 +33,7 @@ class User {
       this.birthday,
       this.email,
       this.usertype,
+      this.about,
       this.userGraduations,
       this.matches,
       this.likesSended,
@@ -48,6 +50,7 @@ class User {
     gender = json['gender'];
     birthday = json['birthday'];
     email = json['email'];
+    about = json['about'];
     usertype = json['usertype'];
     if (json['userGraduations'] != null) {
       userGraduations = <Graduation>[];
@@ -93,6 +96,7 @@ class User {
     data['birthday'] = this.birthday;
     data['email'] = this.email;
     data['usertype'] = this.usertype;
+    data['about'] = this.about;
     data['token'] = this.token;
     if (this.userGraduations != null) {
       data['userGraduations'] =
@@ -113,6 +117,7 @@ class User {
 
     return data;
   }
+  
 
   // @override
   //   String toString() {

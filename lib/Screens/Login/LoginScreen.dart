@@ -1,4 +1,5 @@
 import 'package:be_free_front/Screens/Base/BaseScreen.dart';
+import 'package:be_free_front/Screens/EventOwner/Login/EventOwnerLogin.dart';
 import 'package:be_free_front/Screens/Home/HomeScreen.dart';
 import 'package:be_free_front/Providers/LoginProvider.dart';
 import 'package:be_free_front/Screens/Register/RegisterScreen.dart';
@@ -216,7 +217,48 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 },
               ),
-            )
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                "Are you a EventOwner/Company? Use this way: ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 25, right: 25),
+              height: 55,
+              child: TextButton(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Event Login Screen',
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  elevation: 5,
+                  backgroundColor: Color(0xff9a00e6),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => EventOwnerLogin(),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

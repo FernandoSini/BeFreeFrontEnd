@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:be_free_front/Models/EventOwner.dart';
 import 'package:be_free_front/Models/User.dart';
+import 'package:be_free_front/Screens/EventOwner/EventOwnerHome/EventOwnerHome.dart';
 import 'package:be_free_front/Screens/Matches/MatchesScreen.dart';
 import 'package:be_free_front/Screens/Events/EventsScreen.dart';
 import 'package:be_free_front/Screens/Home/HomeScreen.dart';
@@ -13,15 +15,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:universal_html/html.dart' as universal;
 
-class BaseScreen extends StatefulWidget {
-  BaseScreen({this.userData});
-  User? userData;
+class BaseScreenEventOwner extends StatefulWidget {
+  BaseScreenEventOwner({this.eventOwner});
+  EventOwner? eventOwner;
 
   @override
-  _BaseScreenState createState() => _BaseScreenState();
+  _BaseScreenEventOwnerState createState() => _BaseScreenEventOwnerState();
 }
 
-class _BaseScreenState extends State<BaseScreen> {
+class _BaseScreenEventOwnerState extends State<BaseScreenEventOwner> {
   int page = 0;
   final storage = new FlutterSecureStorage();
 
@@ -29,10 +31,10 @@ class _BaseScreenState extends State<BaseScreen> {
   void didChangeDependencies() async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
-      var token = await storage.read(key: "token");
+      var eventOwnerToken = await storage.read(key: "event_owner_token");
 
-      if (token != null) {
-        if (JwtDecoder.isExpired(token)) {
+      if (eventOwnerToken != null) {
+        if (JwtDecoder.isExpired(eventOwnerToken)) {
           await storage.deleteAll();
           print("token expirou");
           Timer(
@@ -48,7 +50,8 @@ class _BaseScreenState extends State<BaseScreen> {
         }
       }
     } else {
-      if (JwtDecoder.isExpired(universal.window.localStorage["token"]!)) {
+      if (JwtDecoder.isExpired(
+          universal.window.localStorage["event_owner_token"]!)) {
         universal.window.localStorage.clear();
         print("token expirou");
         Timer(
@@ -69,15 +72,16 @@ class _BaseScreenState extends State<BaseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.eventOwner?.documentNumber.toString());
     List<Widget> screens = [
-      HomeScreen(
-        userData: widget.userData,
+      EventOwnerHome(
+        eventOwner: widget.eventOwner,
       ),
       EventsScreen(),
-      MatchesScreen(),
-      YourProfileScreen(
-        userData: widget.userData,
-      ),
+
+      // YourProfileScreen(
+      //   userData: widget,
+      // ),
     ];
     return Scaffold(
       body: screens[page],
@@ -115,8 +119,8 @@ class _BaseScreenState extends State<BaseScreen> {
                     icon: Container(
                       padding: EdgeInsets.only(top: 7),
                       child: CircleAvatar(
-                        backgroundImage: widget.userData?.avatar != null
-                            ? NetworkImage("${widget.userData?.avatar}")
+                        backgroundImage: widget.eventOwner?.avatar != null
+                            ? NetworkImage("${widget.eventOwner?.avatar}")
                             : AssetImage("assets/avatars/avatar2.png")
                                 as ImageProvider,
                       ),
@@ -153,15 +157,11 @@ class _BaseScreenState extends State<BaseScreen> {
                     label: "Events",
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.whatshot_outlined),
-                    label: "Matches",
-                  ),
-                  BottomNavigationBarItem(
                     icon: Container(
                       padding: EdgeInsets.only(top: 7),
                       child: CircleAvatar(
-                        backgroundImage: widget.userData?.avatar != null
-                            ? NetworkImage("${widget.userData?.avatar}")
+                        backgroundImage: widget.eventOwner?.avatar != null
+                            ? NetworkImage("${widget.eventOwner?.avatar}")
                             : AssetImage("assets/avatars/avatar2.png")
                                 as ImageProvider,
                       ),

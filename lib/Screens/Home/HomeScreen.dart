@@ -4,7 +4,7 @@ import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Providers/ListUsersProvider.dart';
 import 'package:be_free_front/Providers/UserProvider.dart';
 import 'package:be_free_front/Screens/Login/LoginScreen.dart';
-import 'package:be_free_front/Screens/Profile/EditProfile.dart';
+import 'package:be_free_front/Screens/Profile/YourProfileScreen.dart';
 import 'package:be_free_front/Screens/Profile/ProfileScreen.dart';
 import 'package:be_free_front/Screens/clippers/CustomClipperRound.dart';
 import 'package:be_free_front/Screens/clippers/OvalClipper.dart';
@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as universal;
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
     }
-    Provider.of<ListUsersProvider>(context).dispose();
+    // Provider.of<ListUsersProvider>(context).dispose();
   }
 
   @override
@@ -58,7 +59,14 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<ListUsersProvider>(context, listen: false)
           .getListOfUsersByYourGender(widget.userData);
+
+      if (JwtDecoder.isExpired(widget.userData!.token!)) {
+        await storage.deleteAll();
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
+      }
     });
+
     // print(dataFromAPI);
     // Provider.of<ListUsersProvider>(context, listen: false)
     //     .getListOfUsersByYourGender(widget.userData);
@@ -66,12 +74,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
         Provider.of<ListUsersProvider>(context, listen: false).dispose();
       }
     });
+
     super.dispose();
   }
 
@@ -122,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => EditProfile()));
+                            MaterialPageRoute(builder: (_) => YourProfileScreen()));
                       },
                       child: Row(
                         children: [
@@ -248,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ? NetworkImage(
                                                     "${listUserProvider.userList?[index].avatar}")
                                                 : AssetImage(
-                                                        "assets/avatars/avatar.png")
+                                                        "assets/avatars/avatar2.png")
                                                     as ImageProvider,
                                             fit: BoxFit.cover,
                                           ),

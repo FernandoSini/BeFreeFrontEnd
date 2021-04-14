@@ -1,17 +1,18 @@
 import 'dart:convert';
 
+import 'package:be_free_front/Models/EventOwner.dart';
 import 'package:flutter/material.dart';
 
 import 'package:be_free_front/Models/User.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
-class LoginProvider extends ChangeNotifier {
+class LoginEventOwnerProvider extends ChangeNotifier {
   String username = "";
   String password = "";
   String get userNameData => username;
   String get passwordData => password;
-  User? userData = User();
+  EventOwner? eventOwner = EventOwner();
   String errorText = "";
   String get errorData => errorText;
   bool isLoggedIn = false;
@@ -21,8 +22,8 @@ class LoginProvider extends ChangeNotifier {
   bool loading = false;
   bool get isLoading => loading;
 
-  Future<User?> login(String username, String password) async {
-    String url = "http://192.168.0.136:8080/auth/user/login";
+  Future<EventOwner?> login(String username, String password) async {
+    String url = "http://192.168.0.136:8080/auth/eventowner/login";
     setLoading(true);
     var body = {"user_name": username, "password": password};
     final loginData = jsonEncode(body);
@@ -39,17 +40,18 @@ class LoginProvider extends ChangeNotifier {
         setLoggedIn(true);
         var body = jsonDecode(response.body);
 
-        setUser(User.fromJson(body));
-        print(userData);
+        print(body);
+        setEventOwner(EventOwner.fromJson(body));
+
         setLoading(false);
         errorText = "";
-        return userData;
+        return eventOwner;
       } else {
         error = true;
         errorText = "${jsonDecode(response.body)["message"]}";
         setLoading(false);
         notifyListeners();
-        throw Future.error(errorText);
+        return Future.error(errorText);
       }
     } catch (e) {
       setLoading(false);
@@ -60,8 +62,8 @@ class LoginProvider extends ChangeNotifier {
     // setLoading(false);
   }
 
-  void setUser(userValue) {
-    userData = userValue;
+  void setEventOwner(eventOwnerValue) {
+    eventOwner = eventOwnerValue;
     notifyListeners();
   }
 

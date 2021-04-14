@@ -17,6 +17,7 @@ class ListUsersProvider extends ChangeNotifier {
   bool get isApiLoaded => apiLoaded;
 
   Future<List<User>?> getListOfUsersByYourGender(User? user) async {
+    userListFromAPi?.clear();
     setLoading(true);
     try {
       http.Response response = await http.get(
@@ -31,7 +32,16 @@ class ListUsersProvider extends ChangeNotifier {
         var body = jsonDecode(response.body);
         print("teste body: " + body.toString());
         for (var data in body) {
-          userListFromAPi?.add(User.fromJson(data));
+          // userListFromAPi?.forEach((element) {
+          //   if (element != User.fromJson(data)) {
+          //     userListFromAPi?.add(User.fromJson(data));
+          //   } else {}
+          // });
+          if (userListFromAPi!.contains(User.fromJson(data))) {
+          } else {
+            userListFromAPi?.add(User.fromJson(data));
+            userListFromAPi?.shuffle();
+          }
         }
         setLoading(false);
         return userListFromAPi;
