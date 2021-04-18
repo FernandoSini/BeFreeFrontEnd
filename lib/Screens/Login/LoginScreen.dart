@@ -36,6 +36,15 @@ class _LoginScreenState extends State<LoginScreen> {
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.help_outline,
+              color: Color(0xFF9a00e6),
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
@@ -44,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              margin: EdgeInsets.only(top: 30),
+              // margin: EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
@@ -57,11 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(bottom: 30),
+              // margin: EdgeInsets.only(bottom: 30),
+              padding: EdgeInsets.only(left: 40, right: 40),
               child: Text(
                 loginProvider.hasError ? loginProvider.errorData : "",
                 // "flemissajkdhasjkdhas",
@@ -71,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 30,
             ),
             Container(
               margin: EdgeInsets.only(left: 25, right: 25),
@@ -150,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(
-              height: 80,
+              height: 50,
             ),
             Container(
               // width: MediaQuery.of(context).size.width * 0.8,

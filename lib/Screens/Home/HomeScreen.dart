@@ -79,6 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
       if (mounted) {
         Provider.of<ListUsersProvider>(context, listen: false).dispose();
       }
+      if (JwtDecoder.isExpired(widget.userData!.token!)) {
+        await storage.deleteAll();
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
+      }
     });
 
     super.dispose();
@@ -130,8 +135,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (_, userProvider, __) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => YourProfileScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => YourProfileScreen()));
                       },
                       child: Row(
                         children: [
@@ -215,8 +220,11 @@ class _HomeScreenState extends State<HomeScreen> {
           if (!listProvider.isLoading) {
             return Consumer<ListUsersProvider>(
               builder: (_, listUserProvider, __) {
+                listUserProvider.userList!.removeWhere((User? element) =>
+                    element!.idUser! == widget.userData!.idUser);
+
                 return PageView.builder(
-                  itemCount: listProvider.userList!.length,
+                  itemCount: listUserProvider.userList!.length,
                   pageSnapping: true,
                   physics: BouncingScrollPhysics(),
                   allowImplicitScrolling: true,
@@ -362,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 15),
+                            margin: EdgeInsets.only(top: 13),
                             alignment: Alignment.center,
                             child: Text(
                               "${widget.userData?.birthday}",

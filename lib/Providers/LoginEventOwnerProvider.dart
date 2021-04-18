@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:be_free_front/Models/EventOwner.dart';
 import 'package:flutter/material.dart';
 
-import 'package:be_free_front/Models/User.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 

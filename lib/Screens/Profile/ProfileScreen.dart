@@ -75,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
                     padding: EdgeInsets.only(top: 35),
                     clipBehavior: Clip.none,
                     height: user!.images!.length > 3
-                        ? MediaQuery.of(context).size.height * 0.35
+                        ? 290
                         : MediaQuery.of(context).size.height * 0.20,
                     width: MediaQuery.of(context).size.width,
                     child: Container(

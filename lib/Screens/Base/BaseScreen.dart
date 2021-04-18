@@ -35,16 +35,13 @@ class _BaseScreenState extends State<BaseScreen> {
         if (JwtDecoder.isExpired(token)) {
           await storage.deleteAll();
           print("token expirou");
-          Timer(
-            Duration(seconds: 3),
-            () {
+          
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (_) => LoginScreen(),
                 ),
               );
-            },
-          );
+           
         }
       }
     } else {
@@ -74,12 +71,13 @@ class _BaseScreenState extends State<BaseScreen> {
         userData: widget.userData,
       ),
       EventsScreen(),
-      MatchesScreen(),
+      MatchesScreen(user: widget.userData,),
       YourProfileScreen(
         userData: widget.userData,
       ),
     ];
     return Scaffold(
+      extendBody: true,
       body: screens[page],
       bottomNavigationBar: (defaultTargetPlatform == TargetPlatform.iOS ||
               defaultTargetPlatform == TargetPlatform.macOS)
@@ -128,49 +126,61 @@ class _BaseScreenState extends State<BaseScreen> {
             )
           : BottomAppBar(
               elevation: 0,
+              notchMargin: 5,
               shape: CircularNotchedRectangle(),
-              child: BottomNavigationBar(
-                unselectedItemColor: Colors.grey,
-                currentIndex: page,
-                selectedItemColor: Color(0xFF9a00e6),
-                onTap: (index) {
-                  setState(() {
-                    page = index;
-                  });
-                },
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite),
-                    activeIcon: Icon(
-                      Icons.favorite,
-                      color: Colors.pink,
-                    ),
-                    label: "Find",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.nightlife),
-                    activeIcon: Icon(Icons.nightlife),
-                    label: "Events",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.whatshot_outlined),
-                    label: "Matches",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                      padding: EdgeInsets.only(top: 7),
-                      child: CircleAvatar(
-                        backgroundImage: widget.userData?.avatar != null
-                            ? NetworkImage("${widget.userData?.avatar}")
-                            : AssetImage("assets/avatars/avatar2.png")
-                                as ImageProvider,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Container(
+                child: ClipRRect(
+                  // borderRadius: BorderRadius.circular(30),
+                  child: BottomNavigationBar(
+                    type: BottomNavigationBarType.fixed,
+                    unselectedItemColor: Colors.grey,
+                    currentIndex: page,
+                    selectedItemColor: Color(0xFF9a00e6),
+                    onTap: (index) {
+                      setState(() {
+                        page = index;
+                      });
+                    },
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.favorite),
+                        activeIcon: Icon(
+                          Icons.favorite,
+                          color: Colors.pink,
+                        ),
+                        label: "Find",
                       ),
-                    ),
-                    label: "",
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.nightlife),
+                        activeIcon: Icon(Icons.nightlife),
+                        label: "Events",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.whatshot_outlined),
+                        label: "Matches",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Container(
+                          padding: EdgeInsets.only(top: 7),
+                          child: CircleAvatar(
+                            backgroundImage: widget.userData?.avatar != null
+                                ? NetworkImage("${widget.userData?.avatar}")
+                                : AssetImage("assets/avatars/avatar2.png")
+                                    as ImageProvider,
+                          ),
+                        ),
+                        label: "",
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
+      /* floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked, */
     );
   }
 }

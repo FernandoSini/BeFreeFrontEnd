@@ -1,23 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:be_free_front/Models/EventOwner.dart';
 import 'package:be_free_front/Models/User.dart';
-import 'package:be_free_front/Providers/UserProvider.dart';
 import 'package:be_free_front/Screens/Base/BaseScreen.dart';
 import 'package:be_free_front/Screens/EventOwner/Base/BaseScreenEventOwner.dart';
-import 'package:be_free_front/Screens/Home/HomeScreen.dart';
 import 'package:be_free_front/Screens/Login/LoginScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:localstorage/localstorage.dart';
-import 'package:universal_html/controller.dart';
 import 'package:universal_html/html.dart' as universal;
-
-import 'package:provider/provider.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -40,6 +32,7 @@ class _SplashState extends State<Splash> {
         if (token != null) {
           if (!JwtDecoder.isExpired(token)) {
             // await storage.deleteAll();
+            print(data);
             print("token não expirou");
             Map<String, dynamic> fromLocalToUser = {};
             fromLocalToUser.addEntries(data.entries);
@@ -72,6 +65,8 @@ class _SplashState extends State<Splash> {
               "likeReceived": "",
               "likesSended": "",
               "token": "",
+              "job_title": "",
+              "company": ""
             };
             userData.keys.forEach((element) async {
               print(element);
@@ -104,7 +99,6 @@ class _SplashState extends State<Splash> {
       } else if (await storage.containsKey(key: "event_owner_token")) {
         if (eventOwnerToken != null) {
           if (!JwtDecoder.isExpired(eventOwnerToken)) {
-            print(data);
             Map<String, dynamic> fromLocalToUser = {};
             fromLocalToUser.addEntries(data.entries);
             EventOwner? eventOwner = EventOwner.fromJson(fromLocalToUser);

@@ -32,7 +32,7 @@ class UserProvider extends ChangeNotifier {
   void saveDataOnSecurePlace(User? user) async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
-      Map<String, dynamic> userData = {
+      Map<String, String?> userData = {
         "id_user": user!.idUser!,
         "user_name": user.userName!,
         "first_name": user.firstName!,
@@ -42,12 +42,17 @@ class UserProvider extends ChangeNotifier {
         "email": user.email!,
         "avatar": user.avatar == null ? "null" : user.avatar!,
         //esta dando bugs nesses aqui
-        // "images": user.images?.toList(),
-        // "userGraduations": user.userGraduations?.toList(),
-        // "matches": user.matches?.toList(),
-        // "likeReceived": user.likeReceived?.toList(),
-        // "likesSended": user.likesSended?.toList(),
+        "images": user.images?.map((i) => i.toJson()).toList().toString(),
+        "userGraduations":
+            user.userGraduations?.map((g) => g.toJson()).toList().toString(),
+        "matches": user.matches?.toList().toString(),
+        "likeReceived":
+            user.likeReceived?.map((like) => like.toJson()).toString(),
+        "likesSended":
+            user.likesSended?.map((like) => like.toJson()).toList().toString(),
         "token": user.token!,
+        "job_title": user.job,
+        "company": user.company
       };
       userData.forEach((key, value) async {
         await storage.write(key: key, value: value);
@@ -71,6 +76,8 @@ class UserProvider extends ChangeNotifier {
           "likeReceived": user.likeReceived!.toList().asMap().toString(),
           "likesSended": user.likesSended!.toList().asMap().toString(),
           "token": user.token!,
+          "job_title": user.job!,
+          "company": user.company!,
         };
         universal.window.sessionStorage.addEntries(userData.entries);
         // universal.window.localStorage["user"] = user.toString();

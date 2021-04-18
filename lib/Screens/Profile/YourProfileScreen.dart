@@ -38,7 +38,7 @@ class YourProfileScreen extends StatelessWidget {
         child: ListView(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 50),
+              margin: EdgeInsets.only(top: 35),
               child: CircleAvatar(
                 backgroundImage: userData?.avatar != null
                     ? NetworkImage("${userData?.avatar}")
@@ -70,7 +70,17 @@ class YourProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 50,
+              height: 20,
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                "${userData?.gender}",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
             ),
             Container(
               height: 50,

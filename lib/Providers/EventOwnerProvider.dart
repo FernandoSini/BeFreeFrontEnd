@@ -1,11 +1,8 @@
-import 'dart:io';
 
 import 'package:be_free_front/Models/EventOwner.dart';
-import 'package:be_free_front/Models/User.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as universal;
-import 'package:localstorage/localstorage.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 

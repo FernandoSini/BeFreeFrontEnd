@@ -38,7 +38,6 @@ class LoginProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         setLoggedIn(true);
         var body = jsonDecode(response.body);
-
         setUser(User.fromJson(body));
         print(userData);
         setLoading(false);
@@ -49,7 +48,7 @@ class LoginProvider extends ChangeNotifier {
         errorText = "${jsonDecode(response.body)["message"]}";
         setLoading(false);
         notifyListeners();
-        throw Future.error(errorText);
+        return Future.error(errorText);
       }
     } catch (e) {
       setLoading(false);
