@@ -55,15 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 2), () {
-      Provider.of<UserProvider>(context, listen: false)
-          .setUser(widget.userData);
-    });
-
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<ListUsersProvider>(context, listen: false)
           .getListOfUsersByYourGender(widget.userData);
-
+      Provider.of<UserProvider>(context, listen: false)
+          .setUser(widget.userData);
       if (JwtDecoder.isExpired(widget.userData!.token!)) {
         await storage.deleteAll();
         Navigator.of(context)
@@ -82,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (JwtDecoder.isExpired(widget.userData!.token!)) {
         await storage.deleteAll();
-        Provider.of<UserProvider>(context).dispose();
         Navigator.of(context)
             .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
       }
@@ -96,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
         Provider.of<ListUsersProvider>(context, listen: false).dispose();
+        Provider.of<UserProvider>(context).dispose();
         if (JwtDecoder.isExpired(widget.userData!.token!)) {
           await storage.deleteAll();
           Navigator.of(context).pushReplacement(
