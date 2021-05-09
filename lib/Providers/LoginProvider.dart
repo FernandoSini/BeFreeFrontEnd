@@ -7,10 +7,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
 class LoginProvider extends ChangeNotifier {
-  String username = "";
-  String password = "";
-  String get userNameData => username;
-  String get passwordData => password;
+  String? username = "";
+  String? password = "";
+  String? get userNameData => username;
+  String? get passwordData => password;
   User? userData = User();
   String errorText = "";
   String get errorData => errorText;
@@ -24,8 +24,8 @@ class LoginProvider extends ChangeNotifier {
   Future<User?> login(String username, String password) async {
     String url = "http://192.168.0.136:8080/auth/user/login";
     setLoading(true);
-    var body = {"user_name": username, "password": password};
-    final loginData = jsonEncode(body);
+    var data = {"user_name": username, "password": password};
+    final loginData = jsonEncode(data);
     print(loginData);
     try {
       http.Response response =
@@ -37,9 +37,9 @@ class LoginProvider extends ChangeNotifier {
       });
       if (response.statusCode == 200) {
         setLoggedIn(true);
-        var body = jsonDecode(response.body);
+        var body = jsonDecode(
+            Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
         setUser(User.fromJson(body));
-        print(userData);
         setLoading(false);
         errorText = "";
         return userData;

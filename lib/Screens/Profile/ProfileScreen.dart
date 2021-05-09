@@ -1,5 +1,5 @@
 import 'package:be_free_front/Models/User.dart';
-import 'package:be_free_front/Models/Image.dart';
+import 'package:be_free_front/Widget/FullScreenWidget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -71,12 +71,12 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 if (user!.images!.isNotEmpty)
                   Container(
-                    margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.only(top: 35),
+                    margin: EdgeInsets.only(top: 15),
+                    padding: EdgeInsets.only(top: 15),
                     clipBehavior: Clip.none,
                     height: user!.images!.length > 3
                         ? 290
-                        : MediaQuery.of(context).size.height * 0.20,
+                        : MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width,
                     child: Container(
                       clipBehavior: Clip.none,
@@ -126,8 +126,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Container(
                   // color: Colors.green,
-
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.only(top: 5),
                   height: (user?.about != null && user!.about!.length >= 100)
                       ? MediaQuery.of(context).size.height * 0.3
                       : MediaQuery.of(context).size.height * 0.17,
@@ -141,17 +140,18 @@ class ProfileScreen extends StatelessWidget {
                             child: Icon(
                               Icons.info_outlined,
                               size: 30,
+                              color: Colors.pinkAccent[400],
                             ),
                             height: 40,
                             width: 40,
                             decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
                                   offset: Offset(
-                                      3, 2), // changes position of shadow
+                                      2, 2), // changes position of shadow
                                 ),
                               ],
                               color: Colors.white,
@@ -164,7 +164,7 @@ class ProfileScreen extends StatelessWidget {
                               "About",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 22,
+                                fontSize: 25,
                               ),
                             ),
                           ),
@@ -182,80 +182,6 @@ class ProfileScreen extends StatelessWidget {
                           softWrap: true,
                         ),
                       )
-                    ],
-                  ),
-                ),
-                if (user!.userGraduations!.isNotEmpty)
-                  Divider(
-                    color: Color(0xFF9a00e6),
-                  ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  clipBehavior: Clip.none,
-                  height: user!.userGraduations!.length > 3
-                      ? MediaQuery.of(context).size.height * 0.25
-                      : MediaQuery.of(context).size.height * 0.3,
-                  // color: Colors.yellow,
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: user?.userGraduations?.length,
-                        itemBuilder: (context, index) => Container(
-                          margin: EdgeInsets.only(top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Icon(
-                                  Icons.school_outlined,
-                                  size: 40,
-                                ),
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: Offset(
-                                          3, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 10),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "${user?.userGraduations?[index].courseName}",
-                                  style: TextStyle(fontSize: 17),
-                                ),
-                                height: 50,
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: Offset(
-                                          3, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),

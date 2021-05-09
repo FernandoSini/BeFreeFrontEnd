@@ -27,7 +27,7 @@ class _SplashState extends State<Splash> {
       var token = await storage.read(key: "token");
       var data = await storage.readAll();
       var eventOwnerToken = await storage.read(key: "event_owner_token");
-
+      print(token);
       if (await storage.containsKey(key: "token")) {
         if (token != null) {
           if (!JwtDecoder.isExpired(token)) {
@@ -36,7 +36,9 @@ class _SplashState extends State<Splash> {
             print("token não expirou");
             Map<String, dynamic> fromLocalToUser = {};
             fromLocalToUser.addEntries(data.entries);
+            //print("teste2:" + fromLocalToUser.values.toString());
             User? user = User.fromJson(fromLocalToUser);
+            print(user.token.toString());
             Timer(
               Duration(seconds: 5),
               () {
@@ -60,7 +62,6 @@ class _SplashState extends State<Splash> {
               "email": "",
               "avatar": "",
               "images": "",
-              "userGraduations": "",
               "matches": "",
               "likeReceived": "",
               "likesSended": "",
@@ -103,9 +104,11 @@ class _SplashState extends State<Splash> {
             fromLocalToUser.addEntries(data.entries);
             EventOwner? eventOwner = EventOwner.fromJson(fromLocalToUser);
             Timer(Duration(seconds: 3), () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (_) =>
-                      BaseScreenEventOwner(eventOwner: eventOwner)));
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => BaseScreenEventOwner(eventOwner: eventOwner),
+                ),
+              );
             });
           } else {
             Map<String, String> eventOwnerData = {

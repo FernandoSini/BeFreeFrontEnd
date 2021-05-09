@@ -26,15 +26,17 @@ dependencies:
   cached_network_image: ^3.0.0
   cupertino_icons: ^1.0.2
   encrypt: ^5.0.0
-  flutter_holo_date_picker: ^1.0.0-nullsafety.0
-  flutter_secure_storage: ^4.1.0
-  http: ^0.13.1
+  enum_to_string: ^2.0.1
+  flutter_holo_date_picker: ^1.0.0-nullsafety.2
+  flutter_secure_storage: ^4.2.0
+  hive: ^2.0.4
+  http: ^0.13.2
+  intl: ^0.17.0
   jwt_decoder: ^2.0.1
-  localstorage: ^4.0.0+1
   multiavatar: ^0.1.4
   provider: ^5.0.0
   stomp_dart_client: ^0.4.1
-  universal_html: ^2.0.7
+  universal_html: ^2.0.8
 
 dev_dependencies:
   flutter_test:

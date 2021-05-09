@@ -26,54 +26,17 @@ class _BaseScreenState extends State<BaseScreen> {
   final storage = new FlutterSecureStorage();
 
   @override
-  void didChangeDependencies() async {
-    if (defaultTargetPlatform == TargetPlatform.android ||
-        defaultTargetPlatform == TargetPlatform.iOS) {
-      var token = await storage.read(key: "token");
-
-      if (token != null) {
-        if (JwtDecoder.isExpired(token)) {
-          await storage.deleteAll();
-          print("token expirou");
-          
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => LoginScreen(),
-                ),
-              );
-           
-        }
-      }
-    } else {
-      if (JwtDecoder.isExpired(universal.window.localStorage["token"]!)) {
-        universal.window.localStorage.clear();
-        print("token expirou");
-        Timer(
-          Duration(seconds: 5),
-          () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => LoginScreen(),
-              ),
-            );
-          },
-        );
-      }
-    }
-
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
       HomeScreen(
-        userData: widget.userData,
+        userData: widget.userData!,
       ),
-      EventsScreen(),
-      MatchesScreen(user: widget.userData,),
+      EventsScreen(user: widget.userData!),
+      MatchesScreen(
+        user: widget.userData!,
+      ),
       YourProfileScreen(
-        userData: widget.userData,
+        userData: widget.userData!,
       ),
     ];
     return Scaffold(

@@ -39,11 +39,20 @@ class YourProfileScreen extends StatelessWidget {
           children: [
             Container(
               margin: EdgeInsets.only(top: 35),
-              child: CircleAvatar(
-                backgroundImage: userData?.avatar != null
-                    ? NetworkImage("${userData?.avatar}")
-                    : AssetImage("assets/avatars/avatar2.png") as ImageProvider,
-                radius: 80,
+              child: Center(
+                child: CircleAvatar(
+                  backgroundImage: userData?.avatar != null
+                      ? NetworkImage("${userData?.avatar}")
+                      : AssetImage("assets/avatars/avatar2.png")
+                          as ImageProvider,
+                  /* child: ClipOval(
+                    child: userData?.avatar != null
+                        ? Image.network("${userData?.avatar}")
+                        : Image.asset("assets/avatars/avatar2.png"),
+                  ), */
+                  backgroundColor: Colors.transparent,
+                  radius: 80,
+                ),
               ),
             ),
             const SizedBox(
@@ -85,7 +94,9 @@ class YourProfileScreen extends StatelessWidget {
             Container(
               height: 50,
               margin: EdgeInsets.only(left: 80, right: 80),
-              child: ElevatedButton(
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.edit),
+                label: Text("Edit Profile"),
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xFF9a00e6),
                   shape: RoundedRectangleBorder(
@@ -96,23 +107,6 @@ class YourProfileScreen extends StatelessWidget {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => EditProfileScreen()));
                 },
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        // margin: ,
-                        alignment: Alignment.centerRight,
-                        child: Icon(Icons.edit),
-                      ),
-                      Container(
-                        // margin: EdgeInsets.only(left: 30, right: 80),
-                        padding: EdgeInsets.only(left: 50, right: 70),
-                        child: Text("Edit Profile"),
-                      )
-                    ],
-                  ),
-                ),
               ),
             ),
             const SizedBox(
@@ -121,7 +115,9 @@ class YourProfileScreen extends StatelessWidget {
             Container(
               height: 50,
               margin: EdgeInsets.only(left: 80, right: 80),
-              child: ElevatedButton(
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.exit_to_app_sharp),
+                label: Text("Logout"),
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xFF9a00e6),
                   shape: RoundedRectangleBorder(
@@ -129,23 +125,6 @@ class YourProfileScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () => _logout(context),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        // margin: ,
-                        alignment: Alignment.centerRight,
-                        child: Icon(Icons.exit_to_app_sharp),
-                      ),
-                      Container(
-                        // margin: EdgeInsets.only(left: 30, right: 80),
-                        padding: EdgeInsets.only(left: 50, right: 85),
-                        child: Text("Logout"),
-                      )
-                    ],
-                  ),
-                ),
               ),
             )
           ],

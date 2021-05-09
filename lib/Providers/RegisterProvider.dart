@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:be_free_front/Models/Gender.dart';
-import 'package:be_free_front/Models/Graduation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -27,11 +26,6 @@ class RegisterProvider extends ChangeNotifier {
   DateTime? get birthdayValue => birthday;
 
   bool get isAdult => DateTime.now().year - birthday!.year >= 18;
-  List<Graduation>? graduations = [];
-  List<Graduation>? get graduationsDisponible => graduations;
-
-  Graduation? yourGraduationSelected;
-  Graduation? get graduationData => yourGraduationSelected;
 
   Gender? gender;
   Gender? get genderValue => gender;
@@ -39,6 +33,14 @@ class RegisterProvider extends ChangeNotifier {
   bool hasError = false;
   bool get containError => hasError;
   String get errorData => error;
+  String school = "";
+  String get schoolValue => school;
+  String company = "";
+  String get companyValue => company;
+  String livesIn = "";
+  String get livesInValue => livesIn;
+  String job = "";
+  String get jobValue => job;
 
   Future<void> register(String userName, String password, String email) async {
     Map dadosLogin = {
@@ -46,46 +48,32 @@ class RegisterProvider extends ChangeNotifier {
       "password": password,
       "email": email,
       "gender": genderValue,
-      "userGraduations": graduations,
       "birthday": birthdayValue,
+      "school": schoolValue,
+      "company": companyValue,
+      "livesIn": livesInValue,
+      "job": jobValue,
     };
     notifyListeners();
   }
 
-  Future<List<Graduation?>> fetchGraduations() async {
-    try {
-      http.Response response = await http.get(
-        Uri.parse(("http://192.168.0.136:8080/graduations/all")),
-        headers: {"Content-Type": "application/json"},
-      );
-
-      List<Graduation>? graduationList = [];
-      if (response.statusCode == 200) {
-        setHasError(false);
-        List jsonData = jsonDecode(response.body);
-
-        graduationList = jsonData.map((e) => Graduation.fromJson(e)).toList();
-        notifyListeners();
-        return graduationList;
-      } else {
-        throw Future.error(
-            "Error trying to connect to db:" + response.statusCode.toString());
-      }
-    } catch (e) {
-      setHasError(true);
-      setError(e.toString());
-      return Future.error(errorData);
-    }
-  }
-
-  void setGraduationListToSelect(value) {
-    graduations = value;
+  void setSchool(newValue) {
+    school = newValue;
     notifyListeners();
   }
 
-  void setYourGraduation(value) {
-    yourGraduationSelected = value;
-    print("$graduationData" + "$userName");
+  void setJob(newValue) {
+    job = newValue;
+    notifyListeners();
+  }
+
+  void setCompany(newValue) {
+    company = newValue;
+    notifyListeners();
+  }
+
+  void setLivesIn(newValue) {
+    livesIn = newValue;
     notifyListeners();
   }
 

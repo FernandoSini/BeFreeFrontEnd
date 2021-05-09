@@ -72,7 +72,6 @@ class _BaseScreenEventOwnerState extends State<BaseScreenEventOwner> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.eventOwner?.documentNumber.toString());
     List<Widget> screens = [
       EventOwnerHome(
         eventOwner: widget.eventOwner,

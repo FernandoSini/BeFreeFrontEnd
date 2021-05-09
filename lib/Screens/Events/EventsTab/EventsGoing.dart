@@ -4,7 +4,7 @@ class EventsGoing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 15),
+      margin: EdgeInsets.only(top: 15, left: 5, right: 5),
       child: ListView.builder(
         physics: BouncingScrollPhysics(),
         itemCount: 5,
@@ -57,7 +57,7 @@ class EventsGoing extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 15),
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: null,
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFF9a00e6),
                   ),

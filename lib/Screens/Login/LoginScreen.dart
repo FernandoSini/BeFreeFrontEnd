@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 onPressed: () async {
                   var userData = await loginProvider.login(
-                      loginProvider.userNameData, loginProvider.passwordData);
+                      loginProvider.userNameData!, loginProvider.passwordData!);
                   if (loginProvider.isLogged) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
@@ -193,6 +193,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     );
+                    loginProvider.setUserName("");
+                    loginProvider.setPassword("");
                   }
                 },
               ),

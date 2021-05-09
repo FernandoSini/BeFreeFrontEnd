@@ -1,8 +1,10 @@
-import 'package:be_free_front/Models/Graduation.dart';
+import 'dart:convert';
+
+import 'package:be_free_front/Models/Event.dart';
+import 'package:intl/intl.dart';
 
 import 'Like.dart';
 import 'Match.dart';
-import 'Graduation.dart';
 import 'Image.dart';
 
 class User {
@@ -16,7 +18,6 @@ class User {
   String? email;
   String? usertype;
   String? about;
-  List<Graduation>? userGraduations;
   List<Match>? matches;
   List<Like>? likesSended;
   List<Like>? likeReceived;
@@ -24,6 +25,9 @@ class User {
   String? token;
   String? job;
   String? company;
+  String? school;
+  String? createdAt;
+  List<Event>? events;
 
   User(
       {this.idUser,
@@ -36,14 +40,16 @@ class User {
       this.email,
       this.usertype,
       this.about,
-      this.userGraduations,
       this.matches,
       this.likesSended,
       this.likeReceived,
       this.images,
       this.token,
       this.job,
-      this.company});
+      this.school,
+      this.company,
+      this.createdAt,
+      this.events});
 
   User.fromJson(Map<String, dynamic> json) {
     idUser = json['id_user'];
@@ -54,40 +60,44 @@ class User {
     gender = json['gender'];
     birthday = json['birthday'];
     email = json['email'];
-    about = json['about'];
     usertype = json['usertype'];
-    // userGraduations?.addAll((json["userGraduations"] as List).map((g) => Graduation.fromJson(g)).toList());
-    if (json['userGraduations'] != null) {
-      userGraduations?.addAll((json['userGraduations']! as List)
-          .map((g) => Graduation.fromJson(g))
-          .toList());
-    }
-    if (json['matches'] != null) {
-      // matches = <Match>[];
-      matches?.addAll((json['matches']! as List).map((m) => Match.fromJson(m)));
-    }
-    if (json['likesSended'] != null) {
-      // likesSended = <Like>[];
-      likesSended?.addAll((json['likesSended']! as List)
-          .map((like) => Like.fromJson(like))
-          .toList());
-    }
-    if (json['likeReceived'] != null) {
-      // likeReceived = <Like>[];
-      likeReceived?.addAll((json['likeReceived']! as List)
-          .map((lr) => Like.fromJson(lr))
-          .toList());
-    }
-    if (json['images'] != null) {
-      // images = <Image>[];
-      images?.addAll(
-          (json['images']! as List).map((i) => Image.fromJson(i)).toList());
-    }
+    about = json['about'];
     token = json['token'];
     job = json['job_title'];
     company = json['company'];
+    school = json['school'];
+    createdAt = json['createdAt'];
+    if (json['events'] != null) {
+      events = [];
+      (json['events'] as List<dynamic>).forEach((v) {
+        events?.add(new Event.fromJson(v));
+      });
+      if (json['matches'] != null) {
+        matches = [];
+        (json['matches'] as List<dynamic>).forEach((v) {
+          matches?.add(new Match.fromJson(v));
+        });
+      }
+      if (json['likesSended'] != null) {
+        likesSended = [];
+        (json['likesSended'] as List<dynamic>).forEach((v) {
+          likesSended?.add(new Like.fromJson(v));
+        });
+      }
+      if (json['likeReceived'] != null) {
+        likeReceived = [];
+        (json['likeReceived'] as List<dynamic>).forEach((v) {
+          likeReceived?.add(new Like.fromJson(v));
+        });
+      }
+      if (json['images'] != null) {
+        images = [];
+        (json['images'] as List<dynamic>).forEach((v) {
+          images?.add(new Image.fromJson(v));
+        });
+      }
+    }
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_user'] = this.idUser;
@@ -103,9 +113,11 @@ class User {
     data['token'] = this.token;
     data['job_title'] = this.job;
     data['company'] = this.company;
-    if (this.userGraduations != null) {
-      data['userGraduations'] =
-          this.userGraduations?.map((v) => v.toJson()).toList();
+    data['school'] = this.school;
+    data['createdAt'] = this.createdAt;
+
+    if (this.events != null) {
+      data['events'] = this.events?.map((v) => v.toJson()).toList();
     }
     if (this.matches != null) {
       data['matches'] = this.matches?.map((v) => v.toJson()).toList();
@@ -122,10 +134,4 @@ class User {
 
     return data;
   }
-
-  // @override
-  //   String toString() {
-  //     return "Username: $userName, lastName: $lastName, firstName:$firstName,id:$idUser, Usertype:$usertype, Gender:$gender, Email: $email, Birthday:$birthday, Graduations:${userGraduations}";
-  //   }
-
 }

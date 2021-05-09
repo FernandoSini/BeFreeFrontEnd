@@ -1,10 +1,14 @@
+import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Screens/Events/EventsTab/EventsGoing.dart';
-import 'package:be_free_front/Screens/Events/EventsTab/EventsIgnored.dart';
+import 'package:be_free_front/Screens/Events/EventsTab/EventsEnded.dart';
+import 'package:be_free_front/Screens/Events/EventsTab/EventsHappening.dart';
 import 'package:flutter/material.dart';
 
 import 'EventsTab/EventsIncoming.dart';
 
 class EventsScreen extends StatefulWidget {
+  EventsScreen({this.user});
+  User? user;
   @override
   _EventsScreenState createState() => _EventsScreenState();
 }
@@ -17,13 +21,28 @@ class _EventsScreenState extends State<EventsScreen>
       children: [
         Container(
           child: Icon(
-            Icons.event,
+            Icons.event_outlined,
             color: Colors.pink[400],
           ),
         ),
         Container(
           child: Text(
-            "Events incoming",
+            "Incoming",
+            softWrap: true,
+            style: TextStyle(color: Colors.pink[400], fontSize: 9),
+          ),
+        )
+      ],
+    ),
+    Column(
+      children: [
+        Icon(
+          Icons.event_note_outlined,
+          color: Colors.pink[400],
+        ),
+        Container(
+          child: Text(
+            "Happening",
             style: TextStyle(color: Colors.pink[400], fontSize: 10),
           ),
         )
@@ -51,7 +70,7 @@ class _EventsScreenState extends State<EventsScreen>
         ),
         Container(
           child: Text(
-            "Events ignored",
+            "Ended",
             style: TextStyle(color: Colors.pink[400], fontSize: 10),
           ),
         )
@@ -98,11 +117,19 @@ class _EventsScreenState extends State<EventsScreen>
         bottom: TabBar(controller: tabController, tabs: tabs),
       ),
       body: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
         controller: tabController,
         children: [
-          EventsIncoming(),
+          EventsIncoming(
+            user: widget.user,
+          ),
+          EventsHappening(
+            user: widget.user,
+          ),
           EventsGoing(),
-          EventsIgnored(),
+          EventsEnded(
+            user: widget.user,
+          ),
         ],
       ),
     );

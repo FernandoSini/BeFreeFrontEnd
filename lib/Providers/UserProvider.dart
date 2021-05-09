@@ -4,8 +4,6 @@ import 'package:be_free_front/Models/User.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as universal;
-import 'package:localstorage/localstorage.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -14,6 +12,7 @@ class UserProvider extends ChangeNotifier {
 
   void setUser(User? value) {
     user = value;
+    notifyListeners();
     saveDataOnSecurePlace(user);
   }
   // Future<User?> loadData() async {
@@ -32,8 +31,9 @@ class UserProvider extends ChangeNotifier {
   void saveDataOnSecurePlace(User? user) async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
-      Map<String, String?> userData = {
+      Map<String, dynamic?> userData = {
         "id_user": user!.idUser!,
+        "about": user.about,
         "user_name": user.userName!,
         "first_name": user.firstName!,
         "last_name": user.lastName!,
@@ -42,21 +42,26 @@ class UserProvider extends ChangeNotifier {
         "email": user.email!,
         "avatar": user.avatar == null ? "null" : user.avatar!,
         //esta dando bugs nesses aqui
-        "images": user.images?.map((i) => i.toJson()).toList().toString(),
-        "userGraduations":
-            user.userGraduations?.map((g) => g.toJson()).toList().toString(),
-        "matches": user.matches?.toList().toString(),
-        "likeReceived":
-            user.likeReceived?.map((like) => like.toJson()).toString(),
-        "likesSended":
-            user.likesSended?.map((like) => like.toJson()).toList().toString(),
+        // "images": user.images?.map((e) => e.toJson()).toList().toString(),
+        // "userGraduations":
+        //     user.userGraduations?.map((e) => e.toJson()).toList().toString(),
+        // "matches": user.matches?.map((e) => e.toJson()).toList().toString(),
+        // "likeReceived": user.likeReceived
+        //     ?.map((like) => like.toJson().values)
+        //     .toList()
+        //     .toString(),
+        // "likesSended":
+        //     user.likesSended?.map((like) => like.toJson()).toList().toString(),
         "token": user.token!,
-        "job_title": user.job,
-        "company": user.company
+        "job_title": user.job!,
+        "company": user.company!,
+        "school": user.school!,
+        "createdAt": user.createdAt!
       };
       userData.forEach((key, value) async {
         await storage.write(key: key, value: value);
       });
+      notifyListeners();
     } else {
       if (user?.token != null) {
         // universal.window.localStorage["user"] = user.toString();
@@ -71,13 +76,14 @@ class UserProvider extends ChangeNotifier {
           "email": user.email!,
           "avatar": user.avatar == null ? "null" : user.avatar!,
           "images": user.images!.toList().asMap().toString(),
-          "userGraduations": user.userGraduations!.toList().asMap().toString(),
+          // "userGraduations": user.userGraduations!.toList().asMap().toString(),
           "matches": user.matches!.toList().asMap().toString(),
           "likeReceived": user.likeReceived!.toList().asMap().toString(),
           "likesSended": user.likesSended!.toList().asMap().toString(),
           "token": user.token!,
           "job_title": user.job!,
           "company": user.company!,
+          "school": user.school!
         };
         universal.window.sessionStorage.addEntries(userData.entries);
         // universal.window.localStorage["user"] = user.toString();

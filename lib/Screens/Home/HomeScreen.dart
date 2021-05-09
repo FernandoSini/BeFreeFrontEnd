@@ -8,12 +8,12 @@ import 'package:be_free_front/Screens/Profile/YourProfileScreen.dart';
 import 'package:be_free_front/Screens/Profile/ProfileScreen.dart';
 import 'package:be_free_front/Screens/clippers/CustomClipperRound.dart';
 import 'package:be_free_front/Screens/clippers/OvalClipper.dart';
+import 'package:be_free_front/Widget/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as universal;
 
@@ -26,7 +26,6 @@ class HomeScreen extends StatefulWidget {
 </dict> */
   HomeScreen({this.userData});
   final User? userData;
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -56,6 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    Future.delayed(Duration(seconds: 2), () {
+      Provider.of<UserProvider>(context, listen: false)
+          .setUser(widget.userData);
+    });
+
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<ListUsersProvider>(context, listen: false)
           .getListOfUsersByYourGender(widget.userData);
@@ -74,15 +78,29 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeDependencies() async {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (JwtDecoder.isExpired(widget.userData!.token!)) {
+        await storage.deleteAll();
+        Provider.of<UserProvider>(context).dispose();
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
+      }
+    });
+
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() async {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
         Provider.of<ListUsersProvider>(context, listen: false).dispose();
-      }
-      if (JwtDecoder.isExpired(widget.userData!.token!)) {
-        await storage.deleteAll();
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
+        if (JwtDecoder.isExpired(widget.userData!.token!)) {
+          await storage.deleteAll();
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => LoginScreen()));
+        }
       }
     });
 
@@ -112,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
               iconTheme: IconThemeData(color: Colors.black),
               title: Consumer<UserProvider>(
                 builder: (_, userProvider, __) {
-                  userProvider.setUser(widget.userData);
                   return Text(
                     userProvider.user?.userName != null
                         ? "Welcome ${userProvider.user?.userName} ${userProvider.user?.lastName}"
@@ -181,7 +198,6 @@ class _HomeScreenState extends State<HomeScreen> {
               iconTheme: IconThemeData(color: Colors.black),
               title: Consumer<UserProvider>(
                 builder: (_, userProvider, __) {
-                  userProvider.setUser(widget.userData);
                   return Text(
                     /* userProvider.user?.userName != null
                         ? "Welcome ${userProvider.user?.userName}"
@@ -216,8 +232,34 @@ class _HomeScreenState extends State<HomeScreen> {
       // backgroundColor: Colors.transparent,
       body: LayoutBuilder(
         builder: (context, constraints) {
-          print(constraints.maxHeight);
           if (!listProvider.isLoading) {
+            if (listProvider.userList!.isEmpty) {
+              return Container(
+                child: Center(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 300,
+                      ),
+                      Container(
+                        child: Icon(
+                          Icons.sentiment_dissatisfied_sharp,
+                          size: 150,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        child: Text(
+                          "Sorry, the list of happening events is empty",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
             return Consumer<ListUsersProvider>(
               builder: (_, listUserProvider, __) {
                 listUserProvider.userList!.removeWhere((User? element) =>
@@ -304,7 +346,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Icon(
                                     Icons.favorite,
                                     size: 35,
-                                    color: Colors.pink[100],
+                                    // color: Colors.pink[100],
+                                    color: Colors.pinkAccent[100],
                                   ),
                                   style: ElevatedButton.styleFrom(
                                       shape: CircleBorder(),
@@ -332,8 +375,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (_) => ProfileScreen(
-                                            user: listUserProvider
-                                                .userList?[index]),
+                                          user:
+                                              listUserProvider.userList?[index],
+                                        ),
                                       ),
                                     );
                                   },
@@ -345,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 // bottom: 500,
                                 child: ElevatedButton(
                                   child: Icon(
-                                    Icons.email_rounded,
+                                    Icons.forward_to_inbox_rounded,
                                     size: 35,
                                     color: Colors.yellowAccent[200],
                                   ),

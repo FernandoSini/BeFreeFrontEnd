@@ -30,7 +30,7 @@ class ListUsersProvider extends ChangeNotifier {
       );
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
-        print("teste body: " + body.toString());
+        // print("teste body: " + body.toString());
         for (var data in body) {
           // userListFromAPi?.forEach((element) {
           //   if (element != User.fromJson(data)) {

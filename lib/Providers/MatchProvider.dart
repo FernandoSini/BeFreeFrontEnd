@@ -25,7 +25,7 @@ class MatchProvider extends ChangeNotifier {
       http.Response response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
-        print(body);
+        // print(body);
         for (var data in body) {
           if (matches!.contains(Match.fromJson(data))) {
           } else {
