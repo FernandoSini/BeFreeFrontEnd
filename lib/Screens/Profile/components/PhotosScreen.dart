@@ -14,16 +14,7 @@ class PhotosScreen extends StatefulWidget {
 }
 
 class _PhotosScreenState extends State<PhotosScreen> {
-  Future<void> _getImageFromCamera() async {
-    final pickedImage =
-        await ImagePicker().getImage(source: ImageSource.camera);
-    if (pickedImage == null) return;
-    final image = io.File(pickedImage.path);
-
-    imageSelected(image);
-  }
-
-  Future<void> imageSelected(io.File image) async {}
+  
 
   @override
   Widget build(BuildContext context) {
