@@ -51,9 +51,9 @@ class Event {
     if (this.users != null) {
       data['users'] = this.users!.map((v) => v.toJson()).toList();
     }
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    data['event_status'] = this.eventStatus;
+    data['start_date'] = this.startDate!.toString();
+    data['end_date'] = this.endDate!.toString();
+    data['event_status'] = EnumToString.convertToString(this.eventStatus);
     data['event_description'] = this.eventDescription;
     data["event_location"] = this.eventLocation;
     return data;

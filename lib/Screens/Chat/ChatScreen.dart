@@ -91,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Container(
               child: CircleAvatar(
-                radius: 28,
+                radius: 23,
                 child: Container(
                   child: FullScreenWidget(
                     child: Center(
@@ -126,12 +126,15 @@ class _ChatScreenState extends State<ChatScreen> {
             const SizedBox(
               width: 10,
             ),
-            Text(
-              "${widget.user?.userName}",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontFamily: "Segoe",
-                color: Colors.pinkAccent[400],
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Text(
+                "${widget.user?.userName}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Segoe",
+                  color: Colors.pinkAccent[400],
+                ),
               ),
             ),
           ],

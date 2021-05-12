@@ -26,9 +26,9 @@ class _EventsEndedState extends State<EventsEnded> {
     return Container(
       margin: EdgeInsets.only(top: 15, right: 5, left: 5),
       child: Consumer<EventsStatusProvider>(
-        builder: (_, eventStatusProvider, __) {
-          if (!eventStatusProvider.isLoading) {
-            if (eventStatusProvider.eventData!.isEmpty) {
+        builder: (_, eventsStatusProvider, __) {
+          if (!eventsStatusProvider.isLoading) {
+            if (eventsStatusProvider.eventData!.isEmpty) {
               return Container(
                 child: Center(
                   child: Column(
@@ -57,7 +57,7 @@ class _EventsEndedState extends State<EventsEnded> {
             }
             return ListView.builder(
               physics: BouncingScrollPhysics(),
-              itemCount: eventStatusProvider.eventData?.length,
+              itemCount: eventsStatusProvider.eventData?.length,
               itemBuilder: (context, index) => Card(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 shape: RoundedRectangleBorder(
@@ -69,6 +69,7 @@ class _EventsEndedState extends State<EventsEnded> {
                   ),
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       height: 200,
@@ -79,16 +80,68 @@ class _EventsEndedState extends State<EventsEnded> {
                             fit: BoxFit.cover),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    Container(
+                      margin: EdgeInsets.only(top: 10, left: 10),
+                      padding: const EdgeInsets.all(5.0),
                       child: Text(
-                        // 'Greyhound divisively hello coldly wonderfully marginally far upon excluding.',
-                        "${eventStatusProvider.eventData?[index].eventLocation}",
-                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                        'Start Date: ' +
+                            '${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without date"}' +
+                            '  ' +
+                            'End Date: ' +
+                            '${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without description"}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.7),
+                        ),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 15),
+                      margin: EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        '${eventsStatusProvider.eventData?[index].eventName ?? "Without description"}',
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.7),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        'Address: ${eventsStatusProvider.eventData?[index].eventLocation ?? "Without address"}',
+                        style: TextStyle(color: Colors.black.withOpacity(0.7)),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        '${eventsStatusProvider.eventData?[index].users!.length ?? "Without users"} Going',
+                        style: TextStyle(color: Colors.black.withOpacity(0.7)),
+                      ),
+                    ),
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 10),
+                    //   padding: const EdgeInsets.all(5.0),
+                    //   child: Text(
+                    //     'Start Date: ${eventsStatusProvider.eventData?[index].startDate.toString().substring(0, 10) ?? "Without date"}',
+                    //     style: TextStyle(
+                    //         color: Colors.black.withOpacity(0.7)),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 10),
+                    //   padding: const EdgeInsets.all(5.0),
+                    //   child: Text(
+                    //     'End Date: ${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without date"}',
+                    //     style: TextStyle(
+                    //       color: Colors.black.withOpacity(0.7),
+                    //     ),
+                    //   ),
+                    // ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 15, left: 50),
                       width: MediaQuery.of(context).size.width * 0.7,
                       child: ElevatedButton(
                         onPressed: null,

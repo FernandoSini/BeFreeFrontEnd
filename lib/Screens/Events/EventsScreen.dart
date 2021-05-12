@@ -22,14 +22,14 @@ class _EventsScreenState extends State<EventsScreen>
         Container(
           child: Icon(
             Icons.event_outlined,
-            color: Colors.pink[400],
+            color: Color(0xFF9a00e6),
           ),
         ),
         Container(
           child: Text(
             "Incoming",
             softWrap: true,
-            style: TextStyle(color: Colors.pink[400], fontSize: 9),
+            style: TextStyle(color: Color(0xFF9a00e6), fontSize: 9),
           ),
         )
       ],
@@ -38,12 +38,12 @@ class _EventsScreenState extends State<EventsScreen>
       children: [
         Icon(
           Icons.event_note_outlined,
-          color: Colors.pink[400],
+          color: Color(0xFF9a00e6),
         ),
         Container(
           child: Text(
             "Happening",
-            style: TextStyle(color: Colors.pink[400], fontSize: 10),
+            style: TextStyle(color: Color(0xFF9a00e6), fontSize: 10),
           ),
         )
       ],
@@ -52,12 +52,12 @@ class _EventsScreenState extends State<EventsScreen>
       children: [
         Icon(
           Icons.event_available_outlined,
-          color: Colors.pink[400],
+          color: Color(0xFF9a00e6),
         ),
         Container(
           child: Text(
             "Going",
-            style: TextStyle(color: Colors.pink[400], fontSize: 10),
+            style: TextStyle(color: Color(0xFF9a00e6), fontSize: 10),
           ),
         )
       ],
@@ -66,12 +66,12 @@ class _EventsScreenState extends State<EventsScreen>
       children: [
         Icon(
           Icons.event_busy_outlined,
-          color: Colors.pink[400],
+          color: Color(0xFF9a00e6),
         ),
         Container(
           child: Text(
             "Ended",
-            style: TextStyle(color: Colors.pink[400], fontSize: 10),
+            style: TextStyle(color: Color(0xFF9a00e6), fontSize: 10),
           ),
         )
       ],
@@ -103,14 +103,14 @@ class _EventsScreenState extends State<EventsScreen>
         leading: IconButton(
           icon: Icon(
             Icons.more_vert_outlined,
-            color: Color(0xFF9a00e6),
+            color: Colors.pinkAccent[400],
           ),
           onPressed: () {},
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.search_rounded),
-            color: Color(0xFF9a00e6),
+            color: Colors.pinkAccent[400],
             onPressed: () {},
           ),
         ],
@@ -126,7 +126,9 @@ class _EventsScreenState extends State<EventsScreen>
           EventsHappening(
             user: widget.user,
           ),
-          EventsGoing(),
+          EventsGoing(
+            user: widget.user,
+          ),
           EventsEnded(
             user: widget.user,
           ),

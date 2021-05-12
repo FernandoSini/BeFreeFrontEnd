@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:be_free_front/Providers/EventOwnerProvider.dart';
+import 'package:be_free_front/Providers/EventsGoingProvider.dart';
 import 'package:be_free_front/Providers/EventsProvider.dart';
 import 'package:be_free_front/Providers/ListUsersProvider.dart';
 import 'package:be_free_front/Providers/LoginEventOwnerProvider.dart';
@@ -33,6 +34,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => MatchProvider()),
         ChangeNotifierProvider(create: (context) => EventsProvider()),
         ChangeNotifierProvider(create: (context) => EventsStatusProvider()),
+        ChangeNotifierProvider(create: (context) => EventsGoingProvider()),
       ],
       child: MyApp(),
     ),

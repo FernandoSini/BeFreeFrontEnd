@@ -170,7 +170,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                               child: Row(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(left: 10),
+                                    margin: EdgeInsets.only(left: 15),
                                     child: CircleAvatar(
                                       backgroundImage: matchProvider
                                                   .matches?[index]
@@ -182,7 +182,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                           : AssetImage(
                                                   "assets/avatars/avatar2.png")
                                               as ImageProvider,
-                                      radius: 50,
+                                      radius: 40,
                                     ),
                                   ),
                                   Container(
@@ -236,9 +236,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
                               ),
                             ),
                             Divider(
-                              indent: 100,
-                              endIndent: 10,
-                              thickness: 1,
+                              indent: 15,
+                              endIndent: 15,
+                              thickness: 0.3,
                               color: Colors.grey,
                             )
                           ],

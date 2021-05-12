@@ -1,16 +1,19 @@
 import 'dart:async';
 
 import 'package:be_free_front/Models/User.dart';
+import 'package:be_free_front/Providers/UserProvider.dart';
 import 'package:be_free_front/Screens/Matches/MatchesScreen.dart';
 import 'package:be_free_front/Screens/Events/EventsScreen.dart';
 import 'package:be_free_front/Screens/Home/HomeScreen.dart';
 import 'package:be_free_front/Screens/Login/LoginScreen.dart';
 import 'package:be_free_front/Screens/Profile/YourProfileScreen.dart';
+import 'package:be_free_front/Screens/Profile/components/PhotosScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as universal;
 
 class BaseScreen extends StatefulWidget {
@@ -24,6 +27,18 @@ class BaseScreen extends StatefulWidget {
 class _BaseScreenState extends State<BaseScreen> {
   int page = 0;
   final storage = new FlutterSecureStorage();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (mounted) {
+        print("a");
+        Provider.of<UserProvider>(context, listen: false)
+            .setUser(widget.userData);
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +64,7 @@ class _BaseScreenState extends State<BaseScreen> {
               notchMargin: 2,
               elevation: 0,
               shape: CircularNotchedRectangle(),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               child: CupertinoTabBar(
                 backgroundColor: Colors.white,
                 activeColor: Color(0xFF9a00e6),
@@ -61,16 +77,27 @@ class _BaseScreenState extends State<BaseScreen> {
                 items: [
                   BottomNavigationBarItem(
                     icon: Icon(Icons.favorite),
-                    activeIcon: Icon(Icons.favorite, color: Colors.pink),
-                    label: "Find",
+                    activeIcon: Icon(
+                      Icons.favorite,
+                      color: Color(0xffedc967),
+                    ),
+                    // label: "Find",
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.nightlife),
-                    label: "Events",
+                    activeIcon: Icon(
+                      Icons.nightlife,
+                      color: Colors.blue,
+                    ),
+                    // label: "Events",
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.whatshot_outlined),
-                    label: "Matches",
+                    activeIcon: Icon(
+                      Icons.whatshot_outlined,
+                      color: Colors.pinkAccent[400],
+                    ),
+                    // label: "Matches",
                   ),
                   BottomNavigationBarItem(
                     icon: Container(
@@ -140,10 +167,22 @@ class _BaseScreenState extends State<BaseScreen> {
                 ),
               ),
             ),
-      /* floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add_a_photo),
+        backgroundColor: Color(0xFF9a00e6),
+        tooltip: "Add photos or Images to your profile",
+        onPressed: () {
+          print(widget.userData!.images!.length);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => PhotosScreen(images: widget.userData!.images!),
+              fullscreenDialog: true,
+              maintainState: true,
+            ),
+          );
+        },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked, */
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

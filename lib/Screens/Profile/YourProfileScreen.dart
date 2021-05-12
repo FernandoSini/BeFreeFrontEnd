@@ -3,6 +3,7 @@ import 'package:be_free_front/Screens/Login/LoginScreen.dart';
 import 'package:be_free_front/Screens/Profile/EditProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 
 class YourProfileScreen extends StatelessWidget {
   YourProfileScreen({this.userData});
@@ -61,7 +62,8 @@ class YourProfileScreen extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               child: Text(
-                "${userData?.userName}, ${userData?.birthday}",
+                "${userData?.userName}, " +
+                    "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(userData!.birthday!).year}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,

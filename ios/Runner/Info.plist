@@ -46,5 +46,11 @@
 	</dict>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Our App needs to access your library to use your photos, are you ok with this?</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Our app needs to access your camera to take photos and record videos for your profile, are you ok with this?</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Our app needs to access your microphone to record videos, are you ok with this?</string>
 </dict>
 </plist>

@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Providers/ListUsersProvider.dart';
 import 'package:be_free_front/Providers/UserProvider.dart';
+import 'package:be_free_front/Screens/Home/components/FilterScreen.dart';
 import 'package:be_free_front/Screens/Login/LoginScreen.dart';
 import 'package:be_free_front/Screens/Profile/YourProfileScreen.dart';
 import 'package:be_free_front/Screens/Profile/ProfileScreen.dart';
@@ -13,7 +14,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as universal;
 
@@ -32,14 +35,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final storage = new FlutterSecureStorage();
+  final LocalStorage localStorage = new LocalStorage("data");
   int page = 0;
 
   bool apiLoaded = false;
   void _logout(context) async {
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {
+      await localStorage.ready;
       await storage.deleteAll();
-
+      localStorage.clear();
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
     } else {
@@ -58,8 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<ListUsersProvider>(context, listen: false)
           .getListOfUsersByYourGender(widget.userData);
-      Provider.of<UserProvider>(context, listen: false)
-          .setUser(widget.userData);
+
       if (JwtDecoder.isExpired(widget.userData!.token!)) {
         await storage.deleteAll();
         Navigator.of(context)
@@ -91,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
         Provider.of<ListUsersProvider>(context, listen: false).dispose();
-        Provider.of<UserProvider>(context).dispose();
+        Provider.of<UserProvider>(context, listen: false).dispose();
         if (JwtDecoder.isExpired(widget.userData!.token!)) {
           await storage.deleteAll();
           Navigator.of(context).pushReplacement(
@@ -99,7 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     });
-
     super.dispose();
   }
 
@@ -214,6 +217,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               actionsIconTheme: IconThemeData(color: Color(0xFF9a00e6)),
               actions: [
+                IconButton(
+                  icon: Icon(Icons.format_list_bulleted),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => FilterScreen(),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  },
+                ),
                 IconButton(
                   icon: Icon(Icons.exit_to_app),
                   onPressed: () {
@@ -374,6 +388,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           user:
                                               listUserProvider.userList?[index],
                                         ),
+                                        maintainState: true,
+                                        fullscreenDialog: true,
                                       ),
                                     );
                                   },
@@ -413,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             margin: EdgeInsets.only(top: 13),
                             alignment: Alignment.center,
                             child: Text(
-                              "${widget.userData?.birthday}",
+                              "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(widget.userData!.birthday!).year}, years",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),

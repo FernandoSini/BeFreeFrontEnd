@@ -1,15 +1,22 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:localstorage/localstorage.dart';
 
+import 'package:be_free_front/Models/ImageModel.dart';
 import 'package:be_free_front/Models/User.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sembast/sembast.dart';
+import 'package:sembast/sembast_io.dart';
 import 'package:universal_html/html.dart' as universal;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserProvider extends ChangeNotifier {
   User? user = User();
   final storage = new FlutterSecureStorage();
-
+  final localStorage = new LocalStorage("data");
   void setUser(User? value) {
     user = value;
     notifyListeners();
@@ -31,79 +38,9 @@ class UserProvider extends ChangeNotifier {
   void saveDataOnSecurePlace(User? user) async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
-      Map<String, dynamic?> userData = {
-        "id_user": user!.idUser!,
-        "about": user.about,
-        "user_name": user.userName!,
-        "first_name": user.firstName!,
-        "last_name": user.lastName!,
-        "birthday": user.birthday!,
-        "gender": user.gender!,
-        "email": user.email!,
-        "avatar": user.avatar == null ? "null" : user.avatar!,
-        //esta dando bugs nesses aqui
-        // "images": user.images?.map((e) => e.toJson()).toList().toString(),
-        // "userGraduations":
-        //     user.userGraduations?.map((e) => e.toJson()).toList().toString(),
-        // "matches": user.matches?.map((e) => e.toJson()).toList().toString(),
-        // "likeReceived": user.likeReceived
-        //     ?.map((like) => like.toJson().values)
-        //     .toList()
-        //     .toString(),
-        // "likesSended":
-        //     user.likesSended?.map((like) => like.toJson()).toList().toString(),
-        "token": user.token!,
-        "job_title": user.job!,
-        "company": user.company!,
-        "school": user.school!,
-        "createdAt": user.createdAt!
-      };
-      userData.forEach((key, value) async {
-        await storage.write(key: key, value: value);
-      });
+      
+      await storage.write(key: "user", value: jsonEncode(user!.toJson()));
       notifyListeners();
-    } else {
-      if (user?.token != null) {
-        // universal.window.localStorage["user"] = user.toString();
-        // universal.window.localStorage["token"] = user!.token!;
-        Map<String, String> userData = {
-          "id_user": user!.idUser!,
-          "user_name": user.userName!,
-          "first_name": user.firstName!,
-          "last_name": user.lastName!,
-          "birthday": user.birthday!,
-          "gender": user.gender!,
-          "email": user.email!,
-          "avatar": user.avatar == null ? "null" : user.avatar!,
-          "images": user.images!.toList().asMap().toString(),
-          // "userGraduations": user.userGraduations!.toList().asMap().toString(),
-          "matches": user.matches!.toList().asMap().toString(),
-          "likeReceived": user.likeReceived!.toList().asMap().toString(),
-          "likesSended": user.likesSended!.toList().asMap().toString(),
-          "token": user.token!,
-          "job_title": user.job!,
-          "company": user.company!,
-          "school": user.school!
-        };
-        universal.window.sessionStorage.addEntries(userData.entries);
-        // universal.window.localStorage["user"] = user.toString();
-        // universal.window.localStorage["token"] = user?.token;
-        // final LocalStorage localStorage = new LocalStorage("userData");
-        userData.forEach((key, value) {
-          // localStorage.setItem(key, value);
-          universal.window.localStorage[key] = value;
-
-          // Cookie cookie = new Cookie("flemis:$key", value);
-          // universal.window.cookieStore?.set(cookie.name, cookie.value);
-
-          // universal.window.cookieStore!.set(key, value);
-        });
-
-        // user.toJson().forEach((key, value) {
-        //   // localStorage.setItem(key, value);
-        //   universal.window.localStorage[key] = value;
-        // });
-      }
-    }
+    } 
   }
 }

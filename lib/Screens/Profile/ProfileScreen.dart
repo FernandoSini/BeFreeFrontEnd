@@ -2,6 +2,7 @@ import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Widget/FullScreenWidget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({this.user});
@@ -15,9 +16,9 @@ class ProfileScreen extends StatelessWidget {
               backgroundColor: Colors.transparent,
               elevation: 0,
               centerTitle: true,
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: IconThemeData(color: Color(0xFF9a00e6)),
               title: Text(
-                "${user?.lastName}, ${user?.birthday}",
+                "${user?.userName}, ${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(user!.birthday!).year}",
                 style: TextStyle(
                   fontFamily: "Segoe",
                   color: Colors.pink[400],
@@ -27,9 +28,6 @@ class ProfileScreen extends StatelessWidget {
                       : 50,
                   fontWeight: FontWeight.bold,
                 ),
-              ),
-              actionsIconTheme: IconThemeData(
-                color: Color(0xFF9a00e6),
               ),
             )
           : AppBar(),

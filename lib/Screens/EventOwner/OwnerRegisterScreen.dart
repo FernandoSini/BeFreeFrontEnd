@@ -43,7 +43,7 @@ class OwnerRegisterScreen extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               child: Text(
-                "Are you a EventOwner/Company? Use this way: ",
+                "What is your name or company name?",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

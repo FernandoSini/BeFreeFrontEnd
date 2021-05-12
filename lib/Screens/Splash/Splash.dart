@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:be_free_front/Models/EventOwner.dart';
 import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Screens/Base/BaseScreen.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:universal_html/html.dart' as universal;
 
 class Splash extends StatefulWidget {
@@ -18,27 +20,24 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   final storage = new FlutterSecureStorage();
-  // final LocalStorage localStorage = new LocalStorage("userData");
-  //
   @override
   void didChangeDependencies() async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
-      var token = await storage.read(key: "token");
+      var userData = await storage.read(key: "user");
       var data = await storage.readAll();
       var eventOwnerToken = await storage.read(key: "event_owner_token");
-      print(token);
-      if (await storage.containsKey(key: "token")) {
-        if (token != null) {
-          if (!JwtDecoder.isExpired(token)) {
-            // await storage.deleteAll();
-            print(data);
+      print(userData);
+      // await storage.deleteAll();
+      if (await storage.containsKey(key: "user")) {
+        if (userData != null) {
+          // token = localData["token"];
+          Map<String, dynamic> fromLocalToUser = {};
+          fromLocalToUser.addAll(jsonDecode(userData));
+          User? user = User.fromJson(fromLocalToUser);
+          if (!JwtDecoder.isExpired(user.token!)) {
             print("token não expirou");
-            Map<String, dynamic> fromLocalToUser = {};
-            fromLocalToUser.addEntries(data.entries);
-            //print("teste2:" + fromLocalToUser.values.toString());
-            User? user = User.fromJson(fromLocalToUser);
-            print(user.token.toString());
+
             Timer(
               Duration(seconds: 5),
               () {

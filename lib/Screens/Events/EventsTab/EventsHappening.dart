@@ -16,8 +16,10 @@ class _EventsHappeningState extends State<EventsHappening> {
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      await Provider.of<EventsStatusProvider>(context, listen: false)
-          .getEventsByStatus(widget.user!.token!, EventStatus.HAPPENING);
+      if (mounted) {
+        await Provider.of<EventsStatusProvider>(context, listen: false)
+            .getEventsByStatus(widget.user!.token!, EventStatus.HAPPENING);
+      }
     });
     super.initState();
   }
@@ -80,13 +82,66 @@ class _EventsHappeningState extends State<EventsHappening> {
                             fit: BoxFit.cover),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    Container(
+                      margin: EdgeInsets.only(top: 10, left: 10),
+                      padding: const EdgeInsets.all(5.0),
                       child: Text(
-                        '${eventsStatusProvider.eventData?[index].eventName}',
-                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                        'Start Date: ' +
+                            '${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without date"}' +
+                            '  ' +
+                            'End Date: ' +
+                            '${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without description"}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.7),
+                        ),
                       ),
                     ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        '${eventsStatusProvider.eventData?[index].eventName ?? "Without description"}',
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.7),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        'Address: ${eventsStatusProvider.eventData?[index].eventLocation ?? "Without address"}',
+                        style: TextStyle(color: Colors.black.withOpacity(0.7)),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        '${eventsStatusProvider.eventData?[index].users!.length ?? "Without users"} Going',
+                        style: TextStyle(color: Colors.black.withOpacity(0.7)),
+                      ),
+                    ),
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 10),
+                    //   padding: const EdgeInsets.all(5.0),
+                    //   child: Text(
+                    //     'Start Date: ${eventsStatusProvider.eventData?[index].startDate.toString().substring(0, 10) ?? "Without date"}',
+                    //     style: TextStyle(
+                    //         color: Colors.black.withOpacity(0.7)),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 10),
+                    //   padding: const EdgeInsets.all(5.0),
+                    //   child: Text(
+                    //     'End Date: ${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without date"}',
+                    //     style: TextStyle(
+                    //       color: Colors.black.withOpacity(0.7),
+                    //     ),
+                    //   ),
+                    // ),
                     // ButtonBar(
                     //   alignment: MainAxisAlignment.start,
                     //   children: [
