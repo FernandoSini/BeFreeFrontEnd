@@ -6,6 +6,7 @@ import 'package:be_free_front/Models/Match.dart';
 
 class MatchProvider extends ChangeNotifier {
   List<Match>? matches = [];
+  List<Match>? get matchData => matches;
   bool loading = false;
   bool get isLoading => loading;
   bool error = false;
@@ -25,30 +26,37 @@ class MatchProvider extends ChangeNotifier {
       http.Response response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
-        // print(body);
         for (var data in body) {
           if (matches!.contains(Match.fromJson(data))) {
           } else {
             matches?.add(Match.fromJson(data));
           }
           setLoading(false);
-          errorText = "";
-          error = false;
-          notifyListeners();
+          setErrorText("");
+          setError(false);
         }
       } else {
-        error = true;
-        errorText = "${jsonDecode(response.body)["message"]}";
+        setError(true);
+        setErrorText(jsonDecode(response.body)["message"]);
         setLoading(false);
-        notifyListeners();
         return Future.error(errorText);
       }
     } on Exception catch (e) {
       setLoading(false);
-      error = true;
-      errorText = e.toString();
+      setError(true);
+      setErrorText(e.toString());
       throw Future.error(errorText);
     }
+  }
+
+  void setErrorText(value) {
+    errorText = value;
+    notifyListeners();
+  }
+
+  void setError(value) {
+    error = value;
+    notifyListeners();
   }
 
   void setLoading(newValue) {

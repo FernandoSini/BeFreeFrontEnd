@@ -5,6 +5,7 @@ import 'package:be_free_front/Screens/Events/EventsTab/EventsHappening.dart';
 import 'package:flutter/material.dart';
 
 import 'EventsTab/EventsIncoming.dart';
+import 'Search/SearchEventScreen.dart';
 
 class EventsScreen extends StatefulWidget {
   EventsScreen({this.user});
@@ -100,18 +101,18 @@ class _EventsScreenState extends State<EventsScreen>
             fontWeight: FontWeight.bold,
           ),
         ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.more_vert_outlined,
-            color: Colors.pinkAccent[400],
-          ),
-          onPressed: () {},
-        ),
         actions: [
           IconButton(
             icon: Icon(Icons.search_rounded),
             color: Colors.pinkAccent[400],
-            onPressed: () {},
+            onPressed: () async {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => SearchEventScreen(widget.user!),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
           ),
         ],
         bottom: TabBar(controller: tabController, tabs: tabs),

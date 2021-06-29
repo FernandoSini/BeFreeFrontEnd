@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 class BirthdayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -83,13 +84,16 @@ class BirthdayScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => GenderScreen(),
-                    ),
-                  );
-                }, /* ??
+                onPressed: registerProvider.birthdayValue != null &&
+                        !registerProvider.isAdult
+                    ? null
+                    : () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => GenderScreen(),
+                          ),
+                        );
+                      }, /* ??
                     null, */
               ),
             )

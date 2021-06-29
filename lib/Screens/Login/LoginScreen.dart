@@ -15,16 +15,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = TextEditingController(text: "");
-
   TextEditingController passwordController = TextEditingController(text: "");
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   if (Provider.of<LoginProvider>(context).isLogged) {
-  //     Navigator.of(context)
-  //         .pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
-  //   }
-  // }
+
 
   @override
   Widget build(BuildContext context) {

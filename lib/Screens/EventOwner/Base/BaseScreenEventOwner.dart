@@ -2,7 +2,11 @@ import 'dart:async';
 
 import 'package:be_free_front/Models/EventOwner.dart';
 import 'package:be_free_front/Models/User.dart';
+import 'package:be_free_front/Providers/EventOwnerProvider.dart';
+import 'package:be_free_front/Providers/UserProvider.dart';
+import 'package:be_free_front/Screens/EventOwner/CreateEvent/CreateEventScreen.dart';
 import 'package:be_free_front/Screens/EventOwner/EventOwnerHome/EventOwnerHome.dart';
+import 'package:be_free_front/Screens/EventOwner/Profile/YourProfileScreenEventOwner.dart';
 import 'package:be_free_front/Screens/Matches/MatchesScreen.dart';
 import 'package:be_free_front/Screens/Events/EventsScreen.dart';
 import 'package:be_free_front/Screens/Home/HomeScreen.dart';
@@ -13,6 +17,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as universal;
 
 class BaseScreenEventOwner extends StatefulWidget {
@@ -26,13 +31,22 @@ class BaseScreenEventOwner extends StatefulWidget {
 class _BaseScreenEventOwnerState extends State<BaseScreenEventOwner> {
   int page = 0;
   final storage = new FlutterSecureStorage();
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (mounted) {
+        Provider.of<EventOwnerProvider>(context, listen: false)
+            .setEventOwner(widget.eventOwner!);
+      }
+    });
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
       var eventOwnerToken = await storage.read(key: "event_owner_token");
-
       if (eventOwnerToken != null) {
         if (JwtDecoder.isExpired(eventOwnerToken)) {
           await storage.deleteAll();
@@ -76,20 +90,38 @@ class _BaseScreenEventOwnerState extends State<BaseScreenEventOwner> {
       EventOwnerHome(
         eventOwner: widget.eventOwner,
       ),
-      EventsScreen(),
-
-      // YourProfileScreen(
-      //   userData: widget,
-      // ),
+      // EventsScreen(),
+      YourProfileScreenEventOwner(ownerData: widget.eventOwner!)
     ];
     return Scaffold(
       body: screens[page],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          size: 35,
+        ),
+        backgroundColor: Color(0xFF9a00e6),
+        tooltip: "Add photos or Images to your profile",
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => CreateEventScreen(widget.eventOwner!),
+              fullscreenDialog: true,
+              maintainState: true,
+            ),
+          );
+        },
+      ),
       bottomNavigationBar: (defaultTargetPlatform == TargetPlatform.iOS ||
               defaultTargetPlatform == TargetPlatform.macOS)
           ? BottomAppBar(
-              color: Colors.white,
+              // color: Colors.transparent,
               notchMargin: 2,
               elevation: 0,
+              clipBehavior: Clip.antiAlias,
               shape: CircularNotchedRectangle(),
               child: CupertinoTabBar(
                 backgroundColor: Colors.white,
@@ -102,26 +134,28 @@ class _BaseScreenEventOwnerState extends State<BaseScreenEventOwner> {
                 },
                 items: [
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite),
-                    activeIcon: Icon(Icons.favorite, color: Colors.pink),
-                    label: "Find",
-                  ),
-                  BottomNavigationBarItem(
                     icon: Icon(Icons.nightlife),
-                    label: "Events",
+                    activeIcon: Icon(Icons.nightlife, color: Colors.pink),
+                    label: "Your Events",
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.whatshot_outlined),
-                    label: "Matches",
-                  ),
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(Icons.nightlife),
+                  //   label: "Events",
+                  // ),
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(Icons.whatshot_outlined),
+                  //   label: "Matches",
+                  // ),
                   BottomNavigationBarItem(
                     icon: Container(
                       padding: EdgeInsets.only(top: 7),
                       child: CircleAvatar(
-                        backgroundImage: widget.eventOwner?.avatar != null
-                            ? NetworkImage("${widget.eventOwner?.avatar}")
-                            : AssetImage("assets/avatars/avatar2.png")
-                                as ImageProvider,
+                        backgroundImage:
+                            widget.eventOwner?.avatarProfile != null
+                                ? NetworkImage(
+                                    "${widget.eventOwner!.avatarProfile!.url}")
+                                : AssetImage("assets/avatars/avatar2.png")
+                                    as ImageProvider,
                       ),
                     ),
                     label: "",
@@ -131,6 +165,8 @@ class _BaseScreenEventOwnerState extends State<BaseScreenEventOwner> {
             )
           : BottomAppBar(
               elevation: 0,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              notchMargin: 2,
               shape: CircularNotchedRectangle(),
               child: BottomNavigationBar(
                 unselectedItemColor: Colors.grey,
@@ -143,26 +179,23 @@ class _BaseScreenEventOwnerState extends State<BaseScreenEventOwner> {
                 },
                 items: [
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite),
+                    icon: Icon(Icons.nightlife),
                     activeIcon: Icon(
-                      Icons.favorite,
+                      Icons.nightlife,
                       color: Colors.pink,
                     ),
-                    label: "Find",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.nightlife),
-                    activeIcon: Icon(Icons.nightlife),
-                    label: "Events",
+                    label: "",
                   ),
                   BottomNavigationBarItem(
                     icon: Container(
                       padding: EdgeInsets.only(top: 7),
                       child: CircleAvatar(
-                        backgroundImage: widget.eventOwner?.avatar != null
-                            ? NetworkImage("${widget.eventOwner?.avatar}")
-                            : AssetImage("assets/avatars/avatar2.png")
-                                as ImageProvider,
+                        backgroundImage:
+                            widget.eventOwner?.avatarProfile != null
+                                ? NetworkImage(
+                                    "${widget.eventOwner!.avatarProfile!.url}")
+                                : AssetImage("assets/avatars/avatar2.png")
+                                    as ImageProvider,
                       ),
                     ),
                     label: "",

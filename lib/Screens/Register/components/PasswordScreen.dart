@@ -1,5 +1,7 @@
 import 'package:be_free_front/Providers/LoginProvider.dart';
 import 'package:be_free_front/Providers/RegisterProvider.dart';
+import 'package:be_free_front/Screens/Base/BaseScreen.dart';
+import 'package:be_free_front/Screens/Login/LoginScreen.dart';
 import 'package:be_free_front/Screens/Register/components/BirthdayScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,11 +9,28 @@ import 'package:flutter_holo_date_picker/date_picker_theme.dart';
 import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:provider/provider.dart';
 
-class PasswordScreen extends StatelessWidget {
+class PasswordScreen extends StatefulWidget {
+  @override
+  _PasswordScreenState createState() => _PasswordScreenState();
+}
 
+class _PasswordScreenState extends State<PasswordScreen> {
   TextEditingController passwordController = TextEditingController();
+
   TextEditingController password2Controller = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (mounted) {
+        Provider.of<RegisterProvider>(context, listen: false).dispose();
+      }
+    });
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final registerProvider = Provider.of<RegisterProvider>(context);
@@ -46,8 +65,18 @@ class PasswordScreen extends StatelessWidget {
             // const SizedBox(
             //   height: 30,
             // ),
-            // 
-            
+            //
+            Container(
+              alignment: Alignment.center,
+              // margin: EdgeInsets.only(bottom: 30),
+              padding: EdgeInsets.only(left: 40, right: 40),
+              child: Text(
+                registerProvider.hasError ? registerProvider.errorData! : "",
+                style: TextStyle(color: Colors.red),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             Container(
               alignment: Alignment.center,
               child: Text(
@@ -139,35 +168,124 @@ class PasswordScreen extends StatelessWidget {
               height: 30,
             ),
             Container(
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.8,
               margin: EdgeInsets.only(left: 25, right: 25),
               height: 55,
-              child: ElevatedButton(
-                child: Text(
-                  "Next",
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  onSurface: Color(0xff9a00e6),
-                  primary: Color(0xff9a00e6),
-                  elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+              child: Consumer<RegisterProvider>(
+                builder: (_, registerProvider, __) {
+                  return ElevatedButton(
+                    child: Text(
+                      "Next",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xff9a00e6),
+                      elevation: 5,
+                      // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    onPressed: registerProvider.password1 == null ||
+                        !registerProvider.isPasswordValid
+                        ? null
+                        : () async {
+                      await registerProvider.register();
+                      // if (registerProvider.isRegistered) {
+                      //   Navigator.of(context).pushAndRemoveUntil(
+                      //       MaterialPageRoute(
+                      //           builder: (_) => LoginScreen()),
+                      //       (Route route) => false);
+                      // }
+                      // registerProvider.setJob("");
+                      // registerProvider.setCompany("");
+                      // registerProvider.setSchool("");
+                      // registerProvider.setFirstName("");
+                      // registerProvider.setLastName("");
+                      // registerProvider.setBirthiday(DateTime.now());
+                      // registerProvider.setLivesIn("");
+                      // registerProvider.mail("");
+                      // registerProvider.setGender(null);
+                      // registerProvider.setUsername("");
+                      // registerProvider.setPassword1("");
+                      // registerProvider.setPassword2("");
+                      // registerProvider.setIsRegistered(false);
+                    },
+                  );
+                },
+              ),
+            ),
+            if (registerProvider.isLoading)
+              Container(
+                margin: EdgeInsets.only(top: 50),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(
+                          Color(0xFF9a00e6),
+                        ),
+                      ),
+                      Flexible(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Text("Creating account, please wait a little"),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                onPressed: !registerProvider.isPasswordValid
-                    ? null
-                    : () {
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(
-                        //     builder: (_) => Fernando(),
-                        //   ),
-                        // );
-                      }, /* ??
-                    null, */
-              ),
-            )
+              )
+            else
+              if (registerProvider.isRegistered)
+                Container(
+                  margin: EdgeInsets.only(top: 50, left: 20, right: 20),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.check_circle_outline,
+                          color: Colors.green,
+                        ),
+                        Flexible(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (_) => LoginScreen()),
+                                      (Route route) => false);
+                              registerProvider.setJob("");
+                              registerProvider.setCompany("");
+                              registerProvider.setSchool("");
+                              registerProvider.setFirstName("");
+                              registerProvider.setLastName("");
+                              registerProvider.setBirthiday(DateTime.now());
+                              registerProvider.setLivesIn("");
+                              registerProvider.setEmail("");
+                              registerProvider.setGender(null);
+                              registerProvider.setUsername("");
+                              registerProvider.setPassword1("");
+                              registerProvider.setPassword2("");
+                              registerProvider.setIsRegistered(false);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text("${registerProvider
+                                  .messageValue} Click here to back to login screen"),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              else
+                Container(),
           ],
         ),
       ),

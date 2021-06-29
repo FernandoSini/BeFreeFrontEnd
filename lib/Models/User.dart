@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:be_free_front/Models/Avatar.dart';
 import 'package:be_free_front/Models/Event.dart';
 import 'package:be_free_front/Models/Usertype.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -11,7 +12,6 @@ import 'ImageModel.dart';
 
 class User {
   String? idUser;
-  String? avatar;
   String? userName;
   String? firstName;
   String? lastName;
@@ -28,12 +28,13 @@ class User {
   String? job;
   String? company;
   String? school;
+  String? livesIn;
   String? createdAt;
   List<Event>? events;
+  Avatar? avatarProfile;
 
   User(
       {this.idUser,
-      this.avatar,
       this.userName,
       this.firstName,
       this.lastName,
@@ -49,13 +50,17 @@ class User {
       this.token,
       this.job,
       this.school,
+      this.livesIn,
       this.company,
       this.createdAt,
+      this.avatarProfile,
       this.events});
 
   User.fromJson(Map<String, dynamic> json) {
     idUser = json['id_user'];
-    avatar = json['avatar'];
+    avatarProfile = json['avatar_profile'] != null
+        ? new Avatar.fromJson(json['avatar_profile'])
+        : null;
     userName = json['user_name'];
     firstName = json['first_name'];
     lastName = json['last_name'];
@@ -69,6 +74,7 @@ class User {
     company = json['company'];
     school = json['school'];
     createdAt = json['createdAt'];
+    livesIn = json["livesIn"];
     if (json['events'] != null) {
       events = [];
       (json['events'] as List<dynamic>).forEach((v) {
@@ -103,7 +109,6 @@ class User {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_user'] = this.idUser;
-    data['avatar'] = this.avatar;
     data['user_name'] = this.userName;
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
@@ -117,7 +122,10 @@ class User {
     data['company'] = this.company;
     data['school'] = this.school;
     data['createdAt'] = this.createdAt;
-
+    data["livesIn"] = this.livesIn;
+    if (this.avatarProfile != null) {
+      data['avatar_profile'] = this.avatarProfile?.toJson();
+    }
     if (this.events != null) {
       data['events'] = this.events?.map((v) => v.toJson()).toList();
     }
@@ -137,132 +145,3 @@ class User {
     return data;
   }
 }
-
-// import 'dart:convert';
-
-// import 'package:be_free_front/Models/Event.dart';
-// import 'package:be_free_front/Models/ImageModel.dart';
-// import 'package:be_free_front/Models/Like.dart';
-// import 'package:be_free_front/Models/Match.dart';
-
-// class User {
-//   User userFromJson(String str) => User.fromJson(json.decode(str));
-
-//   String userToJson(User data) => json.encode(data.toJson());
-
-//   User({
-//     this.idUser,
-//     this.avatar,
-//     this.userName,
-//     this.firstName,
-//     this.lastName,
-//     this.gender,
-//     this.birthday,
-//     this.email,
-//     this.usertype,
-//     this.about,
-//     this.job,
-//     this.company,
-//     this.school,
-//     this.livesIn,
-//     this.createdAt,
-//     this.matches,
-//     this.events,
-//     this.likesSended,
-//     this.likeReceived,
-//     this.images,
-//     this.token,
-//   });
-
-//   String? idUser;
-//   String? avatar;
-//   String? userName;
-//   String? firstName;
-//   String? lastName;
-//   String? gender;
-//   String? birthday;
-//   String? email;
-//   String? usertype;
-//   String? about;
-//   String? job;
-//   String? company;
-//   String? school;
-//   String? livesIn;
-//   String? createdAt;
-//   List<Match>? matches;
-//   List<Event>? events;
-//   List<Like>? likesSended;
-//   List<Like>? likeReceived;
-//   List<ImageModel>? images;
-//   String? token;
-
-//   factory User.fromJson(Map<String, dynamic> json) => User(
-//         idUser: json["id_user"],
-//         avatar: json["avatar"],
-//         userName: json["user_name"],
-//         firstName: json["first_name"],
-//         lastName: json["last_name"],
-//         gender: json["gender"],
-//         birthday: json["birthday"],
-//         email: json["email"],
-//         usertype: json["usertype"],
-//         about: json["about"],
-//         job: json["job_title"],
-//         company: json["company"],
-//         school: json["school"],
-//         livesIn: json["livesIn"],
-//         createdAt: json["createdAt"],
-//         matches: json["matches"] == null
-//             ? null
-//             : List<Match>.from(json["matches"].map((x) => Match.fromJson(x))),
-//         events: json["events"] == null
-//             ? null
-//             : List<Event>.from(json["events"].map((x) => Event.fromJson(x))),
-//         likesSended: json["likesSended"] == null
-//             ? null
-//             : List<Like>.from(json["likesSended"].map((x) => Like.fromJson(x))),
-//         likeReceived: json["likeReceived"] == null
-//             ? null
-//             : List<Like>.from(
-//                 json["likeReceived"].map((x) => Like.fromJson(x))),
-//         images: json["images"] == null
-//             ? null
-//             : List<ImageModel>.from(
-//                 json["images"].map((x) => ImageModel.fromJson(x))),
-//         token: json["token"] == null ? null : json["token"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "id_user": idUser,
-//         "avatar": avatar,
-//         "user_name": userName,
-//         "first_name": firstName,
-//         "last_name": lastName,
-//         "gender": gender,
-//         "birthday": birthday,
-//         "email": email,
-//         "usertype": usertype,
-//         "about": about,
-//         "job_title": job,
-//         "company": company,
-//         "school": school,
-//         "livesIn": livesIn,
-//         "createdAt": createdAt,
-//         "matches": matches == null
-//             ? null
-//             : List<dynamic>.from(matches!.map((x) => x.toJson())),
-//         "events": events == null
-//             ? null
-//             : List<dynamic>.from(events!.map((x) => x.toJson())),
-//         "likesSended": likesSended == null
-//             ? null
-//             : List<dynamic>.from(likesSended!.map((x) => x.toJson())),
-//         "likeReceived": likeReceived == null
-//             ? null
-//             : List<dynamic>.from(likeReceived!.map((x) => x.toJson())),
-//         "images": images == null
-//             ? null
-//             : List<dynamic>.from(images!.map((x) => x.toJson())),
-//         "token": token == null ? null : token,
-//       };
-// }

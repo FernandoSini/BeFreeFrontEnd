@@ -26,7 +26,6 @@ class LoginProvider extends ChangeNotifier {
     setLoading(true);
     var data = {"user_name": username, "password": password};
     final loginData = jsonEncode(data);
-    print(loginData);
     try {
       http.Response response =
           await http.post(Uri.parse(url), body: loginData, headers: {

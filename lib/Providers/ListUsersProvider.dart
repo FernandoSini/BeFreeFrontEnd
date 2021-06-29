@@ -22,21 +22,17 @@ class ListUsersProvider extends ChangeNotifier {
     try {
       http.Response response = await http.get(
         Uri.parse(
-            "http://192.168.0.136:8080/api/users/gender/find/${user?.gender}"),
+            "http://192.168.0.136:8080/api/users/gender/find/different/${user?.gender}"),
         headers: {
           "Authorization": "Bearer ${user?.token}",
           "Content-type": "application/json"
         },
       );
       if (response.statusCode == 200) {
-        var body = jsonDecode(response.body);
-        // print("teste body: " + body.toString());
+        var body = jsonDecode(
+            Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
+
         for (var data in body) {
-          // userListFromAPi?.forEach((element) {
-          //   if (element != User.fromJson(data)) {
-          //     userListFromAPi?.add(User.fromJson(data));
-          //   } else {}
-          // });
           if (userListFromAPi!.contains(User.fromJson(data))) {
           } else {
             userListFromAPi?.add(User.fromJson(data));

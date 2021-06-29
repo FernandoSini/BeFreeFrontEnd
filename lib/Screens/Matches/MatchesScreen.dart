@@ -67,63 +67,79 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
                     physics: BouncingScrollPhysics(),
-                    itemCount: matchProvider.matches?.length,
+                    itemCount: matchProvider.matchData?.length,
                     itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => ChatScreen(
-                                user: matchProvider.matches?[index].hisHer,
-                                you: widget.user,
+                      if (!matchProvider.isLoading) {
+                        if (matchProvider.matchData!.isEmpty) {
+                          return Container();
+                        }
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => ChatScreen(
+                                  user: matchProvider.matches![index].hisHer,
+                                  you: widget.user,
+                                  match: matchProvider.matches![index],
+                                ),
+                                fullscreenDialog: true,
                               ),
-                              fullscreenDialog: true,
-                            ),
-                          );
-                        },
-                        // child: Container(
-                        //   padding: EdgeInsets.only(left: 10, right: 10),
-                        //   child: CircleAvatar(
-                        //     radius: 50,
-                        //     child: ClipOval(
-                        //       child: matchProvider
-                        //                   .matches?[index].hisHer?.avatar !=
-                        //               null
-                        //           ? Image.network(
-                        //               "${matchProvider.matches?[index].hisHer!.avatar}",
-                        //               height: 100,
-                        //               fit: BoxFit.cover,
-                        //             )
-                        //           : Image.asset("assets/avatars/avatar2.png"),
-                        //     ),
-                        //     // backgroundImage: matchProvider
-                        //     //             .matches?[index].hisHer?.avatar !=
-                        //     //         null
-                        //     //     ? NetworkImage(
-                        //     //         "${matchProvider.matches?[index].hisHer!.avatar}")
-                        //     //     : AssetImage("assets/avatars/avatar2.png")
-                        //     //         as ImageProvider,
-                        //     // backgroundColor: Colors.transparent,
-                        //     // minRadius: 10,
-                        //     // maxRadius: 30,
-                        //   ),
-                        // ),
-                        child: Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Center(
-                            child: CircleAvatar(
-                              backgroundImage: matchProvider
-                                          .matches?[index].hisHer!.avatar !=
-                                      null
-                                  ? NetworkImage(
-                                      "${matchProvider.matches?[index].hisHer!.avatar}")
-                                  : AssetImage("assets/avatars/avatar2.png")
-                                      as ImageProvider,
-                              radius: 50,
+                            );
+                          },
+                          // child: Container(
+                          //   padding: EdgeInsets.only(left: 10, right: 10),
+                          //   child: CircleAvatar(
+                          //     radius: 50,
+                          //     child: ClipOval(
+                          //       child: matchProvider
+                          //                   .matches?[index].hisHer?.avatar !=
+                          //               null
+                          //           ? Image.network(
+                          //               "${matchProvider.matches?[index].hisHer!.avatar}",
+                          //               height: 100,
+                          //               fit: BoxFit.cover,
+                          //             )
+                          //           : Image.asset("assets/avatars/avatar2.png"),
+                          //     ),
+                          //     // backgroundImage: matchProvider
+                          //     //             .matches?[index].hisHer?.avatar !=
+                          //     //         null
+                          //     //     ? NetworkImage(
+                          //     //         "${matchProvider.matches?[index].hisHer!.avatar}")
+                          //     //     : AssetImage("assets/avatars/avatar2.png")
+                          //     //         as ImageProvider,
+                          //     // backgroundColor: Colors.transparent,
+                          //     // minRadius: 10,
+                          //     // maxRadius: 30,
+                          //   ),
+                          // ),
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: Center(
+                              child: CircleAvatar(
+                                backgroundImage: matchProvider.matches?[index]
+                                            .hisHer!.avatarProfile !=
+                                        null
+                                    ? NetworkImage(
+                                        "${matchProvider.matches?[index].hisHer!.avatarProfile!.url}")
+                                    : AssetImage("assets/avatars/avatar2.png")
+                                        as ImageProvider,
+                                radius: 50,
+                              ),
                             ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        return Container(
+                          child: Center(
+                            child: CircularProgressIndicator.adaptive(
+                              valueColor: AlwaysStoppedAnimation(
+                                Color(0xff9a00e6),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
                     },
                   );
                 },
@@ -145,107 +161,136 @@ class _MatchesScreenState extends State<MatchesScreen> {
               width: MediaQuery.of(context).size.width,
               child: Consumer<MatchProvider>(
                 builder: (_, matchProvider, __) {
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    // shrinkWrap: true,
-                    // clipBehavior: Clip.none,
-                    physics: BouncingScrollPhysics(),
-                    itemCount: matchProvider.matches?.length,
-                    itemBuilder: (context, index) => InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => ChatScreen(
-                              user: matchProvider.matches?[index].hisHer,
-                              you: widget.user,
+                  if (!matchProvider.isLoading) {
+                    if (matchProvider.matchData!.isEmpty) {
+                      return Container();
+                    }
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      // shrinkWrap: true,
+                      // clipBehavior: Clip.none,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: matchProvider.matchData?.length,
+                      itemBuilder: (context, index) => InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ChatScreen(
+                                user: matchProvider.matches![index].hisHer,
+                                you: widget.user,
+                                match: matchProvider.matches![index],
+                              ),
+                              fullscreenDialog: true,
                             ),
-                            fullscreenDialog: true,
-                          ),
-                        );
-                      },
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 15),
-                                    child: CircleAvatar(
-                                      backgroundImage: matchProvider
-                                                  .matches?[index]
-                                                  .hisHer!
-                                                  .avatar !=
-                                              null
-                                          ? NetworkImage(
-                                              "${matchProvider.matches?[index].hisHer!.avatar}")
-                                          : AssetImage(
-                                                  "assets/avatars/avatar2.png")
-                                              as ImageProvider,
-                                      radius: 40,
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Flexible(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(left: 10),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 20),
-                                                  child: Text(
-                                                    "${matchProvider.matches?[index].hisHer?.userName} ${matchProvider.matches?[index].hisHer?.lastName}",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18,
-                                                      color: Colors
-                                                          .pinkAccent[400],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.only(left: 10),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 10),
-                                                  child: Text(
-                                                    "${matchProvider.matches?[index].hisHer?.userName}",
-                                                    style:
-                                                        TextStyle(fontSize: 18),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                          );
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(left: 15),
+                                      child: CircleAvatar(
+                                        backgroundImage: matchProvider
+                                                    .matches?[index]
+                                                    .hisHer!
+                                                    .avatarProfile !=
+                                                null
+                                            ? NetworkImage(
+                                                "${matchProvider.matches?[index].hisHer!.avatarProfile!.url}")
+                                            : AssetImage(
+                                                    "assets/avatars/avatar2.png")
+                                                as ImageProvider,
+                                        radius: 40,
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      child: Flexible(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(left: 10),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 20),
+                                                    child: Text(
+                                                      "${matchProvider.matches?[index].hisHer?.userName} ${matchProvider.matches?[index].hisHer?.lastName}",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18,
+                                                        color: Colors
+                                                            .pinkAccent[400],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(left: 10),
+                                              child: Row(
+                                                children: [
+                                                  Flexible(
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 10),
+                                                      child: matchProvider
+                                                              .matches![index]
+                                                              .messages!
+                                                              .isNotEmpty
+                                                          ? Text(
+                                                              "${matchProvider.matches?[index].messages?.last.content}",
+                                                              style: TextStyle(
+                                                                  fontSize: 18),
+                                                            )
+                                                          : Text(
+                                                              "No messages sent/received yet",
+                                                              style: TextStyle(
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Divider(
-                              indent: 15,
-                              endIndent: 15,
-                              thickness: 0.3,
-                              color: Colors.grey,
-                            )
-                          ],
+                              Divider(
+                                indent: 15,
+                                endIndent: 15,
+                                thickness: 0.3,
+                                color: Colors.grey,
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 250),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(
+                            Color(0xff9a00e6),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                 },
               ),
             ),

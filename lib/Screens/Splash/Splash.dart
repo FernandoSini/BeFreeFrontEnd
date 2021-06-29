@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:be_free_front/Models/EventOwner.dart';
 import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Screens/Base/BaseScreen.dart';
 import 'package:be_free_front/Screens/EventOwner/Base/BaseScreenEventOwner.dart';
 import 'package:be_free_front/Screens/Login/LoginScreen.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:universal_html/html.dart' as universal;
 
 class Splash extends StatefulWidget {
@@ -24,12 +25,11 @@ class _SplashState extends State<Splash> {
   void didChangeDependencies() async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
-      var userData = await storage.read(key: "user");
-      var data = await storage.readAll();
-      var eventOwnerToken = await storage.read(key: "event_owner_token");
-      print(userData);
-      // await storage.deleteAll();
+      // var userData = await storage.read(key: "user");
+      // print(userData);
+      //  await storage.deleteAll();
       if (await storage.containsKey(key: "user")) {
+        var userData = await storage.read(key: "user");
         if (userData != null) {
           // token = localData["token"];
           Map<String, dynamic> fromLocalToUser = {};
@@ -37,7 +37,6 @@ class _SplashState extends State<Splash> {
           User? user = User.fromJson(fromLocalToUser);
           if (!JwtDecoder.isExpired(user.token!)) {
             print("token não expirou");
-
             Timer(
               Duration(seconds: 5),
               () {
@@ -84,7 +83,6 @@ class _SplashState extends State<Splash> {
             );
           }
         } else {
-          print("object");
           Timer(
             Duration(seconds: 3),
             () {
@@ -96,12 +94,13 @@ class _SplashState extends State<Splash> {
             },
           );
         }
-      } else if (await storage.containsKey(key: "event_owner_token")) {
-        if (eventOwnerToken != null) {
-          if (!JwtDecoder.isExpired(eventOwnerToken)) {
-            Map<String, dynamic> fromLocalToUser = {};
-            fromLocalToUser.addEntries(data.entries);
-            EventOwner? eventOwner = EventOwner.fromJson(fromLocalToUser);
+      } else if (await storage.containsKey(key: "event_owner")) {
+        var eventOwnerData = await storage.read(key: "event_owner");
+        if (eventOwnerData != null) {
+          Map<String, dynamic> fromLocalToUser = {};
+          fromLocalToUser.addAll(jsonDecode(eventOwnerData));
+          EventOwner? eventOwner = EventOwner.fromJson(fromLocalToUser);
+          if (!JwtDecoder.isExpired(eventOwner.token!)) {
             Timer(Duration(seconds: 3), () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
@@ -135,59 +134,8 @@ class _SplashState extends State<Splash> {
               MaterialPageRoute(builder: (_) => LoginScreen()));
         });
       }
-    } else {
-      if (universal.window.localStorage.containsKey("token")) {
-        // print(universal.window.cookieStore!.getAll());
-        print(universal.window.sessionStorage.containsValue("token"));
-
-        if (!JwtDecoder.isExpired(universal.window.localStorage["token"]!)) {
-          Map<String, dynamic> fromLocalToUser = {};
-          fromLocalToUser.addEntries(universal.window.localStorage.entries);
-          User user = User.fromJson(fromLocalToUser);
-          print(user.toString());
-          Timer(
-            Duration(seconds: 5),
-            () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => BaseScreen(
-                    userData: user,
-                  ),
-                ),
-              );
-            },
-          );
-        } else {
-          universal.window.localStorage.clear();
-          print("token expirou");
-          Timer(
-            Duration(seconds: 5),
-            () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => LoginScreen(),
-                ),
-              );
-            },
-          );
-        }
-      } else {
-        print(universal.window.localStorage.containsKey("user"));
-        print(universal.window.localStorage.containsKey("token"));
-
-        Timer(
-          Duration(seconds: 5),
-          () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => LoginScreen(),
-              ),
-            );
-          },
-        );
-      }
-      super.didChangeDependencies();
     }
+    super.didChangeDependencies();
   }
 
   @override

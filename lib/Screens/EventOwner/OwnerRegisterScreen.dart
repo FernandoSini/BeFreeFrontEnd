@@ -1,11 +1,12 @@
 import 'package:be_free_front/Providers/RegisterEventOwnerProvider.dart';
+import 'package:be_free_front/Screens/EventOwner/components/DocumentNumberScreen.dart';
 import 'package:be_free_front/Screens/EventOwner/components/OwnerPasswordScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class OwnerRegisterScreen extends StatelessWidget {
-  TextEditingController eventOwnerController = TextEditingController(text: "");
+  TextEditingController eventOwnerNameController = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +80,9 @@ class OwnerRegisterScreen extends StatelessWidget {
                     ),
                   ),
                   keyboardType: TextInputType.text,
-                  controller: eventOwnerController,
+                  controller: eventOwnerNameController,
                   onChanged: (value) {
-                    registerEventOwner.setUsername(value);
+                    registerEventOwner.setUserName(value);
                   },
                 ),
               ),
@@ -109,7 +110,7 @@ class OwnerRegisterScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => OwnerPassword(),
+                      builder: (_) => DocumentNumberScreen(),
                     ),
                   );
                 }, /* ??

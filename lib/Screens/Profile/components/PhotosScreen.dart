@@ -1,4 +1,5 @@
 import 'dart:io' as io;
+import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Screens/Camera/CameraScreen.dart';
 import 'package:be_free_front/Screens/Profile/components/ChooseFromScreen.dart';
 import 'package:flutter/material.dart';
@@ -7,15 +8,13 @@ import 'package:camera_camera/camera_camera.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PhotosScreen extends StatefulWidget {
-  PhotosScreen({this.images});
-  List<ImageModel>? images = [];
+  PhotosScreen({this.user});
+  User? user;
   @override
   _PhotosScreenState createState() => _PhotosScreenState();
 }
 
 class _PhotosScreenState extends State<PhotosScreen> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,20 +55,22 @@ class _PhotosScreenState extends State<PhotosScreen> {
                         // crossAxisSpacing: 3,
                         childAspectRatio: 0.8),
                     shrinkWrap: true,
-                    itemCount:
-                        widget.images!.isEmpty ? 9 : widget.images?.length,
+                    itemCount: widget.user!.images!.isEmpty
+                        ? 0
+                        : widget.user!.images?.length,
                     itemBuilder: (context, index) {
+                      print(widget.user!.images![index].url);
                       return Container(
                         margin: EdgeInsets.only(right: 5, left: 5),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: Colors.black),
                           color: Colors.black,
-                          image: widget.images!.isEmpty
+                          image: widget.user!.images!.isEmpty
                               ? null
                               : DecorationImage(
                                   image: NetworkImage(
-                                    widget.images![index].imageLink!,
+                                    widget.user!.images![index].url!,
                                   ),
                                   fit: BoxFit.cover,
                                 ),
@@ -92,7 +93,7 @@ class _PhotosScreenState extends State<PhotosScreen> {
                     () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => ChooseFromScreen(),
+                          builder: (_) => ChooseFromScreen(user: widget.user!),
                         ),
                       );
                     },

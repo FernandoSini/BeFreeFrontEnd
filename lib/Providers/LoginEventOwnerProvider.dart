@@ -28,16 +28,20 @@ class LoginEventOwnerProvider extends ChangeNotifier {
     final loginData = jsonEncode(body);
     print(loginData);
     try {
-      http.Response response =
-          await http.post(Uri.parse(url), body: loginData, headers: {
-        "Content-type": "application/json",
-        'Access-Control-Allow-Methods': '*',
-        // 'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*'
-      });
+      http.Response response = await http.post(
+        Uri.parse(url),
+        body: loginData,
+        headers: {
+          "Content-type": "application/json",
+          'Access-Control-Allow-Methods': '*',
+          // 'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*'
+        },
+      );
       if (response.statusCode == 200) {
         setLoggedIn(true);
-        var body = jsonDecode(response.body);
+        var body = jsonDecode(
+            Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
 
         print(body);
         setEventOwner(EventOwner.fromJson(body));
@@ -56,6 +60,7 @@ class LoginEventOwnerProvider extends ChangeNotifier {
       setLoading(false);
       error = true;
       errorText = e.toString();
+
       throw Future.error(errorText);
     }
     // setLoading(false);

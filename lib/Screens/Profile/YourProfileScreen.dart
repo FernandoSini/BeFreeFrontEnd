@@ -1,5 +1,7 @@
+import 'package:be_free_front/Models/Gender.dart';
 import 'package:be_free_front/Models/User.dart';
 import 'package:be_free_front/Screens/Login/LoginScreen.dart';
+import 'package:be_free_front/Screens/Profile/ChangeAvatarScreen.dart';
 import 'package:be_free_front/Screens/Profile/EditProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -41,18 +43,41 @@ class YourProfileScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 35),
               child: Center(
-                child: CircleAvatar(
-                  backgroundImage: userData?.avatar != null
-                      ? NetworkImage("${userData?.avatar}")
-                      : AssetImage("assets/avatars/avatar2.png")
-                          as ImageProvider,
-                  /* child: ClipOval(
-                    child: userData?.avatar != null
-                        ? Image.network("${userData?.avatar}")
-                        : Image.asset("assets/avatars/avatar2.png"),
-                  ), */
-                  backgroundColor: Colors.transparent,
-                  radius: 80,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ChangeAvatarScreen(
+                          user: userData,
+                        ),
+                      ),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(65),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(80),
+                      border: Border.all(
+                        color: userData!.gender == "MALE"
+                            ? Colors.blue
+                            : Colors.pinkAccent.shade400,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      backgroundImage: userData?.avatarProfile != null
+                          ? NetworkImage("${userData?.avatarProfile!.url}")
+                          : AssetImage("assets/avatars/avatar2.png")
+                              as ImageProvider,
+                      /* child: ClipOval(
+                        child: userData?.avatar != null
+                            ? Image.network("${userData?.avatar}")
+                            : Image.asset("assets/avatars/avatar2.png"),
+                      ), */
+                      backgroundColor: Colors.transparent,
+                      radius: 80,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -107,7 +132,13 @@ class YourProfileScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => EditProfileScreen()));
+                    MaterialPageRoute(
+                      builder: (_) => EditProfileScreen(
+                        userId: userData!.idUser,
+                        token: userData!.token,
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

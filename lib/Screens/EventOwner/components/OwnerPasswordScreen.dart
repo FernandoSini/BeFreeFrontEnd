@@ -1,15 +1,18 @@
 import 'package:be_free_front/Providers/RegisterEventOwnerProvider.dart';
+import 'package:be_free_front/Screens/EventOwner/Login/EventOwnerLogin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class OwnerPassword extends StatelessWidget {
- TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   TextEditingController password2Controller = TextEditingController();
   TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final registerEventProvider = Provider.of<RegisterEventOwnerProvider>(context);
+    final registerEventProvider =
+        Provider.of<RegisterEventOwnerProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -41,6 +44,20 @@ class OwnerPassword extends StatelessWidget {
             // const SizedBox(
             //   height: 30,
             // ),
+            Container(
+              alignment: Alignment.center,
+              // margin: EdgeInsets.only(bottom: 30),
+              padding: EdgeInsets.only(left: 40, right: 40),
+              child: Text(
+                registerEventProvider.hasError
+                    ? registerEventProvider.errorValue!
+                    : "",
+                // "flemissajkdhasjkdhas",
+                style: TextStyle(color: Colors.red),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             Container(
               alignment: Alignment.center,
               child: Text(
@@ -149,18 +166,77 @@ class OwnerPassword extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: !registerEventProvider.isPasswordValid
+                onPressed: registerEventProvider.password1Value == null ||
+                        !registerEventProvider.isPasswordValid
                     ? null
-                    : () {
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(
-                        //     builder: (_) => Fernando(),
-                        //   ),
-                        // );
-                      }, /* ??
-                    null, */
+                    : () async {
+                        await registerEventProvider.register();
+                      },
               ),
-            )
+            ),
+            if (registerEventProvider.isLoading)
+              Container(
+                margin: EdgeInsets.only(top: 50),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(
+                          Color(0xFF9a00e6),
+                        ),
+                      ),
+                      Flexible(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Text("Creating account, please wait a little"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else if (registerEventProvider.isEventOwnerRegistered)
+              Container(
+                margin: EdgeInsets.only(top: 50, left: 20, right: 20),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.check_circle_outline,
+                        color: Colors.green,
+                      ),
+                      Flexible(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (_) => EventOwnerLogin(),
+                                ),
+                                (Route route) => false);
+
+                            registerEventProvider.setUserName("");
+                            registerEventProvider.setEmail("");
+                            registerEventProvider.setPassword1("");
+                            registerEventProvider.setPassword2("");
+                            registerEventProvider
+                                .setIsEventOwnerRegistered(false);
+                            registerEventProvider.setErrorValue(false);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text(
+                                "${registerEventProvider.messageRegistered} Click here to back to login screen"),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              Container(),
           ],
         ),
       ),

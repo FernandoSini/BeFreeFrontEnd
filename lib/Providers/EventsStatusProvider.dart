@@ -33,8 +33,9 @@ class EventsStatusProvider extends ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        var body = json.decode(Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
-        
+        var body = json.decode(
+            Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
+
         for (var item in body) {
           if (events!.contains(Event.fromJson(item))) {
           } else {

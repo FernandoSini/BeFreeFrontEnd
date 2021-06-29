@@ -168,6 +168,8 @@ class EventOwnerLogin extends StatelessWidget {
                         ),
                       ),
                     );
+                    loginOwnerProvider.setUserName("");
+                    loginOwnerProvider.setPassword("");
                     print("logado");
                   }
                 },
@@ -200,6 +202,7 @@ class EventOwnerLogin extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (_) => OwnerRegisterScreen(),
                     ),
+
                   );
                 },
               ),

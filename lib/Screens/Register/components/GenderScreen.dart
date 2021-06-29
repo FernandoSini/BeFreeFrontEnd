@@ -1,6 +1,8 @@
 import 'package:be_free_front/Models/Gender.dart';
 import 'package:be_free_front/Providers/RegisterProvider.dart';
 import 'package:be_free_front/Screens/Register/components/GraduationScreen.dart';
+import 'package:be_free_front/Screens/Register/components/LivesInScreen.dart';
+import 'package:be_free_front/Screens/Register/components/SchoolScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +13,7 @@ class GenderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
@@ -154,13 +157,15 @@ class GenderScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => GraduationScreen(),
-                    ),
-                  );
-                }, /* ??
+                onPressed: registerProvider.genderValue == null
+                    ? null
+                    : () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => LivesInScreen(),
+                          ),
+                        );
+                      }, /* ??
                     null, */
               ),
             )

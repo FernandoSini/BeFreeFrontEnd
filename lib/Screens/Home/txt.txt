@@ -529,3 +529,37 @@ lembrar que esse é o else que identifica para o web e desktop e salva no armaze
         // });
       }
     }
+//mesmo pro eventowner
+    else {
+      if (eventOwner?.token != null) {
+        // universal.window.localStorage["user"] = user.toString();
+        // universal.window.localStorage["token"] = user!.token!;
+        Map<String, String> eventOwnerData = {
+          "event_owner_id": eventOwner!.eventOwnerId!,
+          "event_owner_name": eventOwner.eventOwnerName!,
+          "document_number": eventOwner.documentNumber!.toString(),
+          "event_owner_email": eventOwner.email!,
+          "event_owner_avatar": eventOwner.avatar!,
+          // "events": eventOwner.events!.toList().toString(),
+          "event_owner_token": eventOwner.token!,
+        };
+        universal.window.sessionStorage.addEntries(eventOwnerData.entries);
+        // universal.window.localStorage["user"] = user.toString();
+        // universal.window.localStorage["token"] = user?.token;
+        // final LocalStorage localStorage = new LocalStorage("userData");
+        eventOwnerData.forEach((key, value) {
+          // localStorage.setItem(key, value);
+          universal.window.localStorage[key] = value;
+
+          // Cookie cookie = new Cookie("flemis:$key", value);
+          // universal.window.cookieStore?.set(cookie.name, cookie.value);
+
+          // universal.window.cookieStore!.set(key, value);
+        });
+
+        // user.toJson().forEach((key, value) {
+        //   // localStorage.setItem(key, value);
+        //   universal.window.localStorage[key] = value;
+        // });
+      }
+    }

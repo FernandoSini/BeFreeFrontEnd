@@ -32,7 +32,6 @@ class _BaseScreenState extends State<BaseScreen> {
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
-        print("a");
         Provider.of<UserProvider>(context, listen: false)
             .setUser(widget.userData);
       }
@@ -100,13 +99,20 @@ class _BaseScreenState extends State<BaseScreen> {
                     // label: "Matches",
                   ),
                   BottomNavigationBarItem(
+                    tooltip: null,
                     icon: Container(
-                      padding: EdgeInsets.only(top: 7),
-                      child: CircleAvatar(
-                        backgroundImage: widget.userData?.avatar != null
-                            ? NetworkImage("${widget.userData?.avatar}")
-                            : AssetImage("assets/avatars/avatar2.png")
-                                as ImageProvider,
+                      // margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 10),
+                      child: Center(
+                        child: CircleAvatar(
+                          backgroundImage:
+                              widget.userData?.avatarProfile != null
+                                  ? NetworkImage(
+                                      "${widget.userData!.avatarProfile!.url}")
+                                  : AssetImage("assets/avatars/avatar2.png")
+                                      as ImageProvider,
+                          radius: 15,
+                        ),
                       ),
                     ),
                     label: "",
@@ -151,11 +157,14 @@ class _BaseScreenState extends State<BaseScreen> {
                         label: "Matches",
                       ),
                       BottomNavigationBarItem(
+                        tooltip: null,
                         icon: Container(
                           padding: EdgeInsets.only(top: 7),
                           child: CircleAvatar(
-                            backgroundImage: widget.userData?.avatar != null
-                                ? NetworkImage("${widget.userData?.avatar}")
+                            backgroundImage: widget.userData?.avatarProfile !=
+                                    null
+                                ? NetworkImage(
+                                    "${widget.userData!.avatarProfile!.url}")
                                 : AssetImage("assets/avatars/avatar2.png")
                                     as ImageProvider,
                           ),
@@ -172,10 +181,9 @@ class _BaseScreenState extends State<BaseScreen> {
         backgroundColor: Color(0xFF9a00e6),
         tooltip: "Add photos or Images to your profile",
         onPressed: () {
-          print(widget.userData!.images!.length);
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (_) => PhotosScreen(images: widget.userData!.images!),
+              builder: (_) => PhotosScreen(user: widget.userData!),
               fullscreenDialog: true,
               maintainState: true,
             ),

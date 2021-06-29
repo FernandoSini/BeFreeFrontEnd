@@ -1,22 +1,20 @@
 import 'dart:ffi';
 
 import 'package:be_free_front/Models/User.dart';
+import 'package:be_free_front/Providers/LikeProvider.dart';
 import 'package:be_free_front/Providers/ListUsersProvider.dart';
 import 'package:be_free_front/Providers/UserProvider.dart';
 import 'package:be_free_front/Screens/Home/components/FilterScreen.dart';
 import 'package:be_free_front/Screens/Login/LoginScreen.dart';
 import 'package:be_free_front/Screens/Profile/YourProfileScreen.dart';
 import 'package:be_free_front/Screens/Profile/ProfileScreen.dart';
-import 'package:be_free_front/Screens/clippers/CustomClipperRound.dart';
 import 'package:be_free_front/Screens/clippers/OvalClipper.dart';
-import 'package:be_free_front/Widget/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as universal;
 
@@ -35,16 +33,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final storage = new FlutterSecureStorage();
-  final LocalStorage localStorage = new LocalStorage("data");
   int page = 0;
 
   bool apiLoaded = false;
   void _logout(context) async {
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {
-      await localStorage.ready;
       await storage.deleteAll();
-      localStorage.clear();
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
     } else {
@@ -116,81 +111,59 @@ class _HomeScreenState extends State<HomeScreen> {
   //   super.didChangeDependencies();
   // }
 
+  Future<void> showErrorDialog() async {
+    return showDialog(
+      context: context,
+      builder: (_) {
+        return Container(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text("Error"),
+            actions: [
+              Container(
+                margin: EdgeInsets.only(right: 100),
+                child: TextButton(
+                  child: Text(
+                    "Close",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF9a00e6),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            ],
+            content: Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  Icon(
+                    Icons.cancel_sharp,
+                    color: Colors.red,
+                    size: 80,
+                  ),
+                  Text("Error, You've already liked this user"),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final listProvider = Provider.of<ListUsersProvider>(context);
-
+    final likeProvider = Provider.of<LikeProvider>(context);
     return Scaffold(
-      appBar: !(defaultTargetPlatform == TargetPlatform.android ||
-              defaultTargetPlatform == TargetPlatform.iOS)
-          ? AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              iconTheme: IconThemeData(color: Colors.black),
-              title: Consumer<UserProvider>(
-                builder: (_, userProvider, __) {
-                  return Text(
-                    userProvider.user?.userName != null
-                        ? "Welcome ${userProvider.user?.userName} ${userProvider.user?.lastName}"
-                        : "BeFree",
-                    style: TextStyle(
-                      fontFamily: "Segoe",
-                      color: Color(0xFF9a00e6),
-                      fontSize:
-                          (defaultTargetPlatform == TargetPlatform.android ||
-                                  defaultTargetPlatform == TargetPlatform.iOS)
-                              ? 30
-                              : 50,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                },
-              ),
-              actions: [
-                Consumer<UserProvider>(
-                  builder: (_, userProvider, __) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => YourProfileScreen()));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(right: 10),
-                            child: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage("assets/avatars/avatar.png"),
-                              foregroundImage: NetworkImage(
-                                "${userProvider.user?.avatar}",
-                                headers: {
-                                  "Content-type": "application/json",
-                                  'Access-Control-Allow-Methods': '*',
-                                  'Access-Control-Allow-Origin': '*',
-                                  'Access-Control-Allow-Headers': '*'
-                                },
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "${userProvider.user?.userName}",
-                            style: TextStyle(
-                                fontSize: 15, color: Color(0xFF9a00e6)),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.exit_to_app),
-                  onPressed: () {
-                    _logout(context);
-                  },
-                ),
-              ],
-            )
-          : AppBar(
+      appBar:  AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
               centerTitle: true,
@@ -198,9 +171,6 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Consumer<UserProvider>(
                 builder: (_, userProvider, __) {
                   return Text(
-                    /* userProvider.user?.userName != null
-                        ? "Welcome ${userProvider.user?.userName}"
-                        : */
                     "BeFree",
                     style: TextStyle(
                       fontFamily: "Segoe",
@@ -262,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Container(
                         child: Text(
-                          "Sorry, the list of happening events is empty",
+                          "Sorry, the list of users is empty",
                         ),
                       ),
                     ],
@@ -274,7 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (_, listUserProvider, __) {
                 listUserProvider.userList!.removeWhere((User? element) =>
                     element!.idUser! == widget.userData!.idUser);
-
                 return PageView.builder(
                   itemCount: listUserProvider.userList!.length,
                   pageSnapping: true,
@@ -282,6 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   allowImplicitScrolling: true,
                   itemBuilder: (_, index) {
                     return Container(
+                      color: Colors.white,
                       child: ListView(
                         physics: NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.only(bottom: 50),
@@ -312,10 +282,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           image: DecorationImage(
                                             image: listUserProvider
                                                         .userList?[index]
-                                                        .avatar !=
+                                                        .avatarProfile !=
                                                     null
                                                 ? NetworkImage(
-                                                    "${listUserProvider.userList?[index].avatar}")
+                                                    "${listUserProvider.userList?[index].avatarProfile!.url}")
                                                 : AssetImage(
                                                         "assets/avatars/avatar2.png")
                                                     as ImageProvider,
@@ -350,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Positioned(
                                 top: MediaQuery.of(context).size.height * 0.67,
-                                left: MediaQuery.of(context).size.width * 0.67,
+                                left: MediaQuery.of(context).size.width * 0.64,
                                 // bottom: 500,
                                 child: ElevatedButton(
                                   child: Icon(
@@ -364,7 +334,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                       minimumSize: Size(60, 60),
                                       primary:
                                           Color(0xFF9a00e6).withOpacity(0.8)),
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    likeProvider.setLike(
+                                        listUserProvider
+                                            .userList![index].idUser!,
+                                        widget.userData!.idUser,
+                                        widget.userData!.token!);
+                                    if (likeProvider.isLiked) {
+                                      print("liked successfuly");
+                                      setState(() {
+                                        listUserProvider.userList!.remove(
+                                            listUserProvider.userList![index]);
+                                      });
+                                    }
+                                    if (likeProvider.hasError) {
+                                      await showErrorDialog();
+                                      setState(() {
+                                        listUserProvider.userList!.remove(
+                                            listUserProvider.userList![index]);
+                                      });
+                                    }
+                                  },
                                 ),
                               ),
                               Positioned(
@@ -386,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       MaterialPageRoute(
                                         builder: (_) => ProfileScreen(
                                           user:
-                                              listUserProvider.userList?[index],
+                                              listUserProvider.userList![index],
                                         ),
                                         maintainState: true,
                                         fullscreenDialog: true,
@@ -397,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Positioned(
                                 top: MediaQuery.of(context).size.height * 0.68,
-                                left: MediaQuery.of(context).size.width * 0.43,
+                                left: MediaQuery.of(context).size.width * 0.41,
                                 // bottom: 500,
                                 child: ElevatedButton(
                                   child: Icon(
@@ -429,7 +419,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             margin: EdgeInsets.only(top: 13),
                             alignment: Alignment.center,
                             child: Text(
-                              "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(widget.userData!.birthday!).year}, years",
+                              "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
