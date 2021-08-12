@@ -1,0 +1,3 @@
+ enum MessageStatus {
+    RECEIVED, DELIVERED
+}

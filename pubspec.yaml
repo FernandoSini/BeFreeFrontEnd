@@ -1,0 +1,66 @@
+name: be_free_v1
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  cached_network_image: ^3.0.0
+  camera: ^0.8.1
+  camera_camera: ^2.0.1
+  cupertino_icons: ^1.0.2
+  date_format: ^2.0.2
+  device_info: ^2.0.2
+  device_preview: ^0.7.3
+  encrypt: ^5.0.0
+  enum_to_string: ^2.0.1
+  flutter:
+    sdk: flutter
+  flutter_datetime_picker:
+    git:
+      url: https://github.com/Realank/flutter_datetime_picker.git
+      ref: master
+  flutter_holo_date_picker: ^1.0.0-nullsafety.2
+  flutter_secure_storage: ^4.2.1
+  http: ^0.13.3
+  image_cropper: ^1.4.0
+  image_picker: ^0.8.0+1
+  intl: ^0.17.0
+  jwt_decoder: ^2.0.1
+  path: ^1.8.0
+  path_provider: ^2.0.1
+  provider: ^5.0.0
+  socket_io_client: ^2.0.0-beta.3-nullsafety.0
+  stomp_dart_client: ^0.4.3
+  universal_html: ^2.0.8
+  video_player: ^2.1.1
+  web_socket_channel: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/avatars/avatar.png
+    - assets/avatars/avatar2.png
+  fonts:
+    - family: Segoe
+      fonts:
+        - asset: fonts/segoesc.ttf

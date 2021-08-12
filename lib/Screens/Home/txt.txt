@@ -1,0 +1,565 @@
+ 
+ rascunho para multiplas telas
+ // } else if (constraints.maxHeight <= 900 &&
+          //     constraints.maxHeight >= 800) {
+          //   return PageView.builder(
+          //     pageSnapping: true,
+          //     physics: BouncingScrollPhysics(),
+          //     allowImplicitScrolling: true,
+          //     itemBuilder: (_, index) {
+          //       return Container(
+          //         child: Column(
+          //           children: [
+          //             Stack(
+          //               clipBehavior: Clip.none,
+          //               children: [
+          //                 Container(
+          //                   child: Stack(
+          //                     children: [
+          //                       ClipPath(
+          //                         clipper: OvalBottomBorderClipper(),
+          //                         child: Container(
+          //                           height: MediaQuery.of(context).size.height *
+          //                               0.73,
+          //                           color: Color(0xFF9a00e6),
+          //                         ),
+          //                       ),
+          //                       ClipPath(
+          //                         clipper: OvalBottomBorderClipper(),
+          //                         child: Container(
+          //                           height: MediaQuery.of(context).size.height *
+          //                               0.72,
+          //                           // color: Colors.blue,
+          //                           decoration: BoxDecoration(
+          //                             image: DecorationImage(
+          //                               image: AssetImage(
+          //                                   "assets/avatars/avatar2.png"),
+          //                               /* userData?.avatar != null ? NetworkImage(
+          //                               "${userData?.images?.first.imageLink}"
+          //                               /* "https://wmodelgroup.com/wp-content/uploads/2018/10/Jenyffer-Wiggers-500x625.jpg" */):AssetImage("assets/avatars/avatar.png"), */
+          //                               fit: BoxFit.cover,
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //                 Positioned(
+          //                   top: 550,
+          //                   left: 75,
+          //                   // bottom: 500,
+          //                   child: ElevatedButton(
+          //                     child: Icon(
+          //                       Icons.close_rounded,
+          //                       size: 35,
+          //                     ),
+          //                     style: ElevatedButton.styleFrom(
+          //                         shape: CircleBorder(),
+          //                         minimumSize: Size(60, 60),
+          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
+          //                     onPressed: () {},
+          //                   ),
+          //                 ),
+          //                 Positioned(
+          //                   top: 550,
+          //                   left: 280,
+          //                   // bottom: 500,
+          //                   child: ElevatedButton(
+          //                     child: Icon(
+          //                       Icons.favorite,
+          //                       size: 35,
+          //                       color: Colors.pink[100],
+          //                     ),
+          //                     style: ElevatedButton.styleFrom(
+          //                         shape: CircleBorder(),
+          //                         minimumSize: Size(60, 60),
+          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
+          //                     onPressed: () {},
+          //                   ),
+          //                 ),
+          //                 Positioned(
+          //                   top: 570,
+          //                   left: 180,
+          //                   // bottom: 500,
+          //                   child: ElevatedButton(
+          //                     child: Icon(
+          //                       Icons.email_rounded,
+          //                       size: 35,
+          //                       color: Colors.yellowAccent[200],
+          //                     ),
+          //                     style: ElevatedButton.styleFrom(
+          //                         shape: CircleBorder(),
+          //                         minimumSize: Size(60, 60),
+          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
+          //                     onPressed: () {},
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //             Container(
+          //               color: Colors.transparent,
+          //               margin: EdgeInsets.only(top: 40),
+          //               alignment: Alignment.center,
+          //               child: Text(
+          //                 "${userData?.userName} ${userData?.userGraduations?.first.courseName}",
+          //                 style: TextStyle(
+          //                     fontWeight: FontWeight.bold, fontSize: 25),
+          //               ),
+          //             ),
+          //             Container(
+          //               margin: EdgeInsets.only(top: 15),
+          //               alignment: Alignment.center,
+          //               child: Text(
+          //                 "${userData?.birthday}",
+          //                 style: TextStyle(
+          //                     fontWeight: FontWeight.bold, fontSize: 20),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       );
+          //     },
+          //   );
+          // } else if (constraints.maxHeight >= 700 &&
+          //     constraints.maxHeight < 800) {
+          //   return PageView.builder(
+          //     pageSnapping: true,
+          //     physics: BouncingScrollPhysics(),
+          //     allowImplicitScrolling: true,
+          //     itemBuilder: (_, index) {
+          //       return Container(
+          //         child: Column(
+          //           children: [
+          //             Stack(
+          //               clipBehavior: Clip.none,
+          //               children: [
+          //                 Container(
+          //                   child: Stack(
+          //                     children: [
+          //                       ClipPath(
+          //                         clipper: OvalBottomBorderClipper(),
+          //                         child: Container(
+          //                           height: MediaQuery.of(context).size.height *
+          //                               0.73,
+          //                           color: Color(0xFF9a00e6),
+          //                         ),
+          //                       ),
+          //                       ClipPath(
+          //                         clipper: OvalBottomBorderClipper(),
+          //                         child: Container(
+          //                           height: MediaQuery.of(context).size.height *
+          //                               0.72,
+          //                           // color: Colors.blue,
+          //                           decoration: BoxDecoration(
+          //                             image: DecorationImage(
+          //                               image: AssetImage(
+          //                                   "assets/avatars/avatar2.png"),
+          //                               /* userData?.avatar != null ? NetworkImage(
+          //                               "${userData?.images?.first.imageLink}"
+          //                               /* "https://wmodelgroup.com/wp-content/uploads/2018/10/Jenyffer-Wiggers-500x625.jpg" */):AssetImage("assets/avatars/avatar.png"), */
+          //                               fit: BoxFit.cover,
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //                 Positioned(
+          //                   top: 510,
+          //                   left: 80,
+          //                   // bottom: 500,
+          //                   child: ElevatedButton(
+          //                     child: Icon(
+          //                       Icons.close_rounded,
+          //                       size: 35,
+          //                     ),
+          //                     style: ElevatedButton.styleFrom(
+          //                         shape: CircleBorder(),
+          //                         minimumSize: Size(60, 60),
+          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
+          //                     onPressed: () {},
+          //                   ),
+          //                 ),
+          //                 Positioned(
+          //                   top: 510,
+          //                   left: 270,
+          //                   // bottom: 500,
+          //                   child: ElevatedButton(
+          //                     child: Icon(
+          //                       Icons.favorite,
+          //                       size: 35,
+          //                       color: Colors.pink[100],
+          //                     ),
+          //                     style: ElevatedButton.styleFrom(
+          //                         shape: CircleBorder(),
+          //                         minimumSize: Size(60, 60),
+          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
+          //                     onPressed: () {},
+          //                   ),
+          //                 ),
+          //                 Positioned(
+          //                   top: 540,
+          //                   left: 175,
+          //                   // bottom: 500,
+          //                   child: ElevatedButton(
+          //                     child: Icon(
+          //                       Icons.email_rounded,
+          //                       size: 35,
+          //                       color: Colors.yellowAccent[200],
+          //                     ),
+          //                     style: ElevatedButton.styleFrom(
+          //                         shape: CircleBorder(),
+          //                         minimumSize: Size(60, 60),
+          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
+          //                     onPressed: () {},
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //             Container(
+          //               color: Colors.transparent,
+          //               margin: EdgeInsets.only(top: 40),
+          //               alignment: Alignment.center,
+          //               child: Text(
+          //                 "${userData?.userName} ${userData?.userGraduations?.first.courseName}",
+          //                 style: TextStyle(
+          //                     fontWeight: FontWeight.bold, fontSize: 25),
+          //               ),
+          //             ),
+          //             Container(
+          //               margin: EdgeInsets.only(top: 15),
+          //               alignment: Alignment.center,
+          //               child: Text(
+          //                 "${userData?.birthday}",
+          //                 style: TextStyle(
+          //                     fontWeight: FontWeight.bold, fontSize: 20),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       );
+          //     },
+          //   );
+          // } else {
+          //   return PageView.builder(
+          //     pageSnapping: true,
+          //     physics: BouncingScrollPhysics(),
+          //     allowImplicitScrolling: true,
+          //     itemBuilder: (_, index) {
+          //       return Container(
+          //         child: Column(
+          //           children: [
+          //             Stack(
+          //               clipBehavior: Clip.none,
+          //               children: [
+          //                 Container(
+          //                   child: Stack(
+          //                     children: [
+          //                       ClipPath(
+          //                         clipper: OvalBottomBorderClipper(),
+          //                         child: Container(
+          //                           height: MediaQuery.of(context).size.height *
+          //                               0.73,
+          //                           color: Color(0xFF9a00e6),
+          //                         ),
+          //                       ),
+          //                       ClipPath(
+          //                         clipper: OvalBottomBorderClipper(),
+          //                         child: Container(
+          //                           height: MediaQuery.of(context).size.height *
+          //                               0.72,
+          //                           // color: Colors.blue,
+          //                           decoration: BoxDecoration(
+          //                             image: DecorationImage(
+          //                               image: AssetImage(
+          //                                   "assets/avatars/avatar2.png"),
+          //                               /* userData?.avatar != null ? NetworkImage(
+          //                               "${userData?.images?.first.imageLink}"
+          //                               /* "https://wmodelgroup.com/wp-content/uploads/2018/10/Jenyffer-Wiggers-500x625.jpg" */):AssetImage("assets/avatars/avatar.png"), */
+          //                               fit: BoxFit.cover,
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //                 Positioned(
+          //                   top: 450,
+          //                   left: 75,
+          //                   // bottom: 500,
+          //                   child: ElevatedButton(
+          //                     child: Icon(
+          //                       Icons.close_rounded,
+          //                       size: 35,
+          //                     ),
+          //                     style: ElevatedButton.styleFrom(
+          //                         shape: CircleBorder(),
+          //                         minimumSize: Size(60, 60),
+          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
+          //                     onPressed: () {},
+          //                   ),
+          //                 ),
+          //                 Positioned(
+          //                   top: 450,
+          //                   left: 280,
+          //                   // bottom: 500,
+          //                   child: ElevatedButton(
+          //                     child: Icon(
+          //                       Icons.favorite,
+          //                       size: 35,
+          //                       color: Colors.pink[100],
+          //                     ),
+          //                     style: ElevatedButton.styleFrom(
+          //                         shape: CircleBorder(),
+          //                         minimumSize: Size(60, 60),
+          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
+          //                     onPressed: () {},
+          //                   ),
+          //                 ),
+          //                 Positioned(
+          //                   top: 470,
+          //                   left: 180,
+          //                   // bottom: 500,
+          //                   child: ElevatedButton(
+          //                     child: Icon(
+          //                       Icons.email_rounded,
+          //                       size: 35,
+          //                       color: Colors.yellowAccent[200],
+          //                     ),
+          //                     style: ElevatedButton.styleFrom(
+          //                         shape: CircleBorder(),
+          //                         minimumSize: Size(60, 60),
+          //                         primary: Color(0xFF9a00e6).withOpacity(0.8)),
+          //                     onPressed: () {},
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //             Container(
+          //               color: Colors.transparent,
+          //               margin: EdgeInsets.only(top: 40),
+          //               alignment: Alignment.center,
+          //               child: Text(
+          //                 "${userData?.userName} ${userData?.userGraduations?.first.courseName}",
+          //                 style: TextStyle(
+          //                     fontWeight: FontWeight.bold, fontSize: 25),
+          //               ),
+          //             ),
+          //             Container(
+          //               margin: EdgeInsets.only(top: 15),
+          //               alignment: Alignment.center,
+          //               child: Text(
+          //                 "${userData?.birthday}",
+          //                 style: TextStyle(
+          //                     fontWeight: FontWeight.bold, fontSize: 20),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       );
+          //     },
+          //   );
+          // }
+
+
+          else {
+      if (universal.window.localStorage.containsKey("token")) {
+        // print(universal.window.cookieStore!.getAll());
+        print(universal.window.sessionStorage.containsValue("token"));
+
+        if (!JwtDecoder.isExpired(universal.window.localStorage["token"]!)) {
+          Map<String, dynamic> fromLocalToUser = {};
+          fromLocalToUser.addEntries(universal.window.localStorage.entries);
+          User user = User.fromJson(fromLocalToUser);
+          print(user.toString());
+          Timer(
+            Duration(seconds: 5),
+            () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => BaseScreen(
+                    userData: user,
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          universal.window.localStorage.clear();
+          print("token expirou");
+          Timer(
+            Duration(seconds: 5),
+            () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => LoginScreen(),
+                ),
+              );
+            },
+          );
+        }
+      } else {
+        print(universal.window.localStorage.containsKey("user"));
+        print(universal.window.localStorage.containsKey("token"));
+
+        Timer(
+          Duration(seconds: 5),
+          () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => LoginScreen(),
+              ),
+            );
+          },
+        );
+      }
+    } e lembrar de importar o package universal html
+//armazenar localmente os dados no html flutter web
+    } else {
+      if (eventOwner?.token != null) {
+        // universal.window.localStorage["user"] = user.toString();
+        // universal.window.localStorage["token"] = user!.token!;
+        Map<String, String> eventOwnerData = {
+          "event_owner_id": eventOwner!.eventOwnerId!,
+          "event_owner_name": eventOwner.eventOwnerName!,
+          "document_number": eventOwner.documentNumber!.toString(),
+          "event_owner_email": eventOwner.email!,
+          "event_owner_avatar": eventOwner.avatar!,
+          // "events": eventOwner.events!.toList().toString(),
+          "event_owner_token": eventOwner.token!,
+        };
+        universal.window.sessionStorage.addEntries(eventOwnerData.entries);
+        // universal.window.localStorage["user"] = user.toString();
+        // universal.window.localStorage["token"] = user?.token;
+        // final LocalStorage localStorage = new LocalStorage("userData");
+        eventOwnerData.forEach((key, value) {
+          // localStorage.setItem(key, value);
+          universal.window.localStorage[key] = value;
+
+          // Cookie cookie = new Cookie("flemis:$key", value);
+          // universal.window.cookieStore?.set(cookie.name, cookie.value);
+
+          // universal.window.cookieStore!.set(key, value);
+        });
+
+        // user.toJson().forEach((key, value) {
+        //   // localStorage.setItem(key, value);
+        //   universal.window.localStorage[key] = value;
+        // });
+      }
+    }
+
+  Rascunho que tentei usar para salvar os dados no flutter secure storage
+  o correto é await storage.write(key:key, value jsonEncode(user.toJson()))
+  // Map<String, dynamic?> userData = {
+      //   "id_user": user!.idUser!,
+      //   "about": user.about,
+      //   "user_name": user.userName!,
+      //   "first_name": user.firstName!,
+      //   "last_name": user.lastName!,
+      //   "birthday": user.birthday!,
+      //   "gender": user.gender!,
+      //   "email": user.email!,
+      //   "avatar": user.avatar,
+      //   //esta dando bugs nesses aqui
+      //   "images": jsonEncode(user.images?.map((e) => e.toJson()).toList()),
+      //   // "matches": user.matches?.map((e) => e.toJson()).toList().toString(),
+      //   // "likeReceived": user.likeReceived
+      //   //     ?.map((like) => like.toJson().values)
+      //   //     .toList()
+      //   //     .toString(),
+      //   // "likesSended":
+      //   //     user.likesSended?.map((like) => like.toJson()).toList().toString(),
+      //   "token": user.token,
+      //   "job_title": user.job,
+      //   "company": user.company,
+      //   "school": user.school,
+      //   "createdAt": user.createdAt
+      // };
+      // await storage.write(
+      //     key: "images", value: jsonEncode(user.images!.toList()));
+      // userData.forEach((key, value) async {
+      //   await storage.write(key: key, value: value);
+      // });
+
+lembrar que esse é o else que identifica para o web e desktop e salva no armazenamento local
+      else {
+      if (user?.token != null) {
+        // universal.window.localStorage["user"] = user.toString();
+        // universal.window.localStorage["token"] = user!.token!;
+        Map<String, String> userData = {
+          "id_user": user!.idUser!,
+          "user_name": user.userName!,
+          "first_name": user.firstName!,
+          "last_name": user.lastName!,
+          "birthday": user.birthday!,
+          "gender": user.gender!,
+          "email": user.email!,
+          "avatar": user.avatar == null ? "null" : user.avatar!,
+          "images": user.images!.toList().asMap().toString(),
+          // "userGraduations": user.userGraduations!.toList().asMap().toString(),
+          "matches": user.matches!.toList().asMap().toString(),
+          "likeReceived": user.likeReceived!.toList().asMap().toString(),
+          "likesSended": user.likesSended!.toList().asMap().toString(),
+          "token": user.token!,
+          "job_title": user.job!,
+          "company": user.company!,
+          "school": user.school!
+        };
+        universal.window.sessionStorage.addEntries(userData.entries);
+        // universal.window.localStorage["user"] = user.toString();
+        // universal.window.localStorage["token"] = user?.token;
+        // final LocalStorage localStorage = new LocalStorage("userData");
+        userData.forEach((key, value) {
+          // localStorage.setItem(key, value);
+          universal.window.localStorage[key] = value;
+
+          // Cookie cookie = new Cookie("flemis:$key", value);
+          // universal.window.cookieStore?.set(cookie.name, cookie.value);
+
+          // universal.window.cookieStore!.set(key, value);
+        });
+
+        // user.toJson().forEach((key, value) {
+        //   // localStorage.setItem(key, value);
+        //   universal.window.localStorage[key] = value;
+        // });
+      }
+    }
+//mesmo pro eventowner
+    else {
+      if (eventOwner?.token != null) {
+        // universal.window.localStorage["user"] = user.toString();
+        // universal.window.localStorage["token"] = user!.token!;
+        Map<String, String> eventOwnerData = {
+          "event_owner_id": eventOwner!.eventOwnerId!,
+          "event_owner_name": eventOwner.eventOwnerName!,
+          "document_number": eventOwner.documentNumber!.toString(),
+          "event_owner_email": eventOwner.email!,
+          "event_owner_avatar": eventOwner.avatar!,
+          // "events": eventOwner.events!.toList().toString(),
+          "event_owner_token": eventOwner.token!,
+        };
+        universal.window.sessionStorage.addEntries(eventOwnerData.entries);
+        // universal.window.localStorage["user"] = user.toString();
+        // universal.window.localStorage["token"] = user?.token;
+        // final LocalStorage localStorage = new LocalStorage("userData");
+        eventOwnerData.forEach((key, value) {
+          // localStorage.setItem(key, value);
+          universal.window.localStorage[key] = value;
+
+          // Cookie cookie = new Cookie("flemis:$key", value);
+          // universal.window.cookieStore?.set(cookie.name, cookie.value);
+
+          // universal.window.cookieStore!.set(key, value);
+        });
+
+        // user.toJson().forEach((key, value) {
+        //   // localStorage.setItem(key, value);
+        //   universal.window.localStorage[key] = value;
+        // });
+      }
+    }
