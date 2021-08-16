@@ -22,9 +22,9 @@ class LoginProvider extends ChangeNotifier {
   bool get isLoading => loading;
 
   Future<User?> login(String username, String password) async {
-    String url = "http://192.168.0.22:8080/auth/user/login";
+    String url = "http://192.168.0.22:3000/user/login";
     setLoading(true);
-    var data = {"user_name": username, "password": password};
+    var data = {"username": username, "password": password};
     final loginData = jsonEncode(data);
     try {
       http.Response response =
@@ -44,7 +44,7 @@ class LoginProvider extends ChangeNotifier {
         return userData;
       } else {
         error = true;
-        errorText = "${jsonDecode(response.body)["message"]}";
+        errorText = "${jsonDecode(response.body)["error"]}";
         setLoading(false);
         notifyListeners();
         return Future.error(errorText);

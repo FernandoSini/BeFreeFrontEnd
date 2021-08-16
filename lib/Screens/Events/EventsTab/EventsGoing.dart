@@ -20,7 +20,7 @@ class _EventsGoingState extends State<EventsGoing> {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       if (mounted) {
         await Provider.of<EventsGoingProvider>(context, listen: false)
-            .getEventsByStatus(widget.user!.token!, widget.user!.idUser!);
+            .getEventsByStatus(widget.user!.token!, widget.user!.id!);
       }
     });
     super.initState();

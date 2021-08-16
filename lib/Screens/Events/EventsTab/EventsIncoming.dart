@@ -5,6 +5,7 @@ import 'package:be_free_v1/Providers/EventsProvider.dart';
 import 'package:be_free_v1/Providers/EventsStatusProvider.dart';
 import 'package:be_free_v1/Screens/Events/AboutEventScreen/AboutEventScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class EventsIncoming extends StatefulWidget {
@@ -106,10 +107,10 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: Text(
                                   'Start Date: ' +
-                                      '${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without date"}' +
+                                      '${eventsStatusProvider.eventData![index].startDate != null ? DateFormat("dd/MM/yyyy").format(eventsStatusProvider.eventData![index].startDate!) : "Without date"}' +
                                       '  ' +
                                       'End Date: ' +
-                                      '${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without description"}',
+                                      '${eventsStatusProvider.eventData![index].endDate != null ? DateFormat("dd/MM/yyyy").format(eventsStatusProvider.eventData![index].endDate!) : "Without description"}',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black.withOpacity(0.7),

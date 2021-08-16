@@ -1,3 +1,32 @@
+// class LikesReceived {
+//   String? id;
+//   String? username;
+//   String? firstname;
+//   String? lastname;
+//   String? birthday;
+
+//   LikesReceived(
+//       {this.id, this.username, this.firstname, this.lastname, this.birthday});
+
+//   LikesReceived.fromJson(Map<String, dynamic> json) {
+//     id = json['_id'] == null ? null : json["_id"];
+//     username = json['username'] == null ? null : json["username"];
+//     firstname = json['firstname'] == null ? null : json["firstname"];
+//     lastname = json['lastname'] == null ? null : json['lastname'];
+//     birthday = json['birthday'] == null ? null : json["birthday"];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['_id'] = this.id;
+//     data['username'] = this.username;
+//     data['firstname'] = this.firstname;
+//     data['lastname'] = this.lastname;
+//     data['birthday'] = this.birthday;
+//     return data;
+//   }
+// }
+
 // import 'dart:convert';
 
 // import 'package:be_free_v1/Models/Avatar.dart';
@@ -155,7 +184,7 @@ import 'LikesReceived.dart';
 import 'LikesSent.dart';
 import 'Photos.dart';
 
-class User {
+class LikesReceived {
   String? id;
   String? username;
   String? firstname;
@@ -170,15 +199,13 @@ class User {
   String? school;
   String? company;
   List<Photos>? photos;
-  List<LikesSent>? likesSent;
-  List<LikesReceived>? likesReceived;
   List<String>? matches;
   String? role;
   String? createdAt;
   String? token;
   String? livesIn;
 
-  User(
+  LikesReceived(
       {this.id,
       this.username,
       this.firstname,
@@ -193,15 +220,13 @@ class User {
       this.school,
       this.company,
       this.photos,
-      this.likesSent,
-      this.likesReceived,
       this.matches,
       this.role,
       this.createdAt,
       this.livesIn,
       this.token});
 
-  User.fromJson(Map<String, dynamic> json) {
+  LikesReceived.fromJson(Map<String, dynamic> json) {
     id = json['_id'] == null ? null : json["_id"];
     username = json['username'] == null ? null : json["username"];
     firstname = json['firstname'] == null ? null : json["firstname"];
@@ -228,18 +253,7 @@ class User {
         photos?.add(new Photos.fromJson(v));
       });
     }
-    if (json['likesSent'] != null) {
-      likesSent = <LikesSent>[];
-      json['likesSent'].forEach((v) {
-        likesSent?.add(new LikesSent.fromJson(v));
-      });
-    }
-    if (json['likesReceived'] != null) {
-      likesReceived = <LikesReceived>[];
-      json['likesReceived'].forEach((v) {
-        likesReceived?.add(new LikesReceived.fromJson(v));
-      });
-    }
+
     matches = json['matches'] == null ? null : json['matches'].cast<String>();
     role = json['role'] == null ? null : json["roles"];
     createdAt = json['createdAt'] == null ? null : json["createdAt"];
@@ -253,26 +267,22 @@ class User {
     data['firstname'] = this.firstname;
     data['lastname'] = this.lastname;
     data['birthday'] = this.birthday;
-    data['gender'] = EnumToString.convertToString(this.gender);
+    data['gender'] =
+        this.gender == null ? null : EnumToString.convertToString(this.gender);
     data['email'] = this.email;
     if (this.avatarProfile != null) {
       data['avatar_profile'] = this.avatarProfile?.toJson();
     }
     data['about'] = this.about;
-    data['usertype'] = EnumToString.convertToString(this.usertype);
+    data['usertype'] = this.usertype == null
+        ? null
+        : EnumToString.convertToString(this.usertype);
     data['job'] = this.job;
     data['school'] = this.school;
     data['company'] = this.company;
     data["livesIn"] = this.livesIn;
     if (this.photos != null) {
       data['photos'] = this.photos?.map((v) => v.toJson()).toList();
-    }
-    if (this.likesSent != null) {
-      data['likesSent'] = this.likesSent?.map((v) => v.toJson()).toList();
-    }
-    if (this.likesReceived != null) {
-      data['likesReceived'] =
-          this.likesReceived?.map((v) => v.toJson()).toList();
     }
     data['matches'] = this.matches;
     data['role'] = this.role;

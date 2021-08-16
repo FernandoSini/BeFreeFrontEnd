@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
               centerTitle: true,
               iconTheme: IconThemeData(color: Color(0xFF9a00e6)),
               title: Text(
-                "${user?.userName}, ${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(user!.birthday!).year}",
+                "${user?.username}, ${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(user!.birthday!).year}",
                 style: TextStyle(
                   fontFamily: "Segoe",
                   color: Colors.pink[400],
@@ -62,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
                     image: DecorationImage(
                       image: user!.avatarProfile == null
                           ? AssetImage("assets/avatars/avatar2.png")
-                          : NetworkImage("${user!.avatarProfile!.url!}")
+                          : NetworkImage("${user!.avatarProfile!.path!}")
                               as ImageProvider,
                       fit: BoxFit.cover,
                     ),
@@ -216,7 +216,7 @@ class ProfileScreen extends StatelessWidget {
                     color: Color(0xFF9a00e6),
                   ),
                 ),
-                if (user!.images!.isNotEmpty)
+                if (user!.photos != null)
                   Column(
                     children: [
                       Container(
@@ -238,14 +238,14 @@ class ProfileScreen extends StatelessWidget {
                         padding: EdgeInsets.only(
                             top: 15, bottom: 15, left: 15, right: 15),
                         clipBehavior: Clip.none,
-                        height: user!.images!.length > 3
+                        height: user!.photos!.length > 3
                             ? 200
                             : MediaQuery.of(context).size.height * 0.2,
                         width: MediaQuery.of(context).size.width,
                         child: GridView.builder(
                           scrollDirection: Axis.horizontal,
                           physics: BouncingScrollPhysics(),
-                          itemCount: user?.images?.length,
+                          itemCount: user?.photos?.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2, crossAxisSpacing: 10),
@@ -268,9 +268,9 @@ class ProfileScreen extends StatelessWidget {
                                   color: Color(0xFF9a00e6), width: 2),
                               borderRadius: BorderRadius.circular(40),
                               image: DecorationImage(
-                                image: user?.images?[index] == null
+                                image: user?.photos?[index] == null
                                     ? AssetImage("/assets/avatars/avatar2.png")
-                                    : NetworkImage(user!.images![index].url!)
+                                    : NetworkImage(user!.photos![index].path!)
                                         as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
@@ -282,9 +282,9 @@ class ProfileScreen extends StatelessWidget {
                                     tag: "smallImage$index",
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(40),
-                                      child: user?.images?[index] != null
+                                      child: user?.photos?[index] != null
                                           ? Image.network(
-                                              user!.images![index].url!,
+                                              user!.photos![index].path!,
                                               fit: BoxFit.cover,
                                               height: MediaQuery.of(context)
                                                       .size
@@ -306,7 +306,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
+                  )
               ],
             ),
           ),

@@ -1,6 +1,8 @@
 import 'package:be_free_v1/Models/User.dart';
+import 'package:be_free_v1/Providers/LikesReceivedProvider.dart';
 import 'package:be_free_v1/Providers/MatchProvider.dart';
 import 'package:be_free_v1/Screens/Chat/ChatScreen.dart';
+import 'package:be_free_v1/Screens/Profile/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,9 +19,22 @@ class _MatchesScreenState extends State<MatchesScreen> {
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<MatchProvider>(context, listen: false)
-          .getMatches(widget.user!.token!, widget.user!.idUser!);
+          .getMatches(widget.user!.token!, widget.user!.id!);
+      await Provider.of<LikesReceivedProvider>(context, listen: false)
+          .getLikesReceived(widget.user!.token!, widget.user!.id!);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (mounted) {
+        Provider.of<MatchProvider>(context, listen: false).dispose();
+        Provider.of<LikesReceivedProvider>(context, listen: false).dispose();
+      }
+    });
+    super.dispose();
   }
 
   @override
@@ -51,7 +66,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             Container(
               margin: EdgeInsets.only(top: 20, left: 20, bottom: 10),
               child: Text(
-                "Your Matches",
+                "Who like You",
                 style: TextStyle(
                   fontFamily: "Segoe",
                   fontWeight: FontWeight.bold,
@@ -62,29 +77,34 @@ class _MatchesScreenState extends State<MatchesScreen> {
             Container(
               height: MediaQuery.of(context).size.height * 0.15,
               alignment: Alignment.center,
-              child: Consumer<MatchProvider>(
-                builder: (context, matchProvider, _) {
+              child: Consumer<LikesReceivedProvider>(
+                builder: (context, likesReceivedProvider, _) {
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
                     physics: BouncingScrollPhysics(),
-                    itemCount: matchProvider.matchData?.length,
+                    itemCount: likesReceivedProvider.likesReceived?.length,
                     itemBuilder: (context, index) {
-                      if (!matchProvider.isLoading) {
-                        if (matchProvider.matchData!.isEmpty) {
+                      if (!likesReceivedProvider.isLoading) {
+                        if (likesReceivedProvider.likesData!.isEmpty) {
                           return Container();
                         }
                         return GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => ChatScreen(
-                                  user: matchProvider.matches![index].hisHer,
-                                  you: widget.user,
-                                  match: matchProvider.matches![index],
-                                ),
-                                fullscreenDialog: true,
-                              ),
-                            );
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (_) => ChatScreen(
+                            //       user: matchProvider.matches![index].user1,
+                            //       you: widget.user,
+                            //       match: matchProvider.matches![index],
+                            //     ),
+                            //     fullscreenDialog: true,
+                            //   ),
+                            // );
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => ProfileScreen(
+                                  user: likesReceivedProvider
+                                      .likesReceived![index]),
+                            ));
                           },
                           // child: Container(
                           //   padding: EdgeInsets.only(left: 10, right: 10),
@@ -117,11 +137,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             margin: EdgeInsets.only(left: 10),
                             child: Center(
                               child: CircleAvatar(
-                                backgroundImage: matchProvider.matches?[index]
-                                            .hisHer!.avatarProfile !=
+                                backgroundImage: likesReceivedProvider
+                                            .likesData?[index].avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "${matchProvider.matches?[index].hisHer!.avatarProfile!.url}")
+                                        "http://192.168.0.22:3000/api/${likesReceivedProvider.likesReceived?[index].avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 radius: 50,
@@ -148,7 +168,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             Container(
               margin: EdgeInsets.only(left: 20, bottom: 10, top: 20),
               child: Text(
-                "Messages",
+                "Matches",
                 style: TextStyle(
                   fontFamily: "Segoe",
                   fontWeight: FontWeight.bold,
@@ -176,7 +196,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => ChatScreen(
-                                user: matchProvider.matches![index].hisHer,
+                                user: matchProvider.matches![index].user1,
                                 you: widget.user,
                                 match: matchProvider.matches![index],
                               ),
@@ -195,11 +215,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                       child: CircleAvatar(
                                         backgroundImage: matchProvider
                                                     .matches?[index]
-                                                    .hisHer!
+                                                    .user1!
                                                     .avatarProfile !=
                                                 null
                                             ? NetworkImage(
-                                                "${matchProvider.matches?[index].hisHer!.avatarProfile!.url}")
+                                                "http://localhost:3000/api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
                                             : AssetImage(
                                                     "assets/avatars/avatar2.png")
                                                 as ImageProvider,
@@ -220,7 +240,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                     margin: EdgeInsets.only(
                                                         bottom: 20),
                                                     child: Text(
-                                                      "${matchProvider.matches?[index].hisHer?.userName} ${matchProvider.matches?[index].hisHer?.lastName}",
+                                                      "${matchProvider.matches?[index].user1?.username} ${matchProvider.matches?[index].user1?.lastname}",
                                                       style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -237,27 +257,27 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                               margin: EdgeInsets.only(left: 10),
                                               child: Row(
                                                 children: [
-                                                  Flexible(
-                                                    child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 10),
-                                                      child: matchProvider
-                                                              .matches![index]
-                                                              .messages!
-                                                              .isNotEmpty
-                                                          ? Text(
-                                                              "${matchProvider.matches?[index].messages?.last.content}",
-                                                              style: TextStyle(
-                                                                  fontSize: 18),
-                                                            )
-                                                          : Text(
-                                                              "No messages sent/received yet",
-                                                              style: TextStyle(
-                                                                fontSize: 15,
-                                                              ),
-                                                            ),
-                                                    ),
-                                                  ),
+                                                  // Flexible(
+                                                  //   child: Container(
+                                                  //     margin: EdgeInsets.only(
+                                                  //         bottom: 10),
+                                                  //     child: matchProvider
+                                                  //             .matches![index]
+                                                  //             .messages!
+                                                  //             .isNotEmpty
+                                                  //         ? Text(
+                                                  //             "${matchProvider.matches?[index].messages?.last.content}",
+                                                  //             style: TextStyle(
+                                                  //                 fontSize: 18),
+                                                  //           )
+                                                  //         : Text(
+                                                  //             "No messages sent/received yet",
+                                                  //             style: TextStyle(
+                                                  //               fontSize: 15,
+                                                  //             ),
+                                                  //           ),
+                                                  //   ),
+                                                  // ),
                                                 ],
                                               ),
                                             ),

@@ -7,7 +7,7 @@ import 'package:be_free_v1/Providers/LikeProvider.dart';
 import 'package:be_free_v1/Providers/ListUsersProvider.dart';
 import 'package:be_free_v1/Providers/LoginEventOwnerProvider.dart';
 import 'package:be_free_v1/Providers/LoginProvider.dart';
-import 'package:be_free_v1/Providers/MatchProvider.dart';
+import 'package:be_free_v1/Providers/LikesReceivedProvider.dart';
 import 'package:be_free_v1/Providers/RegisterEventOwnerProvider.dart';
 import 'package:be_free_v1/Providers/RegisterProvider.dart';
 import 'package:be_free_v1/Providers/SearchEventProvider.dart';
@@ -24,6 +24,7 @@ import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'Providers/EventOwnerAvatarProvider.dart';
 import 'Providers/EventsStatusProvider.dart';
+import 'Providers/MatchProvider.dart';
 import 'Providers/MessagesProvider.dart';
 import 'Screens/Login/LoginScreen.dart';
 
@@ -55,6 +56,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => UpdateEventOwnerProvider()),
         ChangeNotifierProvider(create: (context) => MessagesProvider()),
         ChangeNotifierProvider(create: (context) => SearchUserProvider()),
+        ChangeNotifierProvider(create: (context) => LikesReceivedProvider()),
       ],
       // child: DevicePreview(
       //   builder: (_) => MyApp(),
@@ -73,9 +75,7 @@ class MyApp extends StatelessWidget {
       // builder: DevicePreview.appBuilder,
       // locale: DevicePreview.locale(context),
       home: Splash(),
-      routes: {
-        "/login": (context) => LoginScreen()
-      },
+      // routes: {"/login": (context) => LoginScreen()},
     );
   }
 }

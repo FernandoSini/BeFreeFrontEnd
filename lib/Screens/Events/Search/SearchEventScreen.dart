@@ -89,13 +89,17 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                               BorderSide(color: Colors.pinkAccent.shade400),
                         ),
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.search),
+                          icon: searchProvider.isLoaded
+                              ? Icon(Icons.close)
+                              : Icon(Icons.search),
                           color: Colors.grey,
                           onPressed: () async {
                             if (controllerSearch.text.isEmpty ||
-                                controllerSearch.text == "") {
+                                controllerSearch.text == "" ||
+                                searchProvider.isLoaded) {
                               controllerSearch.clear();
                               searchProvider.clearList();
+                              searchProvider.setLoaded(false);
                             } else {
                               await searchProvider.searchEventByName(
                                   controllerSearch.text, widget.user!.token!);

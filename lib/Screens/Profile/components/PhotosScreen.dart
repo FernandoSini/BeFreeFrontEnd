@@ -55,22 +55,22 @@ class _PhotosScreenState extends State<PhotosScreen> {
                         // crossAxisSpacing: 3,
                         childAspectRatio: 0.8),
                     shrinkWrap: true,
-                    itemCount: widget.user!.images!.isEmpty
+                    itemCount: widget.user!.photos!.isEmpty
                         ? 0
-                        : widget.user!.images?.length,
+                        : widget.user!.photos?.length,
                     itemBuilder: (context, index) {
-                      print(widget.user!.images![index].url);
+                      print(widget.user!.photos![index].path);
                       return Container(
                         margin: EdgeInsets.only(right: 5, left: 5),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: Colors.black),
                           color: Colors.black,
-                          image: widget.user!.images!.isEmpty
+                          image: widget.user!.photos!.isEmpty
                               ? null
                               : DecorationImage(
                                   image: NetworkImage(
-                                    widget.user!.images![index].url!,
+                                    widget.user!.photos![index].path!,
                                   ),
                                   fit: BoxFit.cover,
                                 ),

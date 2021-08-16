@@ -91,7 +91,7 @@ class ChangeAvatarScreen extends StatefulWidget {
 class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
   Future<void> _getImageFromCamera(BuildContext context) async {
     final pickedImage =
-        await ImagePicker().getImage(source: ImageSource.camera);
+        await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage == null) return;
     final image = io.File(pickedImage.path);
     imageSelected(image, context);
@@ -99,7 +99,7 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
 
   Future<void> _getImageFromGallery(BuildContext context) async {
     final pickedImage =
-        await ImagePicker().getImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage == null) return;
     final image = io.File(pickedImage.path);
 
@@ -130,7 +130,7 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
     // list.add(image);
     if (widget.user?.avatarProfile == null) {
       await Provider.of<AvatarProvider>(context, listen: false)
-          .uploadAvatar(widget.user!.idUser!, image, widget.user!.token);
+          .uploadAvatar(widget.user!.id!, image, widget.user!.token);
       if (Provider.of<AvatarProvider>(context, listen: false).isUploaded) {
         await showSuccessDialog();
       } else {
@@ -138,7 +138,7 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
       }
     } else {
       await Provider.of<AvatarProvider>(context, listen: false)
-          .changeAvatar(widget.user!.idUser!, image, widget.user!.token);
+          .changeAvatar(widget.user!.id!, image, widget.user!.token);
       if (Provider.of<AvatarProvider>(context, listen: false).isUpdated) {
         await showSuccessDialog();
       } else {

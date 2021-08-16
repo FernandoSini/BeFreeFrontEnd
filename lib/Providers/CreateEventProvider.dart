@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:be_free_v1/Models/Event.dart';
+import 'package:be_free_v1/Models/EventStatus.dart';
+import 'package:be_free_v1/Models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -27,9 +29,9 @@ class CreateEventProvider extends ChangeNotifier {
   bool? eventCreated = false;
   bool? get isEventCreated => true;
 
-  Future<void>? createEvent(String? token, String? eventOwnerId) async {
+  Future<void>? createEvent(String? token, User? eventOwner) async {
     setLoading(true);
-    String url = "http://192.168.0.22:8080/api/events/create/$eventOwnerId";
+    String url = "http://192.168.0.22:3000/api/events/create";
 
     Map<String, String> headers = {
       "Content-type": "application/json",
@@ -47,8 +49,10 @@ class CreateEventProvider extends ChangeNotifier {
     //       DateFormat("dd-MM-yyyy hh:mm:ss").format(endDateValue!).toString()
     // };
     Event? data = new Event(
+        eventOwner: eventOwner,
         eventName: eventNameData,
-        eventCover: eventCoverData,
+        //eventPhoto: eventCoverData,
+        eventStatus: EventStatus.INCOMING,
         eventDescription: eventDescriptionData,
         eventLocation: eventLocationData,
         startDate: startDateValue,

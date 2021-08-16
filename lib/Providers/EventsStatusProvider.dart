@@ -26,7 +26,7 @@ class EventsStatusProvider extends ChangeNotifier {
         "Authorization": "Bearer $token"
       };
       String url =
-          "http://192.168.0.22:8080/api/events/${EnumToString.convertToString(eventStatus)}";
+          "http://192.168.0.22:3000/api/events?eventstatus=${EnumToString.convertToString(eventStatus)}";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,
@@ -42,25 +42,37 @@ class EventsStatusProvider extends ChangeNotifier {
             events!.add(Event.fromJson(item));
           }
         }
+        setErr(false);
+        setError("");
         setLoading(false);
         // return events;
       } else {
-        err = true;
-        errorData = "${jsonDecode(response.body)["message"]}";
+        setErr(true);
+        setError(jsonDecode(response.body)["error"]);
         setLoading(false);
-        notifyListeners();
+
         return Future.error(errorData);
       }
     } on Exception catch (e) {
       setLoading(false);
-      err = true;
-      errorData = e.toString();
+      setErr(true);
+      setError(e.toString());
       return Future.error(errorData);
     }
   }
 
   void setLoading(newValue) {
     loadingData = newValue;
+    notifyListeners();
+  }
+
+  void setError(newValue) {
+    errorData = newValue;
+    notifyListeners();
+  }
+
+  void setErr(newValue) {
+    err = newValue;
     notifyListeners();
   }
 }

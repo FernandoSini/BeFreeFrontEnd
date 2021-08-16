@@ -1,6 +1,7 @@
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AboutEventScreen extends StatefulWidget {
   AboutEventScreen({@required this.event});
@@ -44,9 +45,9 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                 borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: widget.event?.eventCover == null
+                  image: widget.event?.eventPhoto == null
                       ? AssetImage("assets/avatars/avatar2.png")
-                      : NetworkImage(widget.event!.eventCover!)
+                      : NetworkImage(widget.event!.eventPhoto!.path!)
                           as ImageProvider,
                 ),
               ),
@@ -124,7 +125,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   const SizedBox(width: 5),
                   Container(
                     child: Text(
-                      "${widget.event!.startDate.toString().substring(0, 19)}",
+                      "${DateFormat("dd/MM/yyyy hh:mm:ss").format(widget.event!.startDate!)}",
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -145,7 +146,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   const SizedBox(width: 5),
                   Container(
                     child: Text(
-                      "${widget.event!.endDate.toString().substring(0, 19)}",
+                      "${DateFormat("dd/MM/yyyy hh:mm:ss").format(widget.event!.endDate!)}",
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -211,7 +212,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                 children: [
                   Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
-                    child: Text("${widget.event!.eventOwner?.eventOwnerName}"),
+                    child: Text("${widget.event!.eventOwner?.username}"),
                   ),
                   Container(
                     // margin: EdgeInsets.only(left: 15),
@@ -220,7 +221,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                                   .event?.eventOwner?.avatarProfile !=
                               null
                           ? NetworkImage(
-                              "${widget.event!.eventOwner!.avatarProfile!.url}")
+                              "http://192.168.0.22:3000/api/${widget.event!.eventOwner!.avatarProfile!.path}")
                           : AssetImage("assets/avatars/avatar2.png")
                               as ImageProvider,
                       radius: 30,

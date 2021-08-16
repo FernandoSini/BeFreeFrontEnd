@@ -55,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    print(widget.userData!.token);
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<ListUsersProvider>(context, listen: false)
           .getListOfUsersByYourGender(widget.userData);
@@ -74,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void didChangeDependencies() async {
+    print(widget.userData!.token!);
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (JwtDecoder.isExpired(widget.userData!.token!)) {
         await storage.deleteAll();
@@ -241,8 +243,8 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             return Consumer<ListUsersProvider>(
               builder: (_, listUserProvider, __) {
-                listUserProvider.userList!.removeWhere((User? element) =>
-                    element!.idUser! == widget.userData!.idUser);
+                listUserProvider.userList!.removeWhere(
+                    (User? element) => element!.id! == widget.userData!.id);
                 return PageView.builder(
                   itemCount: listUserProvider.userList!.length,
                   pageSnapping: true,
@@ -284,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .avatarProfile !=
                                                     null
                                                 ? NetworkImage(
-                                                    "${listUserProvider.userList?[index].avatarProfile!.url}")
+                                                    "http://192.168.0.22:3000/api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                 : AssetImage(
                                                         "assets/avatars/avatar2.png")
                                                     as ImageProvider,
@@ -335,9 +337,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Color(0xFF9a00e6).withOpacity(0.8)),
                                   onPressed: () async {
                                     likeProvider.setLike(
-                                        listUserProvider
-                                            .userList![index].idUser!,
-                                        widget.userData!.idUser,
+                                        listUserProvider.userList![index].id!,
+                                        widget.userData!.id,
                                         widget.userData!.token!);
                                     if (likeProvider.isLiked) {
                                       print("liked successfuly");
@@ -410,7 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             margin: EdgeInsets.only(top: 40),
                             alignment: Alignment.center,
                             child: Text(
-                              "${listUserProvider.userList?[index].userName} ${listUserProvider.userList?[index].lastName}",
+                              "${listUserProvider.userList?[index].username} ${listUserProvider.userList?[index].lastname}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 25),
                             ),
@@ -419,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             margin: EdgeInsets.only(top: 13),
                             alignment: Alignment.center,
                             child: Text(
-                              "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
+                              "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),

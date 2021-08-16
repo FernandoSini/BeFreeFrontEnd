@@ -1,4 +1,5 @@
 import 'package:be_free_v1/Models/EventOwner.dart';
+import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/CreateEventProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_picker_theme.dart';
@@ -9,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class CreateEventScreen extends StatefulWidget {
   CreateEventScreen(this.eventOwner);
-  EventOwner? eventOwner;
+  User? eventOwner;
   @override
   _CreateEventScreenState createState() => _CreateEventScreenState();
 }
@@ -423,8 +424,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           ),
                           onPressed: () async {
                             await createEventProvider.createEvent(
-                                widget.eventOwner!.token,
-                                widget.eventOwner!.eventOwnerId);
+                                widget.eventOwner!.token, widget.eventOwner!);
                             if (createEventProvider.isEventCreated!) {
                               await showDialogSuccess();
                               eventNameController.clear();

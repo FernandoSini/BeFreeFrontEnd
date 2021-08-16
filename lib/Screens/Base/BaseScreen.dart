@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
+import 'package:be_free_v1/Screens/CreateEvent/CreateEventScreen.dart';
 import 'package:be_free_v1/Screens/Matches/MatchesScreen.dart';
 import 'package:be_free_v1/Screens/Events/EventsScreen.dart';
 import 'package:be_free_v1/Screens/Home/HomeScreen.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as universal;
@@ -105,12 +107,12 @@ class _BaseScreenState extends State<BaseScreen> {
                       padding: EdgeInsets.only(top: 10),
                       child: Center(
                         child: CircleAvatar(
-                          backgroundImage:
-                              widget.userData?.avatarProfile != null
-                                  ? NetworkImage(
-                                      "${widget.userData!.avatarProfile!.url}")
-                                  : AssetImage("assets/avatars/avatar2.png")
-                                      as ImageProvider,
+                          backgroundImage: widget.userData?.avatarProfile !=
+                                  null
+                              ? NetworkImage(
+                                  "http://192.168.0.22:3000/api/${widget.userData!.avatarProfile!.path}")
+                              : AssetImage("assets/avatars/avatar2.png")
+                                  as ImageProvider,
                           radius: 15,
                         ),
                       ),
@@ -164,7 +166,7 @@ class _BaseScreenState extends State<BaseScreen> {
                             backgroundImage: widget.userData?.avatarProfile !=
                                     null
                                 ? NetworkImage(
-                                    "${widget.userData!.avatarProfile!.url}")
+                                    "http://192.168.0.22:3000/api/${widget.userData!.avatarProfile!.path}")
                                 : AssetImage("assets/avatars/avatar2.png")
                                     as ImageProvider,
                           ),
@@ -176,19 +178,65 @@ class _BaseScreenState extends State<BaseScreen> {
                 ),
               ),
             ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add_a_photo),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add_a_photo),
+      //   backgroundColor: Color(0xFF9a00e6),
+      //   tooltip: "Add photos or Images to your profile",
+      //   onPressed: () {
+      //     Navigator.of(context).push(
+      //       MaterialPageRoute(
+      //         builder: (_) => PhotosScreen(user: widget.userData!),
+      //         fullscreenDialog: true,
+      //         maintainState: true,
+      //       ),
+      //     );
+      //   },
+      // ),
+      floatingActionButton: SpeedDial(
+        direction: SpeedDialDirection.Up,
+        childrenButtonSize: 65,
+        activeBackgroundColor: Color(0xFF9a00e6),
+        spaceBetweenChildren: 5,
         backgroundColor: Color(0xFF9a00e6),
-        tooltip: "Add photos or Images to your profile",
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => PhotosScreen(user: widget.userData!),
-              fullscreenDialog: true,
-              maintainState: true,
+        icon: Icons.add,
+        useRotationAnimation: true,
+        overlayOpacity: 0,
+        childPadding: EdgeInsets.only(left: 7.5),
+        iconTheme: IconThemeData(size: 25),
+        children: [
+          SpeedDialChild(
+            backgroundColor: Color(0xFF9a00e6),
+            child: Icon(
+              Icons.add_a_photo_outlined,
+              color: Colors.white,
             ),
-          );
-        },
+            label: "Add a photo",
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => PhotosScreen(user: widget.userData!),
+                fullscreenDialog: true,
+                maintainState: true,
+              ),
+            ),
+          ),
+          SpeedDialChild(
+            backgroundColor: Color(0xFF9a00e6),
+            child: Icon(
+              Icons.create,
+              color: Colors.white,
+            ),
+            label: "Create new event",
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => CreateEventScreen(widget.userData!),
+                  fullscreenDialog: true,
+                  maintainState: true,
+                ),
+              );
+            },
+          )
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

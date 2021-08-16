@@ -38,6 +38,7 @@ dependencies:
       ref: master
   flutter_holo_date_picker: ^1.0.0-nullsafety.2
   flutter_secure_storage: ^4.2.1
+  flutter_speed_dial: ^4.2.0
   http: ^0.13.3
   image_cropper: ^1.4.0
   image_picker: ^0.8.0+1

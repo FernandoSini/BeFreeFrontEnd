@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:be_free_v1/Models/User.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,16 +23,18 @@ class ListUsersProvider extends ChangeNotifier {
     try {
       http.Response response = await http.get(
         Uri.parse(
-            "http://192.168.0.22:8080/api/users/gender/find/different/${user?.gender}"),
+            "http://192.168.0.22:3000/api/users/gender/find/different?gender=${EnumToString.convertToString(user?.gender)}"),
         headers: {
           "Authorization": "Bearer ${user?.token}",
           "Content-type": "application/json"
         },
       );
       if (response.statusCode == 200) {
-        var body = jsonDecode(
-            Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
-
+        print("aqui");
+        // var body = jsonDecode(
+        //     Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
+        var body = jsonDecode(response.body);
+        print(body);
         for (var data in body) {
           if (userListFromAPi!.contains(User.fromJson(data))) {
           } else {
@@ -40,18 +43,21 @@ class ListUsersProvider extends ChangeNotifier {
           }
         }
         setLoading(false);
+        setError("");
+        setErr(false);
         return userListFromAPi;
       } else {
-        err = true;
-        errorData = "${jsonDecode(response.body)["message"]}";
+        setErr(true);
+        print(response.statusCode);
+        setError(jsonDecode(response.body)["error"]);
         setLoading(false);
-        notifyListeners();
         return Future.error(errorData);
       }
     } on Exception catch (e) {
+      print(e.toString());
       setLoading(false);
-      err = true;
-      errorData = e.toString();
+      setErr(true);
+      setError(e.toString());
       return Future.error(errorData);
     }
   }
@@ -70,6 +76,16 @@ class ListUsersProvider extends ChangeNotifier {
 
   void setApiLoaded(value) {
     apiLoaded = value;
+    notifyListeners();
+  }
+
+  void setError(newValue) {
+    errorData = newValue;
+    notifyListeners();
+  }
+
+  void setErr(newValue) {
+    err = newValue;
     notifyListeners();
   }
 }

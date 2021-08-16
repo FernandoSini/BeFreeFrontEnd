@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Models/LikesReceived.dart';
+import 'package:be_free_v1/Models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:be_free_v1/Models/Match.dart';
 
-class MatchProvider extends ChangeNotifier {
-  List<Match>? matches = [];
-  List<Match>? get matchData => matches;
+class LikesReceivedProvider extends ChangeNotifier {
+  List<User>? likesReceived = [];
+  List<User>? get likesData => likesReceived;
   bool loading = false;
   bool get isLoading => loading;
   bool error = false;
@@ -14,9 +15,9 @@ class MatchProvider extends ChangeNotifier {
   String errorText = "";
   String get errorData => errorText;
 
-  Future<void> getMatches(String token, String yourId) async {
-    matches?.clear();
-    String url = "http://192.168.0.22:3000/api/matches/$yourId";
+  Future<void> getLikesReceived(String token, String yourId) async {
+    likesReceived?.clear();
+    String url = "http://192.168.0.22:3000/api/users/likes/received/$yourId";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -27,9 +28,9 @@ class MatchProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
         for (var data in body) {
-          if (matches!.contains(Match.fromJson(data))) {
+          if (likesReceived!.contains(User.fromJson(data))) {
           } else {
-            matches?.add(Match.fromJson(data));
+            likesReceived?.add(User.fromJson(data));
           }
           setLoading(false);
           setErrorText("");
@@ -37,7 +38,7 @@ class MatchProvider extends ChangeNotifier {
         }
       } else {
         setError(true);
-        setErrorText(jsonDecode(response.body)["message"]);
+        setErrorText(jsonDecode(response.body)["error"]);
         setLoading(false);
         return Future.error(errorText);
       }

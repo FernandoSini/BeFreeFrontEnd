@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:be_free_v1/Models/EventOwner.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Screens/Base/BaseScreen.dart';
-import 'package:be_free_v1/Screens/EventOwner/Base/BaseScreenEventOwner.dart';
 import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
@@ -27,7 +26,7 @@ class _SplashState extends State<Splash> {
         defaultTargetPlatform == TargetPlatform.iOS) {
       // var userData = await storage.read(key: "user");
       // print(userData);
-      //   await storage.deleteAll();
+      // await storage.deleteAll();
       if (await storage.containsKey(key: "user")) {
         var userData = await storage.read(key: "user");
         if (userData != null) {
@@ -94,45 +93,6 @@ class _SplashState extends State<Splash> {
             },
           );
         }
-      } else if (await storage.containsKey(key: "event_owner")) {
-        var eventOwnerData = await storage.read(key: "event_owner");
-        if (eventOwnerData != null) {
-          Map<String, dynamic> fromLocalToUser = {};
-          fromLocalToUser.addAll(jsonDecode(eventOwnerData));
-          EventOwner? eventOwner = EventOwner.fromJson(fromLocalToUser);
-          if (!JwtDecoder.isExpired(eventOwner.token!)) {
-            Timer(Duration(seconds: 3), () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => BaseScreenEventOwner(eventOwner: eventOwner),
-                ),
-              );
-            });
-          } else {
-            Map<String, String> eventOwnerData = {
-              "event_owner_id": "",
-              "event_owner_name": "",
-              "document_number": "",
-              "event_owner_email": "",
-              "event_owner_avatar": "",
-              "events": "",
-              "event_owner_token": ""
-            };
-            eventOwnerData.keys.forEach((element) async {
-              await storage.delete(key: element);
-            });
-            Timer(Duration(seconds: 3), () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => LoginScreen()));
-            });
-          }
-        }
-      } else {
-        await storage.deleteAll();
-        Timer(Duration(seconds: 3), () {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => LoginScreen()));
-        });
       }
     }
     super.didChangeDependencies();

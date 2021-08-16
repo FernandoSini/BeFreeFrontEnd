@@ -56,7 +56,7 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
     // list.add(image);
 
     await Provider.of<ProviderImage>(context, listen: false)
-        .uploadImage(widget.user!.idUser!, image, widget.user!.token);
+        .uploadImage(widget.user!.id!, image, widget.user!.token);
     if (Provider.of<ProviderImage>(context, listen: false).isUploaded) {
       return showDialog(
         context: context,

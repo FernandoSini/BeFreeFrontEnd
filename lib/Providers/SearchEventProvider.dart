@@ -12,6 +12,8 @@ class SearchEventProvider extends ChangeNotifier {
   bool loading = false;
   bool get isLoading => loading;
   bool err = false;
+  bool loaded = false;
+  bool get isLoaded => loaded;
   bool get hasError => err;
   List<Event>? events = [];
   List<Event>? get eventData => events;
@@ -23,7 +25,8 @@ class SearchEventProvider extends ChangeNotifier {
       "Content-type": "application/json",
       "Authorization": "Bearer $token",
     };
-    String url = "http://192.168.0.22:8080/api/events/find/$eventName";
+    String url =
+        "http://192.168.0.22:3000/api/events/find?eventname=$eventName";
 
     try {
       http.Response response = await http.get(Uri.parse(url), headers: headers);
@@ -32,6 +35,7 @@ class SearchEventProvider extends ChangeNotifier {
         setLoading(false);
         setErrorText("");
         setHasError(false);
+        setLoaded(true);
         var responseBody = jsonDecode(
             Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
 
@@ -42,13 +46,15 @@ class SearchEventProvider extends ChangeNotifier {
       } else {
         setLoading(false);
         setHasError(true);
+        setLoaded(true);
         setErrorText(jsonDecode(Utf8Decoder(allowMalformed: true)
-            .convert(response.bodyBytes))["message"]);
+            .convert(response.bodyBytes))["error"]);
         return Future.error(errorText!);
       }
     } catch (e) {
       setLoading(false);
       setHasError(true);
+      setLoaded(false);
       setErrorText(e.toString());
       throw Future.error(errorText!);
     }
@@ -81,6 +87,11 @@ class SearchEventProvider extends ChangeNotifier {
 
   void clearList() {
     events?.clear();
+    notifyListeners();
+  }
+
+  void setLoaded(bool newValue) {
+    loaded = newValue;
     notifyListeners();
   }
 }

@@ -3,6 +3,7 @@ import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
 import 'package:be_free_v1/Screens/Profile/ChangeAvatarScreen.dart';
 import 'package:be_free_v1/Screens/Profile/EditProfileScreen.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
@@ -66,7 +67,8 @@ class YourProfileScreen extends StatelessWidget {
                     ),
                     child: CircleAvatar(
                       backgroundImage: userData?.avatarProfile != null
-                          ? NetworkImage("${userData?.avatarProfile!.url}")
+                          ? NetworkImage(
+                              "http://192.168.0.22:3000/api/${userData?.avatarProfile!.path}")
                           : AssetImage("assets/avatars/avatar2.png")
                               as ImageProvider,
                       /* child: ClipOval(
@@ -87,8 +89,8 @@ class YourProfileScreen extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               child: Text(
-                "${userData?.userName}, " +
-                    "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(userData!.birthday!).year}",
+                "${userData?.username}, " +
+                    "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(userData!.birthday!).year}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -101,7 +103,7 @@ class YourProfileScreen extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               child: Text(
-                "${userData?.firstName} ${userData?.lastName}",
+                "${userData?.firstname} ${userData?.lastname}",
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -111,7 +113,7 @@ class YourProfileScreen extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               child: Text(
-                "${userData?.gender}",
+                "${EnumToString.convertToString( userData?.gender)}",
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -134,7 +136,7 @@ class YourProfileScreen extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => EditProfileScreen(
-                        userId: userData!.idUser,
+                        userId: userData!.id,
                         token: userData!.token,
                       ),
                     ),
