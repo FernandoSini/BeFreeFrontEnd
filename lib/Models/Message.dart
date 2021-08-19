@@ -81,13 +81,15 @@ class Message {
       this.messageStatus});
 
   Message.fromJson(Map<String, dynamic> json) {
-    yourId = json['yourId'];
-    content = json['content'];
-    targetId = json['targetId'];
-    matchId = json['matchId'];
-    timestamp = DateTime.tryParse(json['timestamp']);
-    messageStatus =
-        EnumToString.fromString(MessageStatus.values, json["message_status"]);
+    yourId = json['yourId'] == null ? null : json['yourId'];
+    content = json['content'] == null ? null : json["content"];
+    targetId = json['targetId'] == null ? null : json["targetId"];
+    matchId = json['matchId'] == null ? null : json["matchId"];
+    timestamp =
+        json["timestamp"] == null ? null : DateTime.tryParse(json['timestamp']);
+    messageStatus = json["message_status"] == null
+        ? null
+        : EnumToString.fromString(MessageStatus.values, json["message_status"]);
   }
 
   Map<String, dynamic> toJson() {

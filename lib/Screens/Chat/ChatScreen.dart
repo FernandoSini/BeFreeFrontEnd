@@ -7,6 +7,7 @@ import 'package:be_free_v1/Models/Message.dart';
 import 'package:be_free_v1/Models/MessageStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/MessagesProvider.dart';
+import 'package:be_free_v1/Screens/Chat/component/YourMessageCard.dart';
 import 'package:be_free_v1/Widget/FullScreenWidget.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/foundation.dart';
@@ -17,6 +18,8 @@ import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+import 'component/ReplyCard.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({this.user, this.you, this.match});
@@ -35,38 +38,66 @@ class _ChatScreenState extends State<ChatScreen> {
   ScrollController _scrollController = ScrollController();
 
   late IO.Socket socket;
+  StreamController get controller => StreamController<Message>();
 
-  @override
-  void initState() {
+  void connect() {
     socket = IO.io("http://192.168.0.22:3000/match/chat",
         IO.OptionBuilder().setTransports(['websocket', 'polling']).build());
-
     socket.onConnect((data) =>
         print("connected: " + socket.id! + " data: " + data.toString()));
     // socket.emit("sendMessage", message);
     socket.emit("signIn", widget.you!.id);
     socket.onError((data) => print("error:" + data.toString()));
+    socket.emit("loadMessages", widget.match!.matchId!);
+    // socket.on("carregarMensagens", (data) => {print(data)});
+    socket.on("carregarData", (data) => print(data));
+    // _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+    //     duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+  }
+
+  @override
+  void initState() {
+    connect();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     socket.onDisconnect((data) => print("disconnected"));
     socket.dispose();
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (mounted) {
+        Provider.of<MessagesProvider>(context, listen: false).dispose();
+      }
+    });
     super.dispose();
   }
 
-  Future<void> sendMessage(
-      String yourId, String content, String targetId, String matchId) async {
-    var message = {
-      "yourId": yourId,
-      "content": content,
-      "targetId": targetId,
-      "matchId": matchId,
-      "message_status": EnumToString.convertToString(MessageStatus.RECEIVED),
-      "timestamp": DateTime.now().toString()
-    };
-    socket.emit("sendMessage", message);
+  Future<void> sendMessage(String yourId, String content, String targetId,
+      String matchId, context) async {
+    // var message = {
+    //   "yourId": yourId,
+    //   "content": content,
+    //   "targetId": targetId,
+    //   "matchId": matchId,
+    //   "message_status": EnumToString.convertToString(MessageStatus.RECEIVED),
+    //   "timestamp": DateTime.now().toString()
+    // };
+    Message message = new Message(
+        content: content,
+        yourId: yourId,
+        targetId: targetId,
+        matchId: matchId,
+        messageStatus: MessageStatus.RECEIVED,
+        timestamp: DateTime.now());
+    socket.emit("sendMessage", message.toJson());
+
+    Provider.of<MessagesProvider>(context, listen: false).setMessages(message);
   }
 
   @override
@@ -165,51 +196,36 @@ class _ChatScreenState extends State<ChatScreen> {
                               ? messageProvider.messages!.length
                               : 0,
                           itemBuilder: (context, index) {
-                            Color color =
-                                Colors.purple.shade600.withOpacity(0.7);
-                            Alignment alignment = Alignment.centerRight;
+                            // Color color =
+                            //     Colors.purple.shade600.withOpacity(0.7);
+                            // Alignment alignment = Alignment.centerRight;
+                            // if (widget.you!.id ==
+                            //     messageProvider.messages?[index].yourId!) {
+                            //   alignment = Alignment.centerLeft;
+                            //   color = Colors.lightBlue.withOpacity(0.5);
+                            // }
+
+                            // // return Container(
+                            // //   // height: 300,
+                            // //   color: Colors.pink,
+                            // //   width: MediaQuery.of(context).size.width * 0.5,
+                            // //   child: Text(
+                            // //       "${messageProvider.messages?[index].content}"),
+                            // // );
                             if (widget.you!.id ==
-                                messageProvider.messages?[index].yourId!) {
-                              alignment = Alignment.centerLeft;
-                              color = Colors.lightBlue.withOpacity(0.5);
+                                messageProvider.messages?[index].yourId) {
+                              return YourMessageCard(
+                                  content:
+                                      messageProvider.messages?[index].content,
+                                  timestamp: messageProvider
+                                      .messages?[index].timestamp);
+                            } else {
+                              return ReplyCard(
+                                  content:
+                                      messageProvider.messages?[index].content,
+                                  timestamp: messageProvider
+                                      .messages?[index].timestamp);
                             }
-
-                            //interface de mensagens
-                            return Align(
-                              //alinhamentos
-                              alignment: alignment,
-                              //espaçamento entre os itens
-                              child: Padding(
-                                padding: EdgeInsets.all(6),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                  padding: EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                      color: color,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8))),
-                                  child: //verificando se o item for do tipo texto edntro do child vai gcarregar o text se não vai carregar a imagem
-                                      messageProvider
-                                                  .messages![index].content !=
-                                              null
-                                          ? Text(
-                                              messageProvider
-                                                  .messages![index].content!,
-                                              style: TextStyle(fontSize: 15),
-                                            )
-                                          : Text(""),
-                                ),
-                              ),
-                            );
-
-                            // return Container(
-                            //   // height: 300,
-                            //   color: Colors.pink,
-                            //   width: MediaQuery.of(context).size.width * 0.5,
-                            //   child: Text(
-                            //       "${messageProvider.messages?[index].content}"),
-                            // );
                           },
                         ),
                       )
@@ -276,9 +292,14 @@ class _ChatScreenState extends State<ChatScreen> {
                           isExtended: true,
                           child: Icon(Icons.send),
                           onPressed: () {
-                            sendMessage(widget.you!.id!, controllerMessage.text,
-                                widget.user!.id!, widget.match!.matchId!);
+                            sendMessage(
+                                widget.you!.id!,
+                                controllerMessage.text,
+                                widget.user!.id!,
+                                widget.match!.matchId!,
+                                context);
                             controllerMessage.clear();
+
                             // onSend(controllerMessage.text);
                             // setState(() {
                             //   controllerMessage.clear();
