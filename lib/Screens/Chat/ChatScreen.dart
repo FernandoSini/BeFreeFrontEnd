@@ -4,9 +4,11 @@ import 'dart:typed_data';
 
 import 'package:be_free_v1/Models/Match.dart';
 import 'package:be_free_v1/Models/Message.dart';
+import 'package:be_free_v1/Models/MessageStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/MessagesProvider.dart';
 import 'package:be_free_v1/Widget/FullScreenWidget.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -31,167 +33,6 @@ class _ChatScreenState extends State<ChatScreen> {
   StompClient? stompClient;
   TextEditingController controllerMessage = TextEditingController(text: "");
   ScrollController _scrollController = ScrollController();
-  // // String socketUrl = "ws://192.168.0.22:8080/socket/websocket";
-  // String socketUrl = "http://192.168.0.22:8080/socket"; /*sem o sockjs*/
-
-  // //String socketUrl = "ws://192.168.0.22:8080/socket/websocket"; com useSockJs true ele só tenta conectar
-
-  // void onConnect(StompFrame frame) {
-  //   if (stompClient != null && stompClient!.connected) {
-  //     // print(stompClient!.connected);
-  //     //  print(frame.headers.toString());
-  //     stompClient!.subscribe(
-  //       headers: {
-  //         "Authorization": "Bearer ${widget.you!.token}",
-  //         'Connection': 'upgrade',
-  //         'Upgrade': 'websocket',
-  //         "Access-Control-Allow-Origin": "*",
-  //         "Access-Control-Allow-Headers": "*",
-  //       },
-  //       destination: "/user/${widget.user!.idUser!}/queue/messages",
-  //       callback: (StompFrame frame) {
-  //         print("${frame.command}");
-  //         if (frame.body != null) {
-  //           Map<String, dynamic> result = jsonDecode(frame.body!);
-  //           print(result);
-  //           // setState(() {
-  //           //   message = result["name"];
-  //           // });
-  //         } else {
-  //           print("error");
-  //         }
-  //       },
-  //     );
-  //   } else {
-  //     print("cant connect");
-  //   }
-  // }
-
-  // // void onSend(String text) {
-  // //   // Map<String, dynamic> message = {
-  // //   //   "sender": widget.you?.toJson(),
-  // //   //   "receiver": widget.user?.toJson(),
-  // //   //   "content": text,
-  // //   //   "timestamp":
-  // //   //       DateFormat("dd-MM-yyyy HH:mm:ss").format(DateTime.now()).toString(),
-  // //   // };
-  // //   Message message = Message(
-  // //       sender: widget.you!,
-  // //       receiver: widget.user,
-  // //       content: text,
-  // //       // timestamp: new DateFormat("dd-MM-yyyy HH:mm:ss")
-  // //       //     .parse(DateTime.now().toString()),
-  // //       timestamp: DateTime.now());
-  // //   stompClient!.send(
-  // //     headers: {
-  // //       "Authorization": "Bearer ${widget.you!.token}",
-  // //       // "Connection": "upgrade",
-  // //       // "Upgrade": "websocket"
-  // //     },
-  // //     destination: "/app/send",
-  // //     body: json.encode(
-  // //       message.toJson(),
-  // //     ),
-  // //   );
-  // // }
-
-  // void onSend(String text) {
-  //   Message message = Message(
-  //     content: text,
-  //     sender: widget.you!,
-  //     receiver: widget.user!,
-  //     timestamp: DateTime.now(),
-  //   );
-  //   //  print(jsonEncode(message.toJson()).toString());
-  //   var body = jsonEncode(message.toJson());
-  //   // var body = jsonEncode({"sender":"${widget.you!.idUser!}",
-  //   //   "receiver":"${widget.user!.idUser!}",
-  //   //   "content": "$text"
-  //   // });
-  //   stompClient!.send(
-  //       headers: {
-  //         "Authorization": "Bearer ${widget.you!.token!}",
-  //         "Content-type": "application/json",
-  //         'Connection': 'Upgrade',
-  //         'Upgrade': 'websocket',
-  //         "Access-Control-Allow-Origin": "*",
-  //         "Access-Control-Allow-Headers": "*",
-  //       },
-
-  //       // destination: "/app/send",
-  //       // body: json.encode(
-  //       //   message.toJson(),
-  //       // ),
-  //       //body:json.encode(message.toJson()),
-  //       body: json.encode(message.toJson().toString()),
-  //       //funciona quando no back end muda o message vo pra string
-  //       //e passamos  json.encode(string) no body
-  //       //  body: jsonEncode(message.content).toString(),
-  //       //  binaryBody:  Uint8List.fromList(utf8.encode(message.content!).toList()),
-  //       destination: '/app/send');
-  // }
-
-  // @override
-  // void initState() {
-  //   WidgetsBinding.instance!.addPostFrameCallback((_) async {
-  //     await Provider.of<MessagesProvider>(context, listen: false)
-  //         .getMessages(
-  //             widget.you!.token!, widget.you!.idUser!, widget.user!.idUser!)
-  //         .then((value) {
-  //       Timer(Duration(seconds: 1), () {
-  //         _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-  //       });
-  //     });
-  //   });
-  //   super.initState();
-  //   stompClient = StompClient(
-  //     config: StompConfig.SockJS(
-  //       onDebugMessage: (dynamic value) => print(value),
-  //       url: socketUrl,
-  //       // useSockJS: true,
-  //       onConnect: onConnect,
-  //       beforeConnect: () async {
-  //         print('waiting to connect...');
-  //         await Future.delayed(Duration(milliseconds: 200));
-  //         print('connecting...');
-  //       },
-  //       onWebSocketError: (dynamic error) => print(error.toString()),
-  //       onStompError: (error) => print(error.toString()),
-  //       onUnhandledReceipt: (error) => print(error.toString()),
-  //       onUnhandledFrame: (frame) => print(frame.toString()),
-
-  //       onDisconnect: (frame) =>
-  //           print("disconnected +${frame.body.toString()}"),
-  //       stompConnectHeaders: {
-  //         'Authorization': 'Bearer ${widget.you!.token}',
-  //         'Connection': 'upgrade',
-  //         'Upgrade': 'websocket',
-  //         "Access-Control-Allow-Origin": "*",
-  //         "Access-Control-Allow-Headers": "*",
-  //         // 'Connection': 'upgrade',
-  //         // 'Upgrade': 'http_upgrade'
-  //       },
-  //       onWebSocketDone: () => print("closed connection"),
-  //       onUnhandledMessage: (data) => print(data.toString()),
-  //       webSocketConnectHeaders: {
-  //         'Authorization': 'Bearer ${widget.you!.token}',
-  //         'Connection': 'upgrade',
-  //         'Upgrade': 'websocket',
-  //         "Access-Control-Allow-Origin": "*",
-  //         "Access-Control-Allow-Headers": "*",
-  //         // 'Connection': 'upgrade',
-  //         // 'Upgrade': 'http_upgrade',
-  //       },
-  //     ),
-  //   );
-  //   stompClient!.activate();
-  // }
-
-  // @override
-  // void dispose() {
-  //   stompClient!.deactivate();
-  //   super.dispose();
-  // }
 
   late IO.Socket socket;
 
@@ -199,10 +40,10 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     socket = IO.io("http://192.168.0.22:3000/match/chat",
         IO.OptionBuilder().setTransports(['websocket', 'polling']).build());
-    var message = {"targetId": "1234", "content": "textx", "senderId": '4522'};
+
     socket.onConnect((data) =>
         print("connected: " + socket.id! + " data: " + data.toString()));
-    socket.emit("sendMessage", message);
+    // socket.emit("sendMessage", message);
     socket.emit("signIn", widget.you!.id);
     socket.onError((data) => print("error:" + data.toString()));
     super.initState();
@@ -213,6 +54,19 @@ class _ChatScreenState extends State<ChatScreen> {
     socket.onDisconnect((data) => print("disconnected"));
     socket.dispose();
     super.dispose();
+  }
+
+  Future<void> sendMessage(
+      String yourId, String content, String targetId, String matchId) async {
+    var message = {
+      "yourId": yourId,
+      "content": content,
+      "targetId": targetId,
+      "matchId": matchId,
+      "message_status": EnumToString.convertToString(MessageStatus.RECEIVED),
+      "timestamp": DateTime.now().toString()
+    };
+    socket.emit("sendMessage", message);
   }
 
   @override
@@ -315,7 +169,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 Colors.purple.shade600.withOpacity(0.7);
                             Alignment alignment = Alignment.centerRight;
                             if (widget.you!.id ==
-                                messageProvider.messages?[index].sender!.id) {
+                                messageProvider.messages?[index].yourId!) {
                               alignment = Alignment.centerLeft;
                               color = Colors.lightBlue.withOpacity(0.5);
                             }
@@ -421,19 +275,16 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: FloatingActionButton(
                           isExtended: true,
                           child: Icon(Icons.send),
-                          onPressed: (controllerMessage.text == "" ||
-                                  controllerMessage.text.isEmpty)
-                              ? null
-                              : () {
-                                  // onSend(controllerMessage.text);
-                                  // setState(() {
-                                  //   controllerMessage.clear();
-                                  // });
-                                },
-                          backgroundColor: (controllerMessage.text == "" ||
-                                  controllerMessage.text.isEmpty)
-                              ? Colors.grey
-                              : Color(0xff9a00e6),
+                          onPressed: () {
+                            sendMessage(widget.you!.id!, controllerMessage.text,
+                                widget.user!.id!, widget.match!.matchId!);
+                            controllerMessage.clear();
+                            // onSend(controllerMessage.text);
+                            // setState(() {
+                            //   controllerMessage.clear();
+                            // });
+                          },
+                          backgroundColor: Color(0xff9a00e6),
                         ),
                       )
                     ],

@@ -17,6 +17,7 @@ class LikesReceivedProvider extends ChangeNotifier {
 
   Future<void> getLikesReceived(String token, String yourId) async {
     likesReceived?.clear();
+    likesData?.clear();
     String url = "http://192.168.0.22:3000/api/users/likes/received/$yourId";
     Map<String, String> headers = {
       "Content-type": "application/json",
@@ -38,6 +39,7 @@ class LikesReceivedProvider extends ChangeNotifier {
         }
       } else {
         setError(true);
+        print(jsonDecode(response.body)["error"]);
         setErrorText(jsonDecode(response.body)["error"]);
         setLoading(false);
         return Future.error(errorText);

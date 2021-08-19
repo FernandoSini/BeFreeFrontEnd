@@ -170,8 +170,8 @@ class User {
   String? school;
   String? company;
   List<Photos>? photos;
-  List<LikesSent>? likesSent;
-  List<LikesReceived>? likesReceived;
+  // List<LikesSent>? likesSent;
+  // List<LikesReceived>? likesReceived;
   List<String>? matches;
   String? role;
   String? createdAt;
@@ -193,8 +193,8 @@ class User {
       this.school,
       this.company,
       this.photos,
-      this.likesSent,
-      this.likesReceived,
+      // this.likesSent,
+      // this.likesReceived,
       this.matches,
       this.role,
       this.createdAt,
@@ -228,18 +228,18 @@ class User {
         photos?.add(new Photos.fromJson(v));
       });
     }
-    if (json['likesSent'] != null) {
-      likesSent = <LikesSent>[];
-      json['likesSent'].forEach((v) {
-        likesSent?.add(new LikesSent.fromJson(v));
-      });
-    }
-    if (json['likesReceived'] != null) {
-      likesReceived = <LikesReceived>[];
-      json['likesReceived'].forEach((v) {
-        likesReceived?.add(new LikesReceived.fromJson(v));
-      });
-    }
+    // if (json['likesSent'] != null) {
+    //   likesSent = <LikesSent>[];
+    //   json['likesSent'].forEach((v) {
+    //     likesSent?.add(new LikesSent.fromJson(v));
+    //   });
+    // }
+    // if (json['likesReceived'] != null) {
+    //   likesReceived = <LikesReceived>[];
+    //   json['likesReceived'].forEach((v) {
+    //     likesReceived?.add(new LikesReceived.fromJson(v));
+    //   });
+    // }
     matches = json['matches'] == null ? null : json['matches'].cast<String>();
     role = json['role'] == null ? null : json["roles"];
     createdAt = json['createdAt'] == null ? null : json["createdAt"];
@@ -267,13 +267,13 @@ class User {
     if (this.photos != null) {
       data['photos'] = this.photos?.map((v) => v.toJson()).toList();
     }
-    if (this.likesSent != null) {
-      data['likesSent'] = this.likesSent?.map((v) => v.toJson()).toList();
-    }
-    if (this.likesReceived != null) {
-      data['likesReceived'] =
-          this.likesReceived?.map((v) => v.toJson()).toList();
-    }
+    // if (this.likesSent != null) {
+    //   data['likesSent'] = this.likesSent?.map((v) => v.toJson()).toList();
+    // }
+    // if (this.likesReceived != null) {
+    //   data['likesReceived'] =
+    //       this.likesReceived?.map((v) => v.toJson()).toList();
+    // }
     data['matches'] = this.matches;
     data['role'] = this.role;
     data['createdAt'] = this.createdAt;

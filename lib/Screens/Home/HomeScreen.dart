@@ -36,10 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
   int page = 0;
 
   bool apiLoaded = false;
+
   void _logout(context) async {
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {
       await storage.deleteAll();
+      Provider.of<UserProvider>(context, listen: false).setUser(null);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
     } else {

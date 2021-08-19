@@ -1,5 +1,6 @@
 import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Models/User.dart';
+import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
 import 'package:be_free_v1/Screens/Profile/ChangeAvatarScreen.dart';
 import 'package:be_free_v1/Screens/Profile/EditProfileScreen.dart';
@@ -7,6 +8,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class YourProfileScreen extends StatelessWidget {
   YourProfileScreen({this.userData});
@@ -15,6 +17,7 @@ class YourProfileScreen extends StatelessWidget {
 
   _logout(context) async {
     await storage.deleteAll();
+    Provider.of<UserProvider>(context, listen: false).setUser(null);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => LoginScreen(),
@@ -113,7 +116,7 @@ class YourProfileScreen extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               child: Text(
-                "${EnumToString.convertToString( userData?.gender)}",
+                "${EnumToString.convertToString(userData?.gender)}",
                 style: TextStyle(fontSize: 20),
               ),
             ),

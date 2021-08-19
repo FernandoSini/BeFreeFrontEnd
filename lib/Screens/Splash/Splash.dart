@@ -93,6 +93,17 @@ class _SplashState extends State<Splash> {
             },
           );
         }
+      } else {
+        Timer(
+          Duration(seconds: 3),
+          () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => LoginScreen(),
+              ),
+            );
+          },
+        );
       }
     }
     super.didChangeDependencies();
@@ -105,8 +116,7 @@ class _SplashState extends State<Splash> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            systemNavigationBarColor: Colors.red),
+            statusBarColor: Colors.red, systemNavigationBarColor: Colors.red),
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,

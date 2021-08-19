@@ -37,7 +37,7 @@ class MatchProvider extends ChangeNotifier {
         }
       } else {
         setError(true);
-        setErrorText(jsonDecode(response.body)["message"]);
+        setErrorText(jsonDecode(response.body)["error"]);
         setLoading(false);
         return Future.error(errorText);
       }

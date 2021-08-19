@@ -40,18 +40,19 @@ class LoginProvider extends ChangeNotifier {
             Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
         setUser(User.fromJson(body));
         setLoading(false);
-        errorText = "";
+        setErrorText("");
+        setError(false);
         return userData;
       } else {
-        error = true;
-        errorText = "${jsonDecode(response.body)["error"]}";
+        setError(true);
+        setErrorText(jsonDecode(response.body)["error"]);
         setLoading(false);
         notifyListeners();
         return Future.error(errorText);
       }
     } catch (e) {
       setLoading(false);
-      error = true;
+      setError(true);
       errorText = e.toString();
       throw Future.error(errorText);
     }
@@ -80,6 +81,16 @@ class LoginProvider extends ChangeNotifier {
 
   void setPassword(value) {
     password = value;
+    notifyListeners();
+  }
+
+  void setErrorText(newValue) {
+    errorText = newValue;
+    notifyListeners();
+  }
+
+  void setError(newValue) {
+    error = newValue;
     notifyListeners();
   }
 }

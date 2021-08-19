@@ -62,7 +62,8 @@ class ProfileScreen extends StatelessWidget {
                     image: DecorationImage(
                       image: user!.avatarProfile == null
                           ? AssetImage("assets/avatars/avatar2.png")
-                          : NetworkImage("${user!.avatarProfile!.path!}")
+                          : NetworkImage(
+                                  "http://192.168.0.22:3000/api/${user!.avatarProfile!.path!}")
                               as ImageProvider,
                       fit: BoxFit.cover,
                     ),

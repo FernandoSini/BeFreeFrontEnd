@@ -31,8 +31,10 @@ class UserProvider extends ChangeNotifier {
   void saveDataOnSecurePlace(User? user) async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
-      await storage.write(key: "user", value: jsonEncode(user!.toJson()));
-      notifyListeners();
+      if (user != null) {
+        await storage.write(key: "user", value: jsonEncode(user.toJson()));
+        notifyListeners();
+      } else {}
     }
   }
 }

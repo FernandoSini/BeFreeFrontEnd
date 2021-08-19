@@ -16,14 +16,16 @@ class MatchesScreen extends StatefulWidget {
 
 class _MatchesScreenState extends State<MatchesScreen> {
   @override
-  void initState() {
+  void didChangeDependencies() {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<MatchProvider>(context, listen: false)
           .getMatches(widget.user!.token!, widget.user!.id!);
+    });
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<LikesReceivedProvider>(context, listen: false)
           .getLikesReceived(widget.user!.token!, widget.user!.id!);
     });
-    super.initState();
+    super.didChangeDependencies();
   }
 
   @override
@@ -100,11 +102,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             //     fullscreenDialog: true,
                             //   ),
                             // );
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => ProfileScreen(
-                                  user: likesReceivedProvider
-                                      .likesReceived![index]),
-                            ));
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => ProfileScreen(
+                                    user: likesReceivedProvider
+                                        .likesReceived![index]),
+                              ),
+                            );
                           },
                           // child: Container(
                           //   padding: EdgeInsets.only(left: 10, right: 10),
@@ -177,13 +181,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.7,
+              height: MediaQuery.of(context).size.height * 0.55,
               width: MediaQuery.of(context).size.width,
               child: Consumer<MatchProvider>(
                 builder: (_, matchProvider, __) {
                   if (!matchProvider.isLoading) {
                     if (matchProvider.matchData!.isEmpty) {
-                      return Container();
+                      return Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(matchProvider.errorData),
+                          ],
+                        ),
+                      );
                     }
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -196,7 +207,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => ChatScreen(
-                                user: matchProvider.matches![index].user1,
+                                user: matchProvider.matches![index].user1?.id ==
+                                        widget.user?.id
+                                    ? matchProvider.matches![index].user2
+                                    : matchProvider.matches![index].user1,
                                 you: widget.user,
                                 match: matchProvider.matches![index],
                               ),
@@ -212,19 +226,35 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                   children: [
                                     Container(
                                       margin: EdgeInsets.only(left: 15),
-                                      child: CircleAvatar(
-                                        backgroundImage: matchProvider
-                                                    .matches?[index]
-                                                    .user1!
-                                                    .avatarProfile !=
-                                                null
-                                            ? NetworkImage(
-                                                "http://localhost:3000/api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
-                                            : AssetImage(
-                                                    "assets/avatars/avatar2.png")
-                                                as ImageProvider,
-                                        radius: 40,
-                                      ),
+                                      child: matchProvider
+                                                  .matches![index].user1?.id ==
+                                              widget.user?.id
+                                          ? CircleAvatar(
+                                              backgroundImage: matchProvider
+                                                          .matches?[index]
+                                                          .user2!
+                                                          .avatarProfile !=
+                                                      null
+                                                  ? NetworkImage(
+                                                      "http://192.168.0.22:3000/api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
+                                                  : AssetImage(
+                                                          "assets/avatars/avatar2.png")
+                                                      as ImageProvider,
+                                              radius: 40,
+                                            )
+                                          : CircleAvatar(
+                                              backgroundImage: matchProvider
+                                                          .matches?[index]
+                                                          .user1!
+                                                          .avatarProfile !=
+                                                      null
+                                                  ? NetworkImage(
+                                                      "http://192.168.0.22:3000/api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
+                                                  : AssetImage(
+                                                          "assets/avatars/avatar2.png")
+                                                      as ImageProvider,
+                                              radius: 40,
+                                            ),
                                     ),
                                     Container(
                                       child: Flexible(
@@ -239,16 +269,35 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                   Container(
                                                     margin: EdgeInsets.only(
                                                         bottom: 20),
-                                                    child: Text(
-                                                      "${matchProvider.matches?[index].user1?.username} ${matchProvider.matches?[index].user1?.lastname}",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 18,
-                                                        color: Colors
-                                                            .pinkAccent[400],
-                                                      ),
-                                                    ),
+                                                    child: matchProvider
+                                                                .matches![index]
+                                                                .user1
+                                                                ?.id ==
+                                                            widget.user?.id
+                                                        ? Text(
+                                                            "${matchProvider.matches?[index].user2?.username} ${matchProvider.matches?[index].user2?.lastname}",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 18,
+                                                              color: Colors
+                                                                      .pinkAccent[
+                                                                  400],
+                                                            ),
+                                                          )
+                                                        : Text(
+                                                            "${matchProvider.matches?[index].user1?.username} ${matchProvider.matches?[index].user1?.lastname}",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 18,
+                                                              color: Colors
+                                                                      .pinkAccent[
+                                                                  400],
+                                                            ),
+                                                          ),
                                                   ),
                                                 ],
                                               ),
@@ -257,27 +306,27 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                               margin: EdgeInsets.only(left: 10),
                                               child: Row(
                                                 children: [
-                                                  // Flexible(
-                                                  //   child: Container(
-                                                  //     margin: EdgeInsets.only(
-                                                  //         bottom: 10),
-                                                  //     child: matchProvider
-                                                  //             .matches![index]
-                                                  //             .messages!
-                                                  //             .isNotEmpty
-                                                  //         ? Text(
-                                                  //             "${matchProvider.matches?[index].messages?.last.content}",
-                                                  //             style: TextStyle(
-                                                  //                 fontSize: 18),
-                                                  //           )
-                                                  //         : Text(
-                                                  //             "No messages sent/received yet",
-                                                  //             style: TextStyle(
-                                                  //               fontSize: 15,
-                                                  //             ),
-                                                  //           ),
-                                                  //   ),
-                                                  // ),
+                                                  Flexible(
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 10),
+                                                      child: matchProvider
+                                                              .matches![index]
+                                                              .messages!
+                                                              .isNotEmpty
+                                                          ? Text(
+                                                              "${matchProvider.matches?[index].messages?.last.content}",
+                                                              style: TextStyle(
+                                                                  fontSize: 18),
+                                                            )
+                                                          : Text(
+                                                              "No messages sent/received yet",
+                                                              style: TextStyle(
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -301,13 +350,16 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     );
                   } else {
                     return Container(
-                      margin: EdgeInsets.only(bottom: 250),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(
-                            Color(0xff9a00e6),
+                      // margin: EdgeInsets.only(bottom: 250),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(
+                              Color(0xff9a00e6),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     );
                   }
