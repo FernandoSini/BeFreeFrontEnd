@@ -17,14 +17,14 @@ class LikeProvider extends ChangeNotifier {
       String? yourId, String? idPeopleLiked, String? token) async {
     setLoading(true);
     String url =
-        "http://192.168.0.22:8080/api/like/sendLikeTo/$idPeopleLiked/$yourId";
+        "http://192.168.0.22:3000/api/users/$yourId/like/$idPeopleLiked";
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         "Authorization": "Bearer $token"
       };
       http.Response response =
-          await http.post(Uri.parse(url), headers: headers);
+          await http.put(Uri.parse(url), headers: headers);
 
       if (response.statusCode == 200) {
         setLoading(false);
@@ -34,7 +34,7 @@ class LikeProvider extends ChangeNotifier {
       } else {
         setLoading(false);
         setError(true);
-        setErrorText(json.decode(response.body)["message"]);
+        setErrorText(json.decode(response.body)["error"]);
         return Future.error(errorText!);
       }
     } catch (e) {

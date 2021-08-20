@@ -339,8 +339,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Color(0xFF9a00e6).withOpacity(0.8)),
                                   onPressed: () async {
                                     likeProvider.setLike(
-                                        listUserProvider.userList![index].id!,
                                         widget.userData!.id,
+                                        listUserProvider.userList![index].id!,
                                         widget.userData!.token!);
                                     if (likeProvider.isLiked) {
                                       print("liked successfuly");

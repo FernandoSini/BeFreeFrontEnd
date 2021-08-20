@@ -92,17 +92,17 @@ class RegisterProvider extends ChangeNotifier {
   Future<void> register() async {
     setLoading(true);
     Map dadosLogin = {
-      "user_name": userNameValue,
-      "first_name": firstNameValue,
-      "last_name": lastNameValue,
+      "username": userNameValue,
+      "firstname": firstNameValue,
+      "lastname": lastNameValue,
       "password": password1,
       "email": emailValue,
       "gender": EnumToString.convertToString(genderValue!),
       "birthday": formatDate(birthdayValue!, [
-        dd,
-        '/',
         mm,
-        '/',
+        '-',
+        dd,
+        '-',
         yyyy,
       ]).toString(),
       "school": schoolValue,
@@ -110,7 +110,7 @@ class RegisterProvider extends ChangeNotifier {
       "livesIn": livesInValue,
       "job_title": jobValue,
     };
-    String url = "http://192.168.0.22:8080/register";
+    String url = "http://192.168.0.22:3000/register";
     var body = json.encode(dadosLogin);
     try {
       http.Response response = await http.post(Uri.parse(url),
@@ -120,15 +120,15 @@ class RegisterProvider extends ChangeNotifier {
         setLoading(false);
         setHasError(false);
         setIsRegistered(true);
-        setMessageRegistered(
-            Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
+        setMessageRegistered(jsonDecode(Utf8Decoder(allowMalformed: true)
+            .convert(response.bodyBytes))["message"]);
         setError("");
       } else {
         setLoading(false);
         setIsRegistered(false);
         setHasError(true);
         setError(jsonDecode(Utf8Decoder(allowMalformed: true)
-            .convert(response.bodyBytes))["message"]);
+            .convert(response.bodyBytes))["error"]);
         return Future.error(error!);
       }
     } catch (e) {

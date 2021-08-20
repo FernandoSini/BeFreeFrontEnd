@@ -50,7 +50,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 30),
+              margin: EdgeInsets.only(bottom: 20),
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
@@ -69,11 +69,13 @@ class _PasswordScreenState extends State<PasswordScreen> {
             Container(
               alignment: Alignment.center,
               // margin: EdgeInsets.only(bottom: 30),
-              padding: EdgeInsets.only(left: 40, right: 40),
+              padding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
               child: Text(
                 registerProvider.hasError ? registerProvider.errorData! : "",
                 style: TextStyle(color: Colors.red),
                 maxLines: 3,
+                textAlign: TextAlign.center,
+                softWrap: true,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
