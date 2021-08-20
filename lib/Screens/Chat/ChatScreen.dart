@@ -292,13 +292,17 @@ class _ChatScreenState extends State<ChatScreen> {
                           isExtended: true,
                           child: Icon(Icons.send),
                           onPressed: () {
-                            sendMessage(
-                                widget.you!.id!,
-                                controllerMessage.text,
-                                widget.user!.id!,
-                                widget.match!.matchId!,
-                                context);
-                            controllerMessage.clear();
+                            if (controllerMessage.text.isNotEmpty) {
+                              sendMessage(
+                                  widget.you!.id!,
+                                  controllerMessage.text,
+                                  widget.user!.id!,
+                                  widget.match!.matchId!,
+                                  context);
+                              controllerMessage.clear();
+                            } else {
+                              print("is empty");
+                            }
 
                             // onSend(controllerMessage.text);
                             // setState(() {

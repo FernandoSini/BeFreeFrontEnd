@@ -20,50 +20,7 @@ class AvatarProvider extends ChangeNotifier {
 
   Future<void> uploadAvatar(String yourId, File? avatar, String? token) async {
     setLoading(true);
-    String url = "http://192.168.0.22:8080/api/avatar/upload/$yourId";
-    // Map<String, String> imageMap = {"file": basename(image!.path)};
-    // var body = jsonEncode(imageMap);
-    try {
-      // http.Response response = await http.post(Uri.parse(url),
-      //     headers: {
-      //       "Content-type": "application/json",
-      //       "Authorization": "Bearer $token"
-      //     },
-      //     body: body);
-
-      Map<String, String> headers = {
-        "Authorization": "Bearer $token",
-      };
-
-      var request = new http.MultipartRequest("POST", Uri.parse(url))
-        ..headers.addAll(headers)
-        ..files.add(await http.MultipartFile.fromPath("file", avatar!.path,
-            contentType: avatar.path.endsWith(".jpg")
-                ? MediaType("image", "jpeg")
-                : MediaType("image", "png")));
-
-      var response = await http.Response.fromStream(await request.send());
-      if (response.statusCode == 200) {
-        setLoading(false);
-        setUploaded(true);
-      } else {
-        setLoading(false);
-        setUploaded(false);
-        setError(true);
-        setErrorText(jsonDecode(response.body)["message"]);
-        return Future.error(errorData);
-      }
-    } on Exception catch (e) {
-      setLoading(false);
-      setError(true);
-      setUploaded(false);
-      setErrorText(e.toString());
-      return Future.error(errorData);
-    }
-  }
-
-  Future<void> changeAvatar(String yourId, File? avatar, String? token) async {
-    String url = "http://192.168.0.22:8080/api/avatar/update/$yourId";
+    String url = "http://192.168.0.22:3000/api/users/$yourId/upload/avatar/";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
     try {
@@ -80,7 +37,50 @@ class AvatarProvider extends ChangeNotifier {
 
       var request = new http.MultipartRequest("PUT", Uri.parse(url))
         ..headers.addAll(headers)
-        ..files.add(await http.MultipartFile.fromPath("file", avatar!.path,
+        ..files.add(await http.MultipartFile.fromPath("img", avatar!.path,
+            contentType: avatar.path.endsWith(".jpg")
+                ? MediaType("image", "jpeg")
+                : MediaType("image", "png")));
+
+      var response = await http.Response.fromStream(await request.send());
+      if (response.statusCode == 200) {
+        setLoading(false);
+        setUploaded(true);
+      } else {
+        setLoading(false);
+        setUploaded(false);
+        setError(true);
+        setErrorText(jsonDecode(response.body)["error"]);
+        return Future.error(errorData);
+      }
+    } on Exception catch (e) {
+      setLoading(false);
+      setError(true);
+      setUploaded(false);
+      setErrorText(e.toString());
+      return Future.error(errorData);
+    }
+  }
+
+  Future<void> changeAvatar(String yourId, File? avatar, String? token) async {
+    String url = "http://192.168.0.22:3000/api/users/avatar/update/$yourId";
+    // Map<String, String> imageMap = {"file": basename(image!.path)};
+    // var body = jsonEncode(imageMap);
+    try {
+      // http.Response response = await http.post(Uri.parse(url),
+      //     headers: {
+      //       "Content-type": "application/json",
+      //       "Authorization": "Bearer $token"
+      //     },
+      //     body: body);
+
+      Map<String, String> headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      var request = new http.MultipartRequest("PUT", Uri.parse(url))
+        ..headers.addAll(headers)
+        ..files.add(await http.MultipartFile.fromPath("img", avatar!.path,
             contentType: avatar.path.endsWith(".jpg")
                 ? MediaType("image", "jpeg")
                 : MediaType("image", "png")));
@@ -95,7 +95,7 @@ class AvatarProvider extends ChangeNotifier {
         setLoading(false);
         setError(true);
         setUpdated(false);
-        setErrorText(jsonDecode(response.body)["message"]);
+        setErrorText(jsonDecode(response.body)["error"]);
         return Future.error(errorData);
       }
     } on Exception catch (e) {
