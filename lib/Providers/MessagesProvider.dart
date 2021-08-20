@@ -66,7 +66,7 @@ class MessagesProvider extends ChangeNotifier {
 
   void setMessages(Message? message) {
     messages?.add(message!);
-    print(messages?.toList().toString());
+    // print(messages?.toList().toString());
     notifyListeners();
   }
 }

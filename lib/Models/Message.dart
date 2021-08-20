@@ -92,6 +92,18 @@ class Message {
         : EnumToString.fromString(MessageStatus.values, json["message_status"]);
   }
 
+  Message.fromJsonSocket(Map<String, dynamic> json) {
+    yourId = json['from'] == null ? null : json['from'];
+    content = json['content'] == null ? null : json["content"];
+    targetId = json['target'] == null ? null : json["target"];
+    matchId = json['match'] == null ? null : json["match"];
+    timestamp =
+        json["timestamp"] == null ? null : DateTime.tryParse(json['timestamp']);
+    messageStatus = json["message_status"] == null
+        ? null
+        : EnumToString.fromString(MessageStatus.values, json["message_status"]);
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['yourId'] = this.yourId;
