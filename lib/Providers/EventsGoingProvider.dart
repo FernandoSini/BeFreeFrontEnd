@@ -24,7 +24,7 @@ class EventsGoingProvider extends ChangeNotifier {
         "Content-type": "application/json; charset=utf-8",
         "Authorization": "Bearer $token"
       };
-      String url = "http://192.168.0.22:8080/api/events/goingEvents/$userId";
+      String url = "http://192.168.0.22:3000/api/events/goingEvents?userId=$userId";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,

@@ -12,6 +12,7 @@ import 'package:be_free_v1/Screens/clippers/OvalClipper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -169,6 +170,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        backwardsCompatibility: false,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        brightness: Brightness.dark,
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.black),

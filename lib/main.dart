@@ -1,6 +1,5 @@
 import 'package:be_free_v1/Providers/AvatarProvider.dart';
 import 'package:be_free_v1/Providers/CreateEventProvider.dart';
-import 'package:be_free_v1/Providers/EventOwnerProvider.dart';
 import 'package:be_free_v1/Providers/EventsGoingProvider.dart';
 import 'package:be_free_v1/Providers/EventsProvider.dart';
 import 'package:be_free_v1/Providers/LikeProvider.dart';
@@ -22,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
-import 'Providers/EventOwnerAvatarProvider.dart';
 import 'Providers/EventsStatusProvider.dart';
 import 'Providers/MatchProvider.dart';
 import 'Providers/MessagesProvider.dart';
@@ -40,7 +38,6 @@ void main() {
         ChangeNotifierProvider(
             create: (context) => RegisterEventOwnerProvider()),
         ChangeNotifierProvider(create: (context) => LoginEventOwnerProvider()),
-        ChangeNotifierProvider(create: (context) => EventOwnerProvider()),
         ChangeNotifierProvider(create: (context) => MatchProvider()),
         ChangeNotifierProvider(create: (context) => EventsProvider()),
         ChangeNotifierProvider(create: (context) => EventsStatusProvider()),
@@ -52,7 +49,6 @@ void main() {
         ChangeNotifierProvider(create: (context) => SearchEventProvider()),
         ChangeNotifierProvider(create: (context) => LikeProvider()),
         ChangeNotifierProvider(create: (context) => AvatarProvider()),
-        ChangeNotifierProvider(create: (context) => EventOwnerAvatarProvider()),
         ChangeNotifierProvider(create: (context) => UpdateEventOwnerProvider()),
         ChangeNotifierProvider(create: (context) => MessagesProvider()),
         ChangeNotifierProvider(create: (context) => SearchUserProvider()),
