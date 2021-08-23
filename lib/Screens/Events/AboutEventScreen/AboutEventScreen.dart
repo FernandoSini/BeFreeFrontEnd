@@ -47,7 +47,8 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   fit: BoxFit.cover,
                   image: widget.event?.eventPhoto == null
                       ? AssetImage("assets/avatars/avatar2.png")
-                      : NetworkImage(widget.event!.eventPhoto!.path!)
+                      : NetworkImage(
+                              "http://192.168.0.22:3000/api/${widget.event!.eventPhoto!.path!}")
                           as ImageProvider,
                 ),
               ),

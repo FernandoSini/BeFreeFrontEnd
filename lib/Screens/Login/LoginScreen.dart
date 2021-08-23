@@ -23,9 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         backwardsCompatibility: false,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-        ),
+        // systemOverlayStyle: SystemUiOverlayStyle(
+        //   statusBarColor: Colors.transparent,
+        // ),
         actions: [
           IconButton(
             icon: Icon(
@@ -38,7 +38,14 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       body: Container(
+        height: MediaQuery.of(context).size.height,
+        // decoration: BoxDecoration(
+        //   image: DecorationImage(
+        //       image: AssetImage("./assets/party.png"), fit: BoxFit.cover),
+        // ),
         child: ListView(
           physics: NeverScrollableScrollPhysics(),
           children: [
@@ -60,12 +67,12 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Container(
               alignment: Alignment.center,
-              // margin: EdgeInsets.only(bottom: 30),
               padding: EdgeInsets.only(left: 40, right: 40),
               child: Text(
                 loginProvider.hasError ? loginProvider.errorData : "",
-                // "flemissajkdhasjkdhas",
                 style: TextStyle(color: Colors.red),
+                softWrap: true,
+                textAlign: TextAlign.center,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),

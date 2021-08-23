@@ -17,7 +17,7 @@ class ChooseFromScreen extends StatefulWidget {
 class _ChooseFromScreenState extends State<ChooseFromScreen> {
   Future<void> _getImageFromCamera(BuildContext context) async {
     final pickedImage =
-        await ImagePicker().getImage(source: ImageSource.camera);
+        await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage == null) return;
     final image = io.File(pickedImage.path);
     imageSelected(image, context);
@@ -25,7 +25,7 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
 
   Future<void> _getImageFromGallery(BuildContext context) async {
     final pickedImage =
-        await ImagePicker().getImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage == null) return;
     final image = io.File(pickedImage.path);
 

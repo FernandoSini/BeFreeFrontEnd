@@ -62,7 +62,7 @@ class YourProfileScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(80),
                       border: Border.all(
-                        color: userData!.gender == "MALE"
+                        color: userData!.gender == Gender.MALE
                             ? Colors.blue
                             : Colors.pinkAccent.shade400,
                         width: 1.5,

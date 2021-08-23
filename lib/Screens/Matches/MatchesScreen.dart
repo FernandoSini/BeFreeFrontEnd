@@ -33,6 +33,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
         Provider.of<MatchProvider>(context, listen: false).dispose();
+      }
+    });
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (mounted) {
         Provider.of<LikesReceivedProvider>(context, listen: false).dispose();
       }
     });
@@ -92,16 +96,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
                         }
                         return GestureDetector(
                           onTap: () {
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(
-                            //     builder: (_) => ChatScreen(
-                            //       user: matchProvider.matches![index].user1,
-                            //       you: widget.user,
-                            //       match: matchProvider.matches![index],
-                            //     ),
-                            //     fullscreenDialog: true,
-                            //   ),
-                            // );
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => ProfileScreen(
@@ -110,33 +104,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
                               ),
                             );
                           },
-                          // child: Container(
-                          //   padding: EdgeInsets.only(left: 10, right: 10),
-                          //   child: CircleAvatar(
-                          //     radius: 50,
-                          //     child: ClipOval(
-                          //       child: matchProvider
-                          //                   .matches?[index].hisHer?.avatar !=
-                          //               null
-                          //           ? Image.network(
-                          //               "${matchProvider.matches?[index].hisHer!.avatar}",
-                          //               height: 100,
-                          //               fit: BoxFit.cover,
-                          //             )
-                          //           : Image.asset("assets/avatars/avatar2.png"),
-                          //     ),
-                          //     // backgroundImage: matchProvider
-                          //     //             .matches?[index].hisHer?.avatar !=
-                          //     //         null
-                          //     //     ? NetworkImage(
-                          //     //         "${matchProvider.matches?[index].hisHer!.avatar}")
-                          //     //     : AssetImage("assets/avatars/avatar2.png")
-                          //     //         as ImageProvider,
-                          //     // backgroundColor: Colors.transparent,
-                          //     // minRadius: 10,
-                          //     // maxRadius: 30,
-                          //   ),
-                          // ),
                           child: Container(
                             margin: EdgeInsets.only(left: 10),
                             child: Center(
@@ -236,7 +203,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                           .avatarProfile !=
                                                       null
                                                   ? NetworkImage(
-                                                      "http://192.168.0.22:3000/api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
+                                                      "http://192.168.0.22:3000/api/${matchProvider.matches?[index].user2!.avatarProfile!.path}")
                                                   : AssetImage(
                                                           "assets/avatars/avatar2.png")
                                                       as ImageProvider,
@@ -366,41 +333,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
                 },
               ),
             ),
-            // Container(
-            //   height: MediaQuery.of(context).size.height * 0.2,
-            //   color: Colors.red,
-            //   child: ListView.builder(
-            //     scrollDirection: Axis.horizontal,
-            //     physics: BouncingScrollPhysics(),
-            //     itemCount: 3,
-            //     itemBuilder: (context, index) {
-            //       return GestureDetector(
-            //         child: Container(
-            //           // color: Colors.black,
-            //           margin: EdgeInsets.only(
-            //             top: 30,
-            //             bottom: 30,
-            //             left: 20,
-            //           ),
-            //           padding: EdgeInsets.only(left: 10, right: 10),
-            //           child: Container(
-            //             // color: Colors.blue,
-            //             child: Icon(
-            //               Icons.email,
-            //               size: 50,
-            //             ),
-            //             height: MediaQuery.of(context).size.height * 0.3,
-            //             width: MediaQuery.of(context).size.width * 0.3,
-            //             decoration: BoxDecoration(
-            //               borderRadius: BorderRadius.circular(15),
-            //               color: Colors.blue,
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // )
           ],
         ),
       ),

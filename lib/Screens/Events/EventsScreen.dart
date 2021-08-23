@@ -1,8 +1,11 @@
 import 'package:be_free_v1/Models/User.dart';
+import 'package:be_free_v1/Screens/Events/EditEvents/EditEventsScreen.dart';
 import 'package:be_free_v1/Screens/Events/EventsTab/EventsGoing.dart';
 import 'package:be_free_v1/Screens/Events/EventsTab/EventsEnded.dart';
 import 'package:be_free_v1/Screens/Events/EventsTab/EventsHappening.dart';
+import 'package:be_free_v1/Screens/Events/EventsTab/YourEvents.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'EventsTab/EventsIncoming.dart';
 import 'Search/SearchEventScreen.dart';
@@ -112,6 +115,13 @@ class _EventsScreenState extends State<EventsScreen>
                   fullscreenDialog: true,
                 ),
               );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.edit, color: Colors.pinkAccent[400]),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => YourEvents(user:widget.user!)));
             },
           ),
         ],

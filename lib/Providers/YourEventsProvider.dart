@@ -14,7 +14,7 @@ class YourEventsProvider extends ChangeNotifier {
   bool err = false;
   bool get hasError => err;
 
-  Future<void> getYourEvents(String token, String eventOwnerId) async {
+  Future<void> getYourEvents(String token, String yourId) async {
     events?.clear();
     setLoading(true);
     try {
@@ -23,7 +23,7 @@ class YourEventsProvider extends ChangeNotifier {
         "Authorization": "Bearer $token"
       };
       String url =
-          "http://192.168.0.22:8080/api/events/yourEvents/$eventOwnerId";
+          "http://192.168.0.22:3000/api/events/yourEvents?yourId=$yourId";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,
@@ -39,13 +39,12 @@ class YourEventsProvider extends ChangeNotifier {
           }
         }
         setLoading(false);
-        // return events;
       } else {
         setLoading(false);
         setError(
             true,
             jsonDecode(Utf8Decoder(allowMalformed: true)
-                .convert(response.bodyBytes))["message"]);
+                .convert(response.bodyBytes))["error"]);
         notifyListeners();
         return Future.error(errorData);
       }

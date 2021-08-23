@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
-import 'package:be_free_v1/Screens/CreateEvent/CreateEventScreen.dart';
+import 'package:be_free_v1/Screens/Events/CreateEvent/CreateEventScreen.dart';
 import 'package:be_free_v1/Screens/Matches/MatchesScreen.dart';
 import 'package:be_free_v1/Screens/Events/EventsScreen.dart';
 import 'package:be_free_v1/Screens/Home/HomeScreen.dart';
-import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
+
 import 'package:be_free_v1/Screens/Profile/YourProfileScreen.dart';
 import 'package:be_free_v1/Screens/Profile/components/PhotosScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,9 +12,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart' as universal;
+
 
 class BaseScreen extends StatefulWidget {
   BaseScreen({this.userData});
@@ -222,7 +220,7 @@ class _BaseScreenState extends State<BaseScreen> {
           SpeedDialChild(
             backgroundColor: Color(0xFF9a00e6),
             child: Icon(
-              Icons.create,
+              FontAwesomeIcons.calendarPlus,
               color: Colors.white,
             ),
             label: "Create new event",

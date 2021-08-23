@@ -92,7 +92,13 @@ class _EventsHappeningState extends State<EventsHappening> {
                         width: MediaQuery.of(context).size.width * 1,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/avatars/avatar2.png"),
+                              image: eventsStatusProvider
+                                          .eventData?[index].eventPhoto !=
+                                      null
+                                  ? NetworkImage(
+                                      "http://192.168.0.22:3000/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                  : AssetImage("assets/avatars/avatar2.png")
+                                      as ImageProvider,
                               fit: BoxFit.cover),
                         ),
                       ),

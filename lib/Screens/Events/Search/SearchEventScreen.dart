@@ -2,6 +2,7 @@ import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/SearchEventProvider.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -218,7 +219,7 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                                     margin: EdgeInsets.only(left: 10),
                                     padding: const EdgeInsets.all(5.0),
                                     child: Text(
-                                      '${search.eventData![index].eventStatus}',
+                                      '${EnumToString.convertToString(search.eventData![index].eventStatus)}',
                                       style: TextStyle(
                                           color: Colors.black.withOpacity(0.7)),
                                     ),

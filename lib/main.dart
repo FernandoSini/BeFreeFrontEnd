@@ -11,20 +11,17 @@ import 'package:be_free_v1/Providers/RegisterEventOwnerProvider.dart';
 import 'package:be_free_v1/Providers/RegisterProvider.dart';
 import 'package:be_free_v1/Providers/SearchEventProvider.dart';
 import 'package:be_free_v1/Providers/SearchUserProvider.dart';
-import 'package:be_free_v1/Providers/UpdateEventOwnerProvider.dart';
+import 'package:be_free_v1/Providers/UpdateEventProvider.dart';
 import 'package:be_free_v1/Providers/UpdateUserProvider.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:be_free_v1/Providers/ProviderImage.dart';
 import 'package:be_free_v1/Providers/YourEventsProvider.dart';
 import 'package:be_free_v1/Screens/Splash/Splash.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:device_preview/device_preview.dart';
 import 'Providers/EventsStatusProvider.dart';
 import 'Providers/MatchProvider.dart';
 import 'Providers/MessagesProvider.dart';
-import 'Screens/Login/LoginScreen.dart';
 
 void main() {
   // debugPaintSizeEnabled = true;
@@ -49,7 +46,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => SearchEventProvider()),
         ChangeNotifierProvider(create: (context) => LikeProvider()),
         ChangeNotifierProvider(create: (context) => AvatarProvider()),
-        ChangeNotifierProvider(create: (context) => UpdateEventOwnerProvider()),
+        ChangeNotifierProvider(create: (context) => UpdateEventProvider()),
         ChangeNotifierProvider(create: (context) => MessagesProvider()),
         ChangeNotifierProvider(create: (context) => SearchUserProvider()),
         ChangeNotifierProvider(create: (context) => LikesReceivedProvider()),

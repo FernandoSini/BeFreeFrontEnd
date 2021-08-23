@@ -133,28 +133,35 @@ class Event {
         : null;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<String, String> toJson() {
+    final Map<String, String> data = new Map<String, String>();
     if (this.users != null) {
-      data['users'] = this.users?.map((v) => v.toJson()).toList();
+      data['users'] = this.users!.map((v) => v.toJson()).toList().toString();
     }
+    if(this.eventStatus!=null)
     data['event_status'] = EnumToString.convertToString(this.eventStatus);
-    data['_id'] = this.id;
+    if(this.id!=null)
+    data['_id'] = this.id!;
     if (this.eventOwner != null) {
-      data['event_owner'] = this.eventOwner?.id;
+      data['event_owner'] = this.eventOwner!.id!;
     }
-    data['event_name'] = this.eventName;
-    data['event_description'] = this.eventDescription;
+    if(this.eventName!=null)
+    data['event_name'] = this.eventName!;
+    if(this.eventDescription!=null)
+    data['event_description'] = this.eventDescription!;
     // data['start_date'] =
     //     DateFormat("dd-MM-yyyy HH:mm:ss").format(this.startDate!).toString();
     // data['end_date'] =
     //     DateFormat("dd-MM-yyyy HH:mm:ss").format(this.endDate!).toString();
+    if(this.startDate!=null)
     data['start_date'] = this.startDate.toString();
+    if(this.endDate!=null)
     data['end_date'] = this.endDate.toString();
-    if (this.eventPhoto != null) {
-      data['event_cover'] = this.eventPhoto?.toJson();
-    }
-    data['event_location'] = this.eventLocation;
+    // if (this.eventPhoto != null) {
+    //   data['event_cover'] = this.eventPhoto!.toJson().toString();
+    // }
+    if(this.eventLocation!=null)
+    data['event_location'] = this.eventLocation!;
     return data;
   }
 }
