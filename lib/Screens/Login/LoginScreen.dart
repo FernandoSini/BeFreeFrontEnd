@@ -1,7 +1,7 @@
+import 'package:be_free_v1/Providers/RegisterProvider.dart';
 import 'package:be_free_v1/Screens/Base/BaseScreen.dart';
 import 'package:be_free_v1/Providers/LoginProvider.dart';
 import 'package:be_free_v1/Screens/Register/RegisterScreen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
+    final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -180,6 +181,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 onPressed: () async {
+                  registerProvider.setJob(null);
+                  registerProvider.setCompany(null);
+                  registerProvider.setSchool(null);
+                  registerProvider.setFirstName(null);
+                  registerProvider.setLastName(null);
+                  registerProvider.setBirthiday(DateTime.now());
+                  registerProvider.setLivesIn(null);
+                  registerProvider.setEmail(null);
+                  registerProvider.setGender(null);
+                  registerProvider.setUsername(null);
+                  registerProvider.setPassword1(null);
+                  registerProvider.setPassword2(null);
+                  registerProvider.setIsRegistered(false);
+                  registerProvider.setHasError(false);
                   var userData = await loginProvider.login(
                       loginProvider.userNameData!, loginProvider.passwordData!);
                   if (loginProvider.isLogged) {
@@ -190,8 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     );
-                    loginProvider.setUserName("");
-                    loginProvider.setPassword("");
+                    loginProvider.setUserName(null);
+                    loginProvider.setPassword(null);
+                    loginProvider.setError(false);
                   }
                 },
               ),
@@ -219,6 +235,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 onPressed: () {
+                  registerProvider.setJob(null);
+                  registerProvider.setCompany(null);
+                  registerProvider.setSchool(null);
+                  registerProvider.setFirstName(null);
+                  registerProvider.setLastName(null);
+                  registerProvider.setBirthiday(DateTime.now());
+                  registerProvider.setLivesIn(null);
+                  registerProvider.setEmail(null);
+                  registerProvider.setGender(null);
+                  registerProvider.setUsername(null);
+                  registerProvider.setPassword1(null);
+                  registerProvider.setPassword2(null);
+                  registerProvider.setIsRegistered(false);
+                  registerProvider.setHasError(false);
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => RegisterScreen(),

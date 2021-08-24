@@ -21,15 +21,15 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
   TextEditingController emailController = TextEditingController();
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if (mounted) {
-        Provider.of<RegisterProvider>(context, listen: false).dispose();
-      }
-    });
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance?.addPostFrameCallback((_) {
+  //     if (mounted) {
+  //       Provider.of<RegisterProvider>(context, listen: false).dispose();
+  //     }
+  //   });
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +192,9 @@ class _PasswordScreenState extends State<PasswordScreen> {
                             !registerProvider.isPasswordValid
                         ? null
                         : () async {
+                            print(registerProvider.userName);
                             await registerProvider.register();
+
                             // if (registerProvider.isRegistered) {
                             //   Navigator.of(context).pushAndRemoveUntil(
                             //       MaterialPageRoute(
@@ -257,19 +259,20 @@ class _PasswordScreenState extends State<PasswordScreen> {
                                 MaterialPageRoute(
                                     builder: (_) => LoginScreen()),
                                 (Route route) => false);
-                            registerProvider.setJob("");
-                            registerProvider.setCompany("");
-                            registerProvider.setSchool("");
-                            registerProvider.setFirstName("");
-                            registerProvider.setLastName("");
+                            registerProvider.setJob(null);
+                            registerProvider.setCompany(null);
+                            registerProvider.setSchool(null);
+                            registerProvider.setFirstName(null);
+                            registerProvider.setLastName(null);
                             registerProvider.setBirthiday(DateTime.now());
-                            registerProvider.setLivesIn("");
-                            registerProvider.setEmail("");
+                            registerProvider.setLivesIn(null);
+                            registerProvider.setEmail(null);
                             registerProvider.setGender(null);
-                            registerProvider.setUsername("");
-                            registerProvider.setPassword1("");
-                            registerProvider.setPassword2("");
+                            registerProvider.setUsername(null);
+                            registerProvider.setPassword1(null);
+                            registerProvider.setPassword2(null);
                             registerProvider.setIsRegistered(false);
+                            registerProvider.setHasError(false);
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 10),
