@@ -1,4 +1,3 @@
-import 'package:be_free_v1/Models/EventOwner.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/CreateEventProvider.dart';
 import 'package:flutter/material.dart';
@@ -173,7 +172,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     mainAxisSpacing: 3,
-                    // crossAxisSpacing: 3,
                     childAspectRatio: 0.8),
                 shrinkWrap: true,
                 itemCount: 3,
@@ -184,9 +182,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                           color: Colors.pinkAccent[400]!, width: 0.5),
-                      // color: Colors.black,
-
-                      // border: Border.all(color: Colors.blue, width: 2),
                     ),
                   );
                 },
@@ -202,7 +197,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     maxLength: 250,
                     controller: eventNameController,
                     decoration: InputDecoration(
-                      // hintText: "Update your username",
                       labelText: "Type name of your event",
                       labelStyle: TextStyle(color: Colors.pinkAccent.shade400),
                       enabledBorder: UnderlineInputBorder(
@@ -234,7 +228,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       maxLength: 250,
                       controller: eventLocationController,
                       decoration: InputDecoration(
-                        // hintText: "Update your username",
                         labelText: "Where is the event?",
                         labelStyle:
                             TextStyle(color: Colors.pinkAccent.shade400),
@@ -268,7 +261,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       maxLength: 250,
                       controller: eventDescriptionController,
                       decoration: InputDecoration(
-                        // hintText: "Update your username",
                         labelText: "Add description to your event",
                         labelStyle: TextStyle(color: Colors.pinkAccent[400]),
                         enabledBorder: UnderlineInputBorder(
@@ -294,18 +286,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               margin: EdgeInsets.only(left: 30, right: 30),
               child: Column(
                 children: [
-                  // DatePickerWidget(
-                  //   pickerTheme: DateTimePickerTheme(
-                  //     backgroundColor: Colors.transparent,
-                  //     itemTextStyle: TextStyle(
-                  //       color: Color(0xff9a00e6),
-                  //     ),
-                  //   ),
-                  //   // dateFormat: "dd/MMMM/yyyy",
-                  //   lastDate: DateTime.now(),
-                  //   onChange: (DateTime newDate, _) {},
-                  // ),
-
                   Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Consumer<CreateEventProvider>(
@@ -350,7 +330,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       },
                     ),
                   ),
-
                   Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Consumer<CreateEventProvider>(
@@ -361,8 +340,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               context,
                               showTitleActions: true,
                               minTime: DateTime.now(),
-
-                              // maxTime: DateT,
                               theme: DatePickerTheme(
                                 headerColor: Colors.pinkAccent[400],
                                 backgroundColor: Colors.white,
@@ -397,7 +374,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       },
                     ),
                   ),
-
                   Container(
                     margin: EdgeInsets.only(top: 15),
                     height: MediaQuery.of(context).size.height * 0.07,
@@ -435,11 +411,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               createEventProvider.setEventDescription(null);
                               createEventProvider.setEventStartDate(null);
                               createEventProvider.setEventEndDate(null);
-                              print("caiu aqui");
                             }
-                            // if (createEventProvider.hasError!) {
-                            //   await showErrorDialog();
-                            // }
+                            if (createEventProvider.hasError!) {
+                              await showErrorDialog();
+                            }
                           },
                         );
                       },

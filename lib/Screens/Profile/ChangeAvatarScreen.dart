@@ -73,7 +73,7 @@
 import 'package:be_free_v1/Models/Avatar.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/AvatarProvider.dart';
-import 'package:be_free_v1/Providers/ProviderImage.dart';
+import 'package:be_free_v1/Providers/UserPhotoProvider.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';
@@ -126,8 +126,7 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
   }
 
   void onImageSelected(io.File image) async {
-    // List<dynamic> list = [];
-    // list.add(image);
+    
     if (widget.user?.avatarProfile == null) {
       await Provider.of<AvatarProvider>(context, listen: false)
           .uploadAvatar(widget.user!.id!, image, widget.user!.token);
@@ -245,7 +244,7 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      await Provider.of<ProviderImage>(context, listen: false);
+      await Provider.of<UserPhotoProvider>(context, listen: false);
     });
     super.initState();
   }

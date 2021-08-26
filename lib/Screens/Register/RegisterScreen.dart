@@ -11,7 +11,6 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -28,7 +27,7 @@ class RegisterScreen extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              // margin: EdgeInsets.only(bottom: 30),
+              
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
@@ -40,9 +39,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 50,
-            // ),
+           
             Container(
               margin: EdgeInsets.only(top: 30),
               alignment: Alignment.center,
@@ -58,9 +55,7 @@ class RegisterScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 30, right: 30),
                     labelText: "Username",
-                    // counterStyle: TextStyle(
-                    //   color: Color(0xff9a00e6),
-                    // ),
+                   
                     labelStyle: TextStyle(
                       color: Color(0xff9a00e6),
                     ),
@@ -105,7 +100,7 @@ class RegisterScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff9a00e6),
                   elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
+                  
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -116,8 +111,7 @@ class RegisterScreen extends StatelessWidget {
                       builder: (_) => NamesScreen(),
                     ),
                   );
-                }, /* ??
-                    null, */
+                }, 
               ),
             )
           ],

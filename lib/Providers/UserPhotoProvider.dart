@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:http_parser/http_parser.dart';
 
-class ProviderImage extends ChangeNotifier {
+class UserPhotoProvider extends ChangeNotifier {
   bool loadingData = false;
   bool get isLoading => loadingData;
   String errorData = "";
@@ -17,7 +17,7 @@ class ProviderImage extends ChangeNotifier {
   bool get isUploaded => uploaded;
 
   Future<void> uploadImage(String yourId, File? image, String? token) async {
-    String url = "http://192.168.0.22:8080/api/images/uploadimage/$yourId";
+    String url = "http://192.168.0.22:3000/api/users/$yourId/photo/upload";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
     try {
@@ -34,7 +34,7 @@ class ProviderImage extends ChangeNotifier {
 
       var request = new http.MultipartRequest("POST", Uri.parse(url))
         ..headers.addAll(headers)
-        ..files.add(await http.MultipartFile.fromPath("file", image!.path,
+        ..files.add(await http.MultipartFile.fromPath("img", image!.path,
             contentType: image.path.endsWith(".jpg")
                 ? MediaType("image", "jpeg")
                 : MediaType("image", "png")));
@@ -44,18 +44,16 @@ class ProviderImage extends ChangeNotifier {
         setLoading(false);
         setUploaded(true);
       } else {
-        err = true;
-        errorData = "";
+        setError(true);
+        setErrorData(jsonDecode(response.body)["error"]);
         setLoading(false);
         notifyListeners();
         return Future.error(errorData);
       }
     } on Exception catch (e) {
       setLoading(false);
-      print("aaaaaa");
-      err = true;
-      errorData = e.toString();
-      notifyListeners();
+      setError(true);
+      setErrorData(e.toString());
       return Future.error(errorData);
     }
   }
@@ -67,6 +65,16 @@ class ProviderImage extends ChangeNotifier {
 
   void setLoading(newValue) {
     loadingData = newValue;
+    notifyListeners();
+  }
+
+  void setErrorData(newValue) {
+    errorData = newValue;
+    notifyListeners();
+  }
+
+  void setError(newValue) {
+    err = newValue;
     notifyListeners();
   }
 }

@@ -139,25 +139,7 @@ class _EventsEndedState extends State<EventsEnded> {
                               TextStyle(color: Colors.black.withOpacity(0.7)),
                         ),
                       ),
-                      // Container(
-                      //   margin: EdgeInsets.only(left: 10),
-                      //   padding: const EdgeInsets.all(5.0),
-                      //   child: Text(
-                      //     'Start Date: ${eventsStatusProvider.eventData?[index].startDate.toString().substring(0, 10) ?? "Without date"}',
-                      //     style: TextStyle(
-                      //         color: Colors.black.withOpacity(0.7)),
-                      //   ),
-                      // ),
-                      // Container(
-                      //   margin: EdgeInsets.only(left: 10),
-                      //   padding: const EdgeInsets.all(5.0),
-                      //   child: Text(
-                      //     'End Date: ${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without date"}',
-                      //     style: TextStyle(
-                      //       color: Colors.black.withOpacity(0.7),
-                      //     ),
-                      //   ),
-                      // ),
+                      
                       Container(
                         margin: EdgeInsets.only(bottom: 15, left: 50),
                         width: MediaQuery.of(context).size.width * 0.7,

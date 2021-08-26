@@ -56,7 +56,6 @@ class BirthdayScreen extends StatelessWidget {
                       color: Color(0xff9a00e6),
                     ),
                   ),
-                  // dateFormat: "dd/MMMM/yyyy",
                   lastDate: DateTime.now(),
                   onChange: (DateTime newDate, _) {
                     registerProvider.setBirthiday(newDate);
@@ -79,7 +78,6 @@ class BirthdayScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff9a00e6),
                   elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -93,8 +91,7 @@ class BirthdayScreen extends StatelessWidget {
                             builder: (_) => GenderScreen(),
                           ),
                         );
-                      }, /* ??
-                    null, */
+                      },
               ),
             )
           ],

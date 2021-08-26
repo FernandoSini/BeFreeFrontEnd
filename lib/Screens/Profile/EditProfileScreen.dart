@@ -2,6 +2,7 @@ import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Providers/UpdateUserProvider.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -32,6 +33,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController controllerSchool = TextEditingController(text: "");
 
   TextEditingController controllerBirthday = TextEditingController(text: "");
+
+  final FlutterSecureStorage storage = new FlutterSecureStorage();
+
   Future<void> showDialogSuccess() {
     return showDialog(
       context: context,
@@ -130,11 +134,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void dispose() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
-        Provider.of<UpdateUserProvider>(context).dispose();
-        Provider.of<UserProvider>(context).dispose();
+        Provider.of<UpdateUserProvider>(context, listen: false).dispose();
       }
     });
-
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (mounted) {
+        Provider.of<UserProvider>(context, listen: false).dispose();
+      }
+    });
     super.dispose();
   }
 
@@ -169,7 +176,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: TextFormField(
                   controller: controllerUserName,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "Your new username",
                     labelStyle: TextStyle(
                       color: Color(0xFF9a00e6),
@@ -200,7 +206,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: TextFormField(
                   controller: controllerFirstName,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "Your first name",
                     labelStyle: TextStyle(color: Color(0xFF9a00e6)),
                     enabledBorder: UnderlineInputBorder(
@@ -229,7 +234,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: TextFormField(
                   controller: controllerLastName,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "Your last name",
                     labelStyle: TextStyle(color: Color(0xFF9a00e6)),
                     enabledBorder: UnderlineInputBorder(
@@ -258,7 +262,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: TextFormField(
                   controller: controllerEmail,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "Your email",
                     labelStyle: TextStyle(color: Color(0xFF9a00e6)),
                     enabledBorder: UnderlineInputBorder(
@@ -288,7 +291,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   maxLength: 250,
                   controller: controllerAbout,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "About You",
                     labelStyle: TextStyle(color: Color(0xFF9a00e6)),
                     enabledBorder: UnderlineInputBorder(
@@ -308,16 +310,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
             Container(
               margin: EdgeInsets.only(left: 40, right: 40),
               child: Center(
                 child: TextFormField(
                   controller: controllerJob,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "Work",
                     labelStyle: TextStyle(color: Color(0xFF9a00e6)),
                     enabledBorder: UnderlineInputBorder(
@@ -346,7 +344,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: TextFormField(
                   controller: controllerCompany,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "Company",
                     labelStyle: TextStyle(
                       color: Color(0xFF9a00e6),
@@ -377,7 +374,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: TextFormField(
                   controller: controllerSchool,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "School",
                     labelStyle: TextStyle(
                       color: Color(0xFF9a00e6),
@@ -408,7 +404,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: TextFormField(
                   controller: controllerLivesIn,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "Lives In",
                     labelStyle: TextStyle(
                       color: Color(0xFF9a00e6),
@@ -440,7 +435,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   controller: controllerBirthday,
                   keyboardType: TextInputType.datetime,
                   decoration: InputDecoration(
-                    // hintText: "Update your username",
                     labelText: "Birthday",
                     labelStyle: TextStyle(
                       color: Color(0xFF9a00e6),
@@ -513,7 +507,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 Expanded(
                   child: Container(
-                    //padding: EdgeInsets.only(left: 10),
                     child: Row(
                       children: [
                         Text(
@@ -556,7 +549,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   var userUpdated = await updateUser.updateUser(
                       widget.userId!, widget.token!);
                   if (updateUser.isUpdated) {
-                    showDialogSuccess();
+                    await storage.delete(key: "user");
+                    print(await storage.read(key: "user"));
+                    userProvider.updateDataSecurePlace(userUpdated);
+                    await showDialogSuccess();
                     updateUser.setBirthday(null);
                     updateUser.setNewAbout(null);
                     updateUser.setNewCompany(null);
@@ -568,9 +564,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     updateUser.setNewJob(null);
                     updateUser.setNewSchool(null);
                     updateUser.setNewLivesIn(null);
-                    userProvider.setUser(userUpdated);
+                    controllerAbout.clear();
+                    controllerBirthday.clear();
+                    controllerCompany.clear();
+                    controllerEmail.clear();
+                    controllerFirstName.clear();
+                    controllerJob.clear();
+                    controllerLastName.clear();
+                    controllerLivesIn.clear();
+                    controllerSchool.clear();
+                    controllerUserName.clear();
                   } else {
-                    showErrorDialog();
+                    await showErrorDialog();
                   }
                 },
                 style: ElevatedButton.styleFrom(

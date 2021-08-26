@@ -40,40 +40,41 @@ class UpdateUserProvider extends ChangeNotifier {
 
   Future<User?> updateUser(String? id, String? token) async {
     setLoading(true);
-    String url = "http://192.168.0.22:8080/api/users/update/$id";
+    String url = "http://192.168.0.22:3000/api/users/you/edit/$id";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
     };
-    Map<String, dynamic> userToUpdate = {
-      "id_user": id,
-      "about": newAbout == null ? null : newAbout,
-      "company": newCompany == null ? null : newCompany,
-      "job_title": newJob == null ? null : newJob,
-      "gender":
-          newGender == null ? null : EnumToString.convertToString(newGender),
-      "email": newEmail == null ? null : newEmail,
-      "first_name": newFirstName == null ? null : newFirstName,
-      "last_name": newLastName == null ? null : newLastName,
-      "user_name": newUsername == null ? null : newUsername,
-      "school": newSchool == null ? null : newSchool,
-      "livesIn": newLivesIn == null ? null : newLivesIn,
-      "birthday": newBirthday == null ? null : newBirthday
-    };
-    // User? userToUpdate = User(
-    //     about: newAbout,
-    //     company: newCompany,
-    //     job: newJob,
-    //     gender: newGender.toString(),
-    //     email: newEmail,
-    //     userName: newUsername,
-    //     firstName: newFirstName,
-    //     lastName: newLastName,
-    //     school: newSchool,
-    //     livesIn: newLivesIn,
-    //     birthday: newBirthday);
-    var body = json.encode(userToUpdate);
 
+    // Map<String, dynamic> userToUpdate = {
+    //   "id_user": id,
+    //   "about": newAbout == null ? null : newAbout,
+    //   "company": newCompany == null ? null : newCompany,
+    //   "job": newJob == null ? null : newJob,
+    //   "gender":
+    //       newGender == null ? null : EnumToString.convertToString(newGender),
+    //   "email": newEmail == null ? null : newEmail,
+    //   "firstname": newFirstName == null ? null : newFirstName,
+    //   "lastname": newLastName == null ? null : newLastName,
+    //   "username": newUsername == null ? null : newUsername,
+    //   "school": newSchool == null ? null : newSchool,
+    //   "livesIn": newLivesIn == null ? null : newLivesIn,
+    //   "birthday": newBirthday == null ? null : newBirthday
+    // };
+    User? userToUpdate = User(
+        about: newAbout,
+        company: newCompany,
+        job: newJob,
+        gender: newGender,
+        email: newEmail,
+        username: newUsername,
+        firstname: newFirstName,
+        lastname: newLastName,
+        school: newSchool,
+        livesIn: newLivesIn,
+        birthday: newBirthday);
+    var body = jsonEncode(userToUpdate.toJsonUpdate());
+    print(body);
     try {
       http.Response response =
           await http.put(Uri.parse(url), headers: headers, body: body);
@@ -83,6 +84,7 @@ class UpdateUserProvider extends ChangeNotifier {
         setLoading(false);
         setHasError(false);
         setErrorText("");
+        print(response.body);
         User user = User.fromJson(
           json.decode(
             Utf8Decoder(allowMalformed: true).convert(response.bodyBytes),
@@ -93,7 +95,7 @@ class UpdateUserProvider extends ChangeNotifier {
       } else {
         setLoading(false);
         setHasError(true);
-        setErrorText(jsonDecode(response.body)["message"]);
+        setErrorText(jsonDecode(response.body)["error"]);
         setUpdated(false);
         return Future.error(errorData!);
       }

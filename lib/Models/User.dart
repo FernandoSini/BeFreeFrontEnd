@@ -253,13 +253,18 @@ class User {
     data['firstname'] = this.firstname;
     data['lastname'] = this.lastname;
     data['birthday'] = this.birthday;
-    data['gender'] = EnumToString.convertToString(this.gender);
+    if (this.gender != null) {
+      data['gender'] = EnumToString.convertToString(this.gender);
+    }
     data['email'] = this.email;
     if (this.avatarProfile != null) {
       data['avatar_profile'] = this.avatarProfile?.toJson();
     }
+
     data['about'] = this.about;
-    data['usertype'] = EnumToString.convertToString(this.usertype);
+    if (this.usertype != null) {
+      data['usertype'] = EnumToString.convertToString(this.usertype);
+    }
     data['job'] = this.job;
     data['school'] = this.school;
     data['company'] = this.company;
@@ -278,6 +283,43 @@ class User {
     data['role'] = this.role;
     data['createdAt'] = this.createdAt;
     data['token'] = this.token;
+    return data;
+  }
+
+  Map<String, dynamic> toJsonUpdate() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.username != null) data['username'] = this.username;
+    if (this.firstname != null) data['firstname'] = this.firstname;
+    if (this.lastname != null) data['lastname'] = this.lastname;
+    if (this.birthday != null) data['birthday'] = this.birthday;
+    if (this.gender != null) {
+      data['gender'] = EnumToString.convertToString(this.gender);
+    }
+    if (this.email != null) data['email'] = this.email;
+    if (this.avatarProfile != null) {
+      data['avatar_profile'] = this.avatarProfile?.toJson();
+    }
+    if (this.about != null) data['about'] = this.about;
+    if (this.usertype != null) {
+      data['usertype'] = EnumToString.convertToString(this.usertype);
+    }
+    if (this.job != null) data['job'] = this.job;
+    if (this.school != null) data['school'] = this.school;
+    if (this.company != null) data['company'] = this.company;
+    if (this.livesIn != null) data["livesIn"] = this.livesIn;
+    if (this.photos != null) {
+      data['photos'] = this.photos?.map((v) => v.toJson()).toList();
+    }
+    // if (this.likesSent != null) {
+    //   data['likesSent'] = this.likesSent?.map((v) => v.toJson()).toList();
+    // }
+    // if (this.likesReceived != null) {
+    //   data['likesReceived'] =
+    //       this.likesReceived?.map((v) => v.toJson()).toList();
+    // }
+    if (this.matches != null) data['matches'] = this.matches;
+    if (this.createdAt != null) data['createdAt'] = this.createdAt;
+
     return data;
   }
 }

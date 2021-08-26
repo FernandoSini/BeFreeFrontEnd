@@ -1,5 +1,6 @@
 import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Models/User.dart';
+import 'package:be_free_v1/Providers/UpdateUserProvider.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
 import 'package:be_free_v1/Screens/Profile/ChangeAvatarScreen.dart';
@@ -27,6 +28,7 @@ class YourProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final updateUser = Provider.of<UpdateUserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -74,11 +76,6 @@ class YourProfileScreen extends StatelessWidget {
                               "http://192.168.0.22:3000/api/${userData?.avatarProfile!.path}")
                           : AssetImage("assets/avatars/avatar2.png")
                               as ImageProvider,
-                      /* child: ClipOval(
-                        child: userData?.avatar != null
-                            ? Image.network("${userData?.avatar}")
-                            : Image.asset("assets/avatars/avatar2.png"),
-                      ), */
                       backgroundColor: Colors.transparent,
                       radius: 80,
                     ),
@@ -136,6 +133,17 @@ class YourProfileScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
+                  updateUser.setBirthday(null);
+                  updateUser.setNewAbout(null);
+                  updateUser.setNewCompany(null);
+                  updateUser.setNewEmail(null);
+                  updateUser.setNewFirstName(null);
+                  updateUser.setNewGender(null);
+                  updateUser.setNewLastName(null);
+                  updateUser.setNewUsername(null);
+                  updateUser.setNewJob(null);
+                  updateUser.setNewSchool(null);
+                  updateUser.setNewLivesIn(null);
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => EditProfileScreen(

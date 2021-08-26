@@ -145,42 +145,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                               TextStyle(color: Colors.black.withOpacity(0.7)),
                         ),
                       ),
-                      // Container(
-                      //   margin: EdgeInsets.only(left: 10),
-                      //   padding: const EdgeInsets.all(5.0),
-                      //   child: Text(
-                      //     'Start Date: ${eventsStatusProvider.eventData?[index].startDate.toString().substring(0, 10) ?? "Without date"}',
-                      //     style: TextStyle(
-                      //         color: Colors.black.withOpacity(0.7)),
-                      //   ),
-                      // ),
-                      // Container(
-                      //   margin: EdgeInsets.only(left: 10),
-                      //   padding: const EdgeInsets.all(5.0),
-                      //   child: Text(
-                      //     'End Date: ${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without date"}',
-                      //     style: TextStyle(
-                      //       color: Colors.black.withOpacity(0.7),
-                      //     ),
-                      //   ),
-                      // ),
-                      // ButtonBar(
-                      //   alignment: MainAxisAlignment.start,
-                      //   children: [
-                      //     TextButton(
-                      //       onPressed: () {
-                      //         // Perform some action
-                      //       },
-                      //       child: const Text('ACTION 1'),
-                      //     ),
-                      //     TextButton(
-                      //       onPressed: () {
-                      //         // Perform some action
-                      //       },
-                      //       child: const Text('ACTION 2'),
-                      //     ),
-                      //   ],
-                      // ),
+                      
                       if (!eventsStatusProvider.eventData![index].users!
                           .contains(widget.user))
                         ButtonBar(
@@ -192,7 +157,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                               child: ElevatedButton(
                                 onPressed: () {},
                                 style: ElevatedButton.styleFrom(
-                                  // primary: Color(0xFF9a00e6),
+                                  
                                   primary: Colors.blue,
                                 ),
                                 child: Row(

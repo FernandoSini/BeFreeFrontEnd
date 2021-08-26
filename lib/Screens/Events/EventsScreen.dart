@@ -120,8 +120,11 @@ class _EventsScreenState extends State<EventsScreen>
           IconButton(
             icon: Icon(Icons.edit, color: Colors.pinkAccent[400]),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => YourEvents(user:widget.user!)));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => YourEvents(user: widget.user!),
+                ),
+              );
             },
           ),
         ],

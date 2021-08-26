@@ -52,7 +52,6 @@ class _PhotosScreenState extends State<PhotosScreen> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         mainAxisSpacing: 3,
-                        // crossAxisSpacing: 3,
                         childAspectRatio: 0.8),
                     shrinkWrap: true,
                     itemCount: widget.user!.photos!.isEmpty
@@ -60,22 +59,27 @@ class _PhotosScreenState extends State<PhotosScreen> {
                         : widget.user!.photos?.length,
                     itemBuilder: (context, index) {
                       print(widget.user!.photos![index].path);
-                      return Container(
-                        margin: EdgeInsets.only(right: 5, left: 5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.black),
-                          color: Colors.black,
-                          image: widget.user!.photos!.isEmpty
-                              ? null
-                              : DecorationImage(
-                                  image: NetworkImage(
-                                    widget.user!.photos![index].path!,
+                      return InkWell(
+                        onLongPress: () {
+                          setState(() {
+                            widget.user?.photos?.removeAt(index);
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 5, left: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.black),
+                            color: Colors.black,
+                            image: widget.user!.photos!.isEmpty
+                                ? null
+                                : DecorationImage(
+                                    image: NetworkImage(
+                                      "http://192.168.0.22:3000/api/${widget.user!.photos![index].path!}",
+                                    ),
+                                    fit: BoxFit.cover,
                                   ),
-                                  fit: BoxFit.cover,
-                                ),
-
-                          // border: Border.all(color: Colors.blue, width: 2),
+                          ),
                         ),
                       );
                     },
@@ -98,7 +102,6 @@ class _PhotosScreenState extends State<PhotosScreen> {
                       );
                     },
                 style: ElevatedButton.styleFrom(
-                  // primary: Colors.transparent,
                   primary: Colors.pinkAccent.shade400,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

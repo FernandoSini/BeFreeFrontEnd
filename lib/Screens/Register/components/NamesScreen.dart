@@ -15,7 +15,6 @@ class NamesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -32,7 +31,6 @@ class NamesScreen extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              // margin: EdgeInsets.only(bottom: 30),
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
@@ -44,9 +42,6 @@ class NamesScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 50,
-            // ),
             Container(
               margin: EdgeInsets.only(top: 30),
               alignment: Alignment.center,
@@ -55,7 +50,6 @@ class NamesScreen extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-
             Container(
               margin: EdgeInsets.only(
                 top: 25,
@@ -67,9 +61,6 @@ class NamesScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 30, right: 30),
                     labelText: "First Name",
-                    // counterStyle: TextStyle(
-                    //   color: Color(0xff9a00e6),
-                    // ),
                     labelStyle: TextStyle(
                       color: Color(0xff9a00e6),
                     ),
@@ -80,7 +71,6 @@ class NamesScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(color: Color(0xFF9a00e6)),
                     ),
-
                     focusedBorder: OutlineInputBorder(
                       gapPadding: 5,
                       borderRadius: BorderRadius.circular(10),
@@ -111,9 +101,6 @@ class NamesScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 30, right: 30),
                     labelText: "Last Name",
-                    // counterStyle: TextStyle(
-                    //   color: Color(0xff9a00e6),
-                    // ),
                     labelStyle: TextStyle(
                       color: Color(0xff9a00e6),
                     ),
@@ -124,7 +111,6 @@ class NamesScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(color: Color(0xFF9a00e6)),
                     ),
-
                     focusedBorder: OutlineInputBorder(
                       gapPadding: 5,
                       borderRadius: BorderRadius.circular(10),
@@ -145,7 +131,6 @@ class NamesScreen extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-
             Container(
               width: MediaQuery.of(context).size.width * 0.8,
               margin: EdgeInsets.only(left: 25, right: 25),
@@ -158,7 +143,6 @@ class NamesScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff9a00e6),
                   elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -169,8 +153,7 @@ class NamesScreen extends StatelessWidget {
                       builder: (_) => EmailScreen(),
                     ),
                   );
-                }, /* ??
-                    null, */
+                },
               ),
             )
           ],

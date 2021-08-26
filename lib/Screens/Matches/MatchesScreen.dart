@@ -165,8 +165,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     }
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
-                      // shrinkWrap: true,
-                      // clipBehavior: Clip.none,
+                      
                       physics: BouncingScrollPhysics(),
                       itemCount: matchProvider.matchData?.length,
                       itemBuilder: (context, index) => InkWell(
@@ -317,7 +316,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     );
                   } else {
                     return Container(
-                      // margin: EdgeInsets.only(bottom: 250),
+                      
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

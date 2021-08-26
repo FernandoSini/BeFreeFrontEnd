@@ -1,6 +1,5 @@
 import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Providers/RegisterProvider.dart';
-import 'package:be_free_v1/Screens/Register/components/GraduationScreen.dart';
 import 'package:be_free_v1/Screens/Register/components/LivesInScreen.dart';
 import 'package:be_free_v1/Screens/Register/components/SchoolScreen.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
 class GenderScreen extends StatelessWidget {
-  // GenderScreen({this.registerProvider});
-  // final RegisterProvider? registerProvider;
-
   @override
   Widget build(BuildContext context) {
     final registerProvider = Provider.of<RegisterProvider>(context);
@@ -50,7 +46,6 @@ class GenderScreen extends StatelessWidget {
               height: 60,
             ),
             Container(
-              // padding: EdgeInsets.only(left: 20, right: 20),
               margin: EdgeInsets.only(left: 50, right: 50),
               height: 55,
               decoration: BoxDecoration(
@@ -66,10 +61,6 @@ class GenderScreen extends StatelessWidget {
                   value: Gender.MALE,
                   activeColor: Colors.white,
                   groupValue: registerProvider.genderValue,
-                  // onChanged: (dynamic value) {
-                  //   registerProvider.gender = value;
-                  //   print("name: ${registerProvider.genderValue}");
-                  // },
                   onChanged: (dynamic value) {
                     registerProvider.setGender(value);
                   },
@@ -95,10 +86,7 @@ class GenderScreen extends StatelessWidget {
                   value: Gender.FEMALE,
                   activeColor: Colors.white,
                   groupValue: registerProvider.genderValue,
-                  // onChanged: (dynamic value) {
-                  //   registerProvider.gender = value;
-                  //   print("${registerProvider.genderValue}}");
-                  // },
+                 
                   onChanged: (dynamic value) {
                     registerProvider.setGender(value);
                   },
@@ -109,7 +97,7 @@ class GenderScreen extends StatelessWidget {
               height: 20,
             ),
             Container(
-              // padding: EdgeInsets.only(left: 20, right: 20),
+             
               margin: EdgeInsets.only(left: 50, right: 50),
               height: 55,
               decoration: BoxDecoration(
@@ -126,11 +114,7 @@ class GenderScreen extends StatelessWidget {
                   value: Gender.NONBINARY,
                   activeColor: Colors.white,
                   groupValue: registerProvider.gender,
-                  // onChanged: (dynamic value) {
-                  //   registerProvider.gender = value;
-                  //   print("maconha das brabdas " +
-                  //       "${registerProvider.genderValue}");
-                  // },
+                 
                   onChanged: (dynamic value) {
                     registerProvider.setGender(value);
                   },
@@ -152,7 +136,6 @@ class GenderScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff9a00e6),
                   elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -165,8 +148,7 @@ class GenderScreen extends StatelessWidget {
                             builder: (_) => LivesInScreen(),
                           ),
                         );
-                      }, /* ??
-                    null, */
+                      }, 
               ),
             )
           ],

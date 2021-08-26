@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:be_free_v1/Models/EventOwner.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Screens/Base/BaseScreen.dart';
 import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
@@ -67,9 +66,9 @@ class _SplashState extends State<Splash> {
               "company": ""
             };
             userData.keys.forEach((element) async {
-              print(element);
               await storage.delete(key: element);
             });
+            await storage.deleteAll();
             Timer(
               Duration(seconds: 3),
               () {

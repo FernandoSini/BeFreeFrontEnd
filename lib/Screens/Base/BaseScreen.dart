@@ -80,7 +80,7 @@ class _BaseScreenState extends State<BaseScreen> {
                       Icons.favorite,
                       color: Color(0xffedc967),
                     ),
-                    // label: "Find",
+                    
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.nightlife),
@@ -88,7 +88,7 @@ class _BaseScreenState extends State<BaseScreen> {
                       Icons.nightlife,
                       color: Colors.blue,
                     ),
-                    // label: "Events",
+                    
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.whatshot_outlined),
@@ -96,12 +96,12 @@ class _BaseScreenState extends State<BaseScreen> {
                       Icons.whatshot_outlined,
                       color: Colors.pinkAccent[400],
                     ),
-                    // label: "Matches",
+                    
                   ),
                   BottomNavigationBarItem(
                     tooltip: null,
                     icon: Container(
-                      // margin: EdgeInsets.only(top: 10),
+                      
                       padding: EdgeInsets.only(top: 10),
                       child: Center(
                         child: CircleAvatar(
@@ -127,7 +127,7 @@ class _BaseScreenState extends State<BaseScreen> {
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Container(
                 child: ClipRRect(
-                  // borderRadius: BorderRadius.circular(30),
+                  
                   child: BottomNavigationBar(
                     type: BottomNavigationBarType.fixed,
                     unselectedItemColor: Colors.grey,
@@ -176,20 +176,7 @@ class _BaseScreenState extends State<BaseScreen> {
                 ),
               ),
             ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add_a_photo),
-      //   backgroundColor: Color(0xFF9a00e6),
-      //   tooltip: "Add photos or Images to your profile",
-      //   onPressed: () {
-      //     Navigator.of(context).push(
-      //       MaterialPageRoute(
-      //         builder: (_) => PhotosScreen(user: widget.userData!),
-      //         fullscreenDialog: true,
-      //         maintainState: true,
-      //       ),
-      //     );
-      //   },
-      // ),
+      
       floatingActionButton: SpeedDial(
         direction: SpeedDialDirection.Up,
         childrenButtonSize: 65,

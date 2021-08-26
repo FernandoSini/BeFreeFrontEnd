@@ -24,9 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         backwardsCompatibility: false,
-        // systemOverlayStyle: SystemUiOverlayStyle(
-        //   statusBarColor: Colors.transparent,
-        // ),
         actions: [
           IconButton(
             icon: Icon(
@@ -43,15 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
       extendBody: true,
       body: Container(
         height: MediaQuery.of(context).size.height,
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //       image: AssetImage("./assets/party.png"), fit: BoxFit.cover),
-        // ),
         child: ListView(
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              // margin: EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
@@ -87,9 +79,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 30, right: 30),
                   labelText: "Username",
-                  // counterStyle: TextStyle(
-                  //   color: Color(0xff9a00e6),
-                  // ),
                   labelStyle: TextStyle(
                     color: Color(0xff9a00e6),
                   ),
@@ -100,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Color(0xFF9a00e6)),
                   ),
-                  // hintText: "Password",
                   focusedBorder: OutlineInputBorder(
                     gapPadding: 5,
                     borderRadius: BorderRadius.circular(10),
@@ -126,9 +114,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 30, right: 30),
                   labelText: "Password",
-                  // counterStyle: TextStyle(
-                  //   color: Color(0xff9a00e6),
-                  // ),
                   labelStyle: TextStyle(
                     color: Color(0xff9a00e6),
                   ),
@@ -139,7 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Color(0xFF9a00e6)),
                   ),
-                  // hintText: "Password",
                   focusedBorder: OutlineInputBorder(
                     gapPadding: 5,
                     borderRadius: BorderRadius.circular(10),
@@ -161,7 +145,6 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 50,
             ),
             Container(
-              // width: MediaQuery.of(context).size.width * 0.8,
               margin: EdgeInsets.only(left: 25, right: 25),
               height: 55,
               child: TextButton(

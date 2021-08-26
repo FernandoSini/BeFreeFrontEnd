@@ -30,10 +30,10 @@ class _EventsIncomingState extends State<EventsIncoming> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.only(top: 15),
+      
       child: Consumer<EventsStatusProvider>(
         builder: (_, eventsStatusProvider, __) {
-          // print(eventsProvider.eventData?.first.eventStatus);
+         
           if (!eventsStatusProvider.isLoading) {
             if (eventsStatusProvider.eventData!.isEmpty) {
               return Container(
@@ -152,25 +152,6 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                       color: Colors.black.withOpacity(0.7)),
                                 ),
                               ),
-                              // Container(
-                              //   margin: EdgeInsets.only(left: 10),
-                              //   padding: const EdgeInsets.all(5.0),
-                              //   child: Text(
-                              //     'Start Date: ${eventsStatusProvider.eventData?[index].startDate.toString().substring(0, 10) ?? "Without date"}',
-                              //     style: TextStyle(
-                              //         color: Colors.black.withOpacity(0.7)),
-                              //   ),
-                              // ),
-                              // Container(
-                              //   margin: EdgeInsets.only(left: 10),
-                              //   padding: const EdgeInsets.all(5.0),
-                              //   child: Text(
-                              //     'End Date: ${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without date"}',
-                              //     style: TextStyle(
-                              //       color: Colors.black.withOpacity(0.7),
-                              //     ),
-                              //   ),
-                              // ),
                               ButtonBar(
                                 alignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -182,7 +163,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                     child: ElevatedButton(
                                       onPressed: () {},
                                       style: ElevatedButton.styleFrom(
-                                        // primary: Color(0xFF9a00e6),
+                                        
                                         primary: Colors.blue,
                                       ),
                                       child: Row(

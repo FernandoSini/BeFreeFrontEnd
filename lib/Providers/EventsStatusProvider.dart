@@ -19,7 +19,7 @@ class EventsStatusProvider extends ChangeNotifier {
   Future<void> getEventsByStatus(String token, EventStatus eventStatus) async {
     events?.clear();
     setLoading(true);
-    print(eventStatus);
+
     try {
       Map<String, String> headers = {
         "Content-type": "application/json; charset=utf-8",

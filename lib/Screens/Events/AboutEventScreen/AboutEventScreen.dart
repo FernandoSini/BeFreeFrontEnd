@@ -55,9 +55,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              // color: Colors.red,
               margin: EdgeInsets.only(top: 20, left: 20, right: 10),
-              // padding: EdgeInsets.only(left: 5),
               child: Text(
                 "${widget.event!.eventName}",
                 style: TextStyle(
@@ -167,9 +165,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
             else
               Container(
                 width: MediaQuery.of(context).size.width,
-                // color: Colors.red,
                 margin: EdgeInsets.only(top: 10, left: 15, right: 10),
-                // padding: EdgeInsets.only(left: 5),
                 child: Text(
                   "Event Description",
                   softWrap: true,
@@ -181,7 +177,6 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                 ),
               ),
             Container(
-              // color: Colors.red,
               width: MediaQuery.of(context).size.width,
               height: widget.event!.eventDescription!.length >= 100
                   ? MediaQuery.of(context).size.height * 0.4
@@ -194,9 +189,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              // color: Colors.red,
               margin: EdgeInsets.only(top: 10, left: 15, right: 10),
-              // padding: EdgeInsets.only(left: 5),
               child: Text(
                 "Who created this event",
                 style: TextStyle(
@@ -216,7 +209,6 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                     child: Text("${widget.event!.eventOwner?.username}"),
                   ),
                   Container(
-                    // margin: EdgeInsets.only(left: 15),
                     child: CircleAvatar(
                       backgroundImage: widget
                                   .event?.eventOwner?.avatarProfile !=
@@ -232,7 +224,6 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
               ),
             ),
           ],
-          // ),
         ),
       ),
     );

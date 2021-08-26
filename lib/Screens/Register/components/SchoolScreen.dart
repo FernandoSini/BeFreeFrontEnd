@@ -37,9 +37,6 @@ class SchoolScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 50,
-            // ),
             Container(
               margin: EdgeInsets.only(top: 50),
               alignment: Alignment.center,
@@ -55,9 +52,6 @@ class SchoolScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 30, right: 30),
                     labelText: "School",
-                    // counterStyle: TextStyle(
-                    //   color: Color(0xff9a00e6),
-                    // ),
                     labelStyle: TextStyle(
                       color: Color(0xff9a00e6),
                     ),
@@ -68,7 +62,6 @@ class SchoolScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(color: Color(0xFF9a00e6)),
                     ),
-
                     focusedBorder: OutlineInputBorder(
                       gapPadding: 5,
                       borderRadius: BorderRadius.circular(10),
@@ -89,7 +82,6 @@ class SchoolScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-
             Container(
               width: MediaQuery.of(context).size.width * 0.8,
               margin: EdgeInsets.only(left: 25, right: 25),
@@ -102,7 +94,6 @@ class SchoolScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff9a00e6),
                   elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -113,8 +104,7 @@ class SchoolScreen extends StatelessWidget {
                       builder: (_) => CompanyScreen(),
                     ),
                   );
-                }, /* ??
-                    null, */
+                },
               ),
             )
           ],

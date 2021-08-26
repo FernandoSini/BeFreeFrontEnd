@@ -21,16 +21,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
   TextEditingController emailController = TextEditingController();
 
-  // @override
-  // void dispose() {
-  //   WidgetsBinding.instance?.addPostFrameCallback((_) {
-  //     if (mounted) {
-  //       Provider.of<RegisterProvider>(context, listen: false).dispose();
-  //     }
-  //   });
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final registerProvider = Provider.of<RegisterProvider>(context);
@@ -62,13 +52,8 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 30,
-            // ),
-            //
             Container(
               alignment: Alignment.center,
-              // margin: EdgeInsets.only(bottom: 30),
               padding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
               child: Text(
                 registerProvider.hasError ? registerProvider.errorData! : "",
@@ -95,20 +80,13 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 30, right: 30),
                   labelText: "Password",
-                  // counterStyle: TextStyle(
-                  //   color: Color(0xff9a00e6),
-                  // ),
                   labelStyle: TextStyle(
                     color: Color(0xff9a00e6),
                   ),
-                  // border: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(15),
-                  // ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Color(0xFF9a00e6)),
                   ),
-                  // hintText: "Password",
                   focusedBorder: OutlineInputBorder(
                     gapPadding: 5,
                     borderRadius: BorderRadius.circular(10),
@@ -192,28 +170,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                             !registerProvider.isPasswordValid
                         ? null
                         : () async {
-                            print(registerProvider.userName);
                             await registerProvider.register();
-
-                            // if (registerProvider.isRegistered) {
-                            //   Navigator.of(context).pushAndRemoveUntil(
-                            //       MaterialPageRoute(
-                            //           builder: (_) => LoginScreen()),
-                            //       (Route route) => false);
-                            // }
-                            // registerProvider.setJob("");
-                            // registerProvider.setCompany("");
-                            // registerProvider.setSchool("");
-                            // registerProvider.setFirstName("");
-                            // registerProvider.setLastName("");
-                            // registerProvider.setBirthiday(DateTime.now());
-                            // registerProvider.setLivesIn("");
-                            // registerProvider.mail("");
-                            // registerProvider.setGender(null);
-                            // registerProvider.setUsername("");
-                            // registerProvider.setPassword1("");
-                            // registerProvider.setPassword2("");
-                            // registerProvider.setIsRegistered(false);
                           },
                   );
                 },

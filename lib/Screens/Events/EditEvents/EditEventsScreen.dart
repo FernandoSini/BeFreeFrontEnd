@@ -134,8 +134,6 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
   Widget build(BuildContext context) {
     final updateEventProvider = context.read<UpdateEventProvider>();
     return Scaffold(
-      // extendBody: true,
-      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -148,7 +146,6 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
           ),
         ),
         centerTitle: true,
-        // actionsIconTheme: IconThemeData(color: Colors.pinkAccent[400]),
         iconTheme: IconThemeData(color: Colors.pinkAccent[400]),
       ),
       body: Container(
@@ -204,7 +201,6 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                       maxLength: 250,
                       controller: eventNameController,
                       decoration: InputDecoration(
-                        // hintText: "Update your username",
                         labelText: "Type name of your event",
                         labelStyle:
                             TextStyle(color: Colors.pinkAccent.shade400),
@@ -237,7 +233,6 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                         maxLength: 250,
                         controller: eventLocationController,
                         decoration: InputDecoration(
-                          // hintText: "Update your username",
                           labelText: "Where is the event?",
                           labelStyle:
                               TextStyle(color: Colors.pinkAccent.shade400),
@@ -271,7 +266,6 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                         maxLength: 250,
                         controller: eventDescriptionController,
                         decoration: InputDecoration(
-                          // hintText: "Update your username",
                           labelText: "Add description to your event",
                           labelStyle: TextStyle(color: Colors.pinkAccent[400]),
                           enabledBorder: UnderlineInputBorder(
@@ -297,18 +291,6 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                 margin: EdgeInsets.only(left: 30, right: 30),
                 child: Column(
                   children: [
-                    // DatePickerWidget(
-                    //   pickerTheme: DateTimePickerTheme(
-                    //     backgroundColor: Colors.transparent,
-                    //     itemTextStyle: TextStyle(
-                    //       color: Color(0xff9a00e6),
-                    //     ),
-                    //   ),
-                    //   // dateFormat: "dd/MMMM/yyyy",
-                    //   lastDate: DateTime.now(),
-                    //   onChange: (DateTime newDate, _) {},
-                    // ),
-
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Consumer<UpdateEventProvider>(
@@ -353,7 +335,6 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                         },
                       ),
                     ),
-
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Consumer<UpdateEventProvider>(
@@ -398,7 +379,6 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                         },
                       ),
                     ),
-
                     Container(
                       margin: EdgeInsets.only(top: 15),
                       height: MediaQuery.of(context).size.height * 0.07,
@@ -424,7 +404,6 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                               ),
                             ),
                             onPressed: () async {
-                              //lembrar amanhã que parei aqui e que o falta fazer uploadar no server
                               await updateEventProvider.updateEvent(
                                   widget.user!, imageData, widget.event!.id);
                               if (updateEventProvider.isEventUpdated!) {

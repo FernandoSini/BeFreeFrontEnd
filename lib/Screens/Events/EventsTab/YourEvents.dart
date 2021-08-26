@@ -32,8 +32,6 @@ class _YourEventsState extends State<YourEvents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // extendBody: true,
-      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -51,7 +49,6 @@ class _YourEventsState extends State<YourEvents> {
         ),
       ),
       body: Container(
-        // margin: EdgeInsets.only(top: 15),
         child: Consumer<YourEventsProvider>(
           builder: (_, yourEventsProvider, __) {
             if (!yourEventsProvider.isLoading) {
@@ -172,25 +169,6 @@ class _YourEventsState extends State<YourEvents> {
                                         color: Colors.black.withOpacity(0.7)),
                                   ),
                                 ),
-                                // Container(
-                                //   margin: EdgeInsets.only(left: 10),
-                                //   padding: const EdgeInsets.all(5.0),
-                                //   child: Text(
-                                //     'Start Date: ${eventsStatusProvider.eventData?[index].startDate.toString().substring(0, 10) ?? "Without date"}',
-                                //     style: TextStyle(
-                                //         color: Colors.black.withOpacity(0.7)),
-                                //   ),
-                                // ),
-                                // Container(
-                                //   margin: EdgeInsets.only(left: 10),
-                                //   padding: const EdgeInsets.all(5.0),
-                                //   child: Text(
-                                //     'End Date: ${eventsStatusProvider.eventData?[index].endDate.toString().substring(0, 10) ?? "Without date"}',
-                                //     style: TextStyle(
-                                //       color: Colors.black.withOpacity(0.7),
-                                //     ),
-                                //   ),
-                                // ),
                                 if (yourEventsProvider
                                         .eventData![index].eventStatus ==
                                     EventStatus.ENDED)
@@ -230,7 +208,6 @@ class _YourEventsState extends State<YourEvents> {
                                         child: ElevatedButton(
                                           onPressed: () {},
                                           style: ElevatedButton.styleFrom(
-                                            // primary: Color(0xFF9a00e6),
                                             primary: Colors.blue,
                                           ),
                                           child: Row(

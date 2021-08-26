@@ -53,12 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
     }
-    // Provider.of<ListUsersProvider>(context).dispose();
   }
 
   @override
   void initState() {
-    print(widget.userData!.token);
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<ListUsersProvider>(context, listen: false)
           .getListOfUsersByYourGender(widget.userData);
@@ -70,15 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
 
-    // print(dataFromAPI);
-    // Provider.of<ListUsersProvider>(context, listen: false)
-    //     .getListOfUsersByYourGender(widget.userData);
     super.initState();
   }
 
   @override
   void didChangeDependencies() async {
-    print(widget.userData!.token!);
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (JwtDecoder.isExpired(widget.userData!.token!)) {
         await storage.deleteAll();
@@ -105,16 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     super.dispose();
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   WidgetsBinding.instance?.addPostFrameCallback((_) async {
-  //     await Provider.of<ListUsersProvider>(context, listen: false)
-  //         .getListOfUsersByYourGender(widget.userData);
-  //   });
-
-  //   super.didChangeDependencies();
-  // }
 
   Future<void> showErrorDialog() async {
     return showDialog(
@@ -201,6 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialPageRoute(
                   builder: (_) => FilterScreen(),
                   fullscreenDialog: true,
+                  maintainState: false,
                 ),
               );
             },
@@ -216,7 +201,6 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
-      // backgroundColor: Colors.transparent,
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (!listProvider.isLoading) {
@@ -284,7 +268,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.72,
-                                        // color: Colors.blue,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
                                             image: listUserProvider
@@ -307,7 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               Positioned(
                                 top: MediaQuery.of(context).size.height * 0.67,
                                 left: 75,
-                                // bottom: 500,
                                 child: ElevatedButton(
                                   child: Icon(
                                     Icons.close_rounded,
@@ -328,12 +310,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               Positioned(
                                 top: MediaQuery.of(context).size.height * 0.67,
                                 left: MediaQuery.of(context).size.width * 0.64,
-                                // bottom: 500,
                                 child: ElevatedButton(
                                   child: Icon(
                                     Icons.favorite,
                                     size: 35,
-                                    // color: Colors.pink[100],
                                     color: Colors.pinkAccent[100],
                                   ),
                                   style: ElevatedButton.styleFrom(
@@ -347,7 +327,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         listUserProvider.userList![index].id!,
                                         widget.userData!.token!);
                                     if (likeProvider.isLiked) {
-                                      print("liked successfuly");
                                       setState(() {
                                         listUserProvider.userList!.remove(
                                             listUserProvider.userList![index]);
@@ -366,7 +345,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               Positioned(
                                 top: MediaQuery.of(context).size.height * 0.63,
                                 left: MediaQuery.of(context).size.width * 0.83,
-                                // bottom: 500,
                                 child: ElevatedButton(
                                   child: Text(
                                     "i",
@@ -394,10 +372,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               Positioned(
                                 top: MediaQuery.of(context).size.height * 0.68,
                                 left: MediaQuery.of(context).size.width * 0.41,
-                                // bottom: 500,
                                 child: ElevatedButton(
                                   child: Icon(
-                                    // Icons.forward_to_inbox_rounded,
                                     Icons.forward_to_inbox_sharp,
                                     size: 35,
                                     color: Colors.yellowAccent[200],

@@ -4,17 +4,15 @@ import 'package:be_free_v1/Providers/EventsGoingProvider.dart';
 import 'package:be_free_v1/Providers/EventsProvider.dart';
 import 'package:be_free_v1/Providers/LikeProvider.dart';
 import 'package:be_free_v1/Providers/ListUsersProvider.dart';
-import 'package:be_free_v1/Providers/LoginEventOwnerProvider.dart';
 import 'package:be_free_v1/Providers/LoginProvider.dart';
 import 'package:be_free_v1/Providers/LikesReceivedProvider.dart';
-import 'package:be_free_v1/Providers/RegisterEventOwnerProvider.dart';
 import 'package:be_free_v1/Providers/RegisterProvider.dart';
 import 'package:be_free_v1/Providers/SearchEventProvider.dart';
 import 'package:be_free_v1/Providers/SearchUserProvider.dart';
 import 'package:be_free_v1/Providers/UpdateEventProvider.dart';
 import 'package:be_free_v1/Providers/UpdateUserProvider.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
-import 'package:be_free_v1/Providers/ProviderImage.dart';
+import 'package:be_free_v1/Providers/UserPhotoProvider.dart';
 import 'package:be_free_v1/Providers/YourEventsProvider.dart';
 import 'package:be_free_v1/Screens/Splash/Splash.dart';
 import 'package:flutter/material.dart';
@@ -32,14 +30,11 @@ void main() {
         ChangeNotifierProvider(create: (context) => RegisterProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => ListUsersProvider()),
-        ChangeNotifierProvider(
-            create: (context) => RegisterEventOwnerProvider()),
-        ChangeNotifierProvider(create: (context) => LoginEventOwnerProvider()),
         ChangeNotifierProvider(create: (context) => MatchProvider()),
         ChangeNotifierProvider(create: (context) => EventsProvider()),
         ChangeNotifierProvider(create: (context) => EventsStatusProvider()),
         ChangeNotifierProvider(create: (context) => EventsGoingProvider()),
-        ChangeNotifierProvider(create: (context) => ProviderImage()),
+        ChangeNotifierProvider(create: (context) => UserPhotoProvider()),
         ChangeNotifierProvider(create: (context) => YourEventsProvider()),
         ChangeNotifierProvider(create: (context) => CreateEventProvider()),
         ChangeNotifierProvider(create: (context) => UpdateUserProvider()),

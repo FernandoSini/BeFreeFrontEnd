@@ -45,13 +45,13 @@ class _ChatScreenState extends State<ChatScreen> {
         IO.OptionBuilder().setTransports(['websocket', 'polling']).build());
     socket.onConnect((data) {
       print("connected: " + socket.id! + " data: " + data.toString());
-      // socket.on("sendMessage", (data) => print(data));
+    
     });
-    // socket.emit("sendMessage", message);
+  
     socket.emit("signIn", widget.you!.id);
     socket.onError((data) => print("error:" + data.toString()));
 
-    // socket.on("carregarData", (data) => print(data));
+    
     // _scrollController.animateTo(_scrollController.position.maxScrollExtent,
     //     duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     socket.on("sendMessage", (data) {
@@ -186,9 +186,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Container(
-          // color: Colors.green,
           child: SingleChildScrollView(
-            // physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 if (messageProvider.isLoading)
@@ -201,7 +199,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   )
                 else
                   Container(
-                      // color: Colors.yellow,
                       height: defaultTargetPlatform == TargetPlatform.iOS
                           ? MediaQuery.of(context).size.height * 0.77
                           : MediaQuery.of(context).size.height * 0.79,
@@ -214,7 +211,6 @@ class _ChatScreenState extends State<ChatScreen> {
                               ? messageProvider.messages!.length
                               : 0,
                           itemBuilder: (context, index) {
-                            // print(messageProvider.messages?[16].content);
                             if (widget.you!.id ==
                                 messageProvider.messages?[index].yourId) {
                               return YourMessageCard(
@@ -231,10 +227,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             }
                           },
                         ),
-                      )
-                      // decoration: BoxDecoration(color: Colors.green),
-                      ),
-                // const SizedBox(height: 20),
+                      )),
                 Container(
                   margin: defaultTargetPlatform == TargetPlatform.android
                       ? EdgeInsets.only(left: 10, right: 10, top: 10)
@@ -258,23 +251,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                 left: 15,
                                 right: 15,
                               ),
-                              // labelText: "Message",
-                              // counterStyle: TextStyle(
-                              //   color: Color(0xff9a00e6),
-                              // ),
-                              // labelStyle: TextStyle(
-                              //   color: Color(0xff9a00e6),
-                              // ),
-                              // border: OutlineInputBorder(
-                              //   borderRadius: BorderRadius.circular(15),
-                              // ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide: BorderSide(
                                   color: Colors.black,
                                 ),
                               ),
-                              // hintText: "Password",
                               focusedBorder: OutlineInputBorder(
                                 gapPadding: 5,
                                 borderRadius: BorderRadius.circular(30),

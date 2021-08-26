@@ -14,7 +14,6 @@ class LivesInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -31,7 +30,6 @@ class LivesInScreen extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              // margin: EdgeInsets.only(bottom: 30),
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
@@ -43,9 +41,6 @@ class LivesInScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 50,
-            // ),
             Container(
               margin: EdgeInsets.only(top: 30),
               alignment: Alignment.center,
@@ -62,9 +57,7 @@ class LivesInScreen extends StatelessWidget {
                     contentPadding: EdgeInsets.only(left: 30, right: 30),
                     labelText:
                         "Example: São Paulo, Brazil, New York, United States",
-                    // counterStyle: TextStyle(
-                    //   color: Color(0xff9a00e6),
-                    // ),
+                    
                     labelStyle: TextStyle(
                       color: Color(0xff9a00e6),
                     ),
@@ -96,7 +89,6 @@ class LivesInScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-
             Container(
               width: MediaQuery.of(context).size.width * 0.8,
               margin: EdgeInsets.only(left: 25, right: 25),
@@ -109,7 +101,7 @@ class LivesInScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff9a00e6),
                   elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
+                  
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -120,8 +112,7 @@ class LivesInScreen extends StatelessWidget {
                       builder: (_) => SchoolScreen(),
                     ),
                   );
-                }, /* ??
-                    null, */
+                }, 
               ),
             )
           ],

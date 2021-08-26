@@ -1,5 +1,5 @@
 import 'package:be_free_v1/Models/User.dart';
-import 'package:be_free_v1/Providers/ProviderImage.dart';
+import 'package:be_free_v1/Providers/UserPhotoProvider.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';
@@ -52,12 +52,9 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
   }
 
   void onImageSelected(io.File image) async {
-    // List<dynamic> list = [];
-    // list.add(image);
-
-    await Provider.of<ProviderImage>(context, listen: false)
+    await Provider.of<UserPhotoProvider>(context, listen: false)
         .uploadImage(widget.user!.id!, image, widget.user!.token);
-    if (Provider.of<ProviderImage>(context, listen: false).isUploaded) {
+    if (Provider.of<UserPhotoProvider>(context, listen: false).isUploaded) {
       return showDialog(
         context: context,
         builder: (_) {
@@ -103,7 +100,7 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
         },
       );
     }
-    if (Provider.of<ProviderImage>(context, listen: false).hasError) {
+    if (Provider.of<UserPhotoProvider>(context, listen: false).hasError) {
       return showDialog(
         context: context,
         builder: (_) {
@@ -141,7 +138,7 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
                       size: 80,
                     ),
                     Text(
-                        "${Provider.of<ProviderImage>(context, listen: false).error}"),
+                        "${Provider.of<UserPhotoProvider>(context, listen: false).error}"),
                   ],
                 ),
               ),
@@ -155,7 +152,7 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      await Provider.of<ProviderImage>(context, listen: false);
+      await Provider.of<UserPhotoProvider>(context, listen: false);
     });
     super.initState();
   }

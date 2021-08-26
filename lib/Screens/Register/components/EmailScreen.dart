@@ -1,10 +1,7 @@
-import 'package:be_free_v1/Providers/LoginProvider.dart';
 import 'package:be_free_v1/Providers/RegisterProvider.dart';
 import 'package:be_free_v1/Screens/Register/components/BirthdayScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_holo_date_picker/date_picker_theme.dart';
-import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:provider/provider.dart';
 
 class EmailScreen extends StatefulWidget {
@@ -44,7 +41,6 @@ class _EmailScreenState extends State<EmailScreen> {
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              // margin: EdgeInsets.only(bottom: 30),
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
@@ -56,9 +52,6 @@ class _EmailScreenState extends State<EmailScreen> {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 50,
-            // ),
             Container(
               margin: EdgeInsets.only(top: 30),
               alignment: Alignment.center,
@@ -74,9 +67,6 @@ class _EmailScreenState extends State<EmailScreen> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 30, right: 30),
                     labelText: "Email",
-                    // counterStyle: TextStyle(
-                    //   color: Color(0xff9a00e6),
-                    // ),
                     labelStyle: TextStyle(
                       color: Color(0xff9a00e6),
                     ),
@@ -87,7 +77,6 @@ class _EmailScreenState extends State<EmailScreen> {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(color: Color(0xFF9a00e6)),
                     ),
-
                     focusedBorder: OutlineInputBorder(
                       gapPadding: 5,
                       borderRadius: BorderRadius.circular(10),
@@ -108,7 +97,6 @@ class _EmailScreenState extends State<EmailScreen> {
             const SizedBox(
               height: 20,
             ),
-
             Container(
               width: MediaQuery.of(context).size.width * 0.8,
               margin: EdgeInsets.only(left: 25, right: 25),
@@ -121,7 +109,6 @@ class _EmailScreenState extends State<EmailScreen> {
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff9a00e6),
                   elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -136,8 +123,7 @@ class _EmailScreenState extends State<EmailScreen> {
                             builder: (_) => BirthdayScreen(),
                           ),
                         );
-                      }, /* ??
-                    null, */
+                      },
               ),
             )
           ],

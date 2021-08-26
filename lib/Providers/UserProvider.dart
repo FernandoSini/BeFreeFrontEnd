@@ -37,4 +37,16 @@ class UserProvider extends ChangeNotifier {
       } else {}
     }
   }
+
+  void updateDataSecurePlace(User? userUpdated) async {
+    if (defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS) {
+      if (user != null) {
+        await storage.delete(key: "user");
+        await storage.write(
+            key: "user", value: jsonEncode(userUpdated?.toJson()));
+        notifyListeners();
+      } else {}
+    }
+  }
 }

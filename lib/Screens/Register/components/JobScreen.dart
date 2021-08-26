@@ -11,7 +11,6 @@ class JobScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -39,9 +38,6 @@ class JobScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 50,
-            // ),
             Container(
               margin: EdgeInsets.only(top: 50),
               alignment: Alignment.center,
@@ -57,9 +53,6 @@ class JobScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 30, right: 30),
                     labelText: "Job",
-                    // counterStyle: TextStyle(
-                    //   color: Color(0xff9a00e6),
-                    // ),
                     labelStyle: TextStyle(
                       color: Color(0xff9a00e6),
                     ),
@@ -70,7 +63,6 @@ class JobScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(color: Color(0xFF9a00e6)),
                     ),
-
                     focusedBorder: OutlineInputBorder(
                       gapPadding: 5,
                       borderRadius: BorderRadius.circular(10),
@@ -91,7 +83,6 @@ class JobScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-
             Container(
               width: MediaQuery.of(context).size.width * 0.8,
               margin: EdgeInsets.only(left: 25, right: 25),
@@ -104,7 +95,6 @@ class JobScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff9a00e6),
                   elevation: 5,
-                  // backgroundColor: Color(0xff9a00e6) ?? Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),

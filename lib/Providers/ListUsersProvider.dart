@@ -30,11 +30,8 @@ class ListUsersProvider extends ChangeNotifier {
         },
       );
       if (response.statusCode == 200) {
-        print("aqui");
-        // var body = jsonDecode(
-        //     Utf8Decoder(allowMalformed: true).convert(response.bodyBytes));
         var body = jsonDecode(response.body);
-        print(body);
+
         for (var data in body) {
           if (userListFromAPi!.contains(User.fromJson(data))) {
           } else {
@@ -48,13 +45,12 @@ class ListUsersProvider extends ChangeNotifier {
         return userListFromAPi;
       } else {
         setErr(true);
-        print(response.statusCode);
+
         setError(jsonDecode(response.body)["error"]);
         setLoading(false);
         return Future.error(errorData);
       }
     } on Exception catch (e) {
-      print(e.toString());
       setLoading(false);
       setErr(true);
       setError(e.toString());

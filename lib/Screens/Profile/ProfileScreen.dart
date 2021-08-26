@@ -37,13 +37,11 @@ class ProfileScreen extends StatelessWidget {
       body: LayoutBuilder(
         builder: (context, constraints) => Container(
           height: MediaQuery.of(context).size.height,
-          // color: Colors.green,
           child: Container(
             child: ListView(
               physics: BouncingScrollPhysics(),
               children: [
                 Container(
-                  // color: Colors.blue,
                   margin: EdgeInsets.only(top: 20, left: 30, right: 30),
                   height: MediaQuery.of(context).size.height * 0.3,
                   width: MediaQuery.of(context).size.width * 0.3,
@@ -76,7 +74,6 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  // color: Colors.green,
                   margin: EdgeInsets.only(top: 5),
                   height: (user?.about != null && user!.about!.length >= 100)
                       ? MediaQuery.of(context).size.height * 0.2
@@ -158,29 +155,6 @@ class ProfileScreen extends StatelessWidget {
                             ),
                       Row(
                         children: [
-                          // Container(
-                          //   margin: EdgeInsets.only(top: 20, left: 20),
-                          //   child: Icon(
-                          //     Icons.info_outlined,
-                          //     size: 30,
-                          //     color: Colors.pinkAccent[400],
-                          //   ),
-                          //   height: 40,
-                          //   width: 40,
-                          //   decoration: BoxDecoration(
-                          //     boxShadow: [
-                          //       BoxShadow(
-                          //         color: Colors.grey.withOpacity(0.2),
-                          //         spreadRadius: 1,
-                          //         blurRadius: 5,
-                          //         offset: Offset(
-                          //             2, 2), // changes position of shadow
-                          //       ),
-                          //     ],
-                          //     color: Colors.white,
-                          //     shape: BoxShape.circle,
-                          //   ),
-                          // ),
                           Container(
                             margin: EdgeInsets.only(left: 30, top: 10),
                             child: Text(
@@ -234,7 +208,6 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        // color: Colors.red,
                         margin: EdgeInsets.only(left: 15, right: 15),
                         padding: EdgeInsets.only(
                             top: 15, bottom: 15, left: 15, right: 15),
@@ -251,10 +224,8 @@ class ProfileScreen extends StatelessWidget {
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2, crossAxisSpacing: 10),
                           itemBuilder: (context, index) => Container(
-                            //  padding: EdgeInsets.only(right: 30, left: 50),
                             margin: EdgeInsets.only(top: 2, left: 2, right: 2),
                             clipBehavior: Clip.none,
-
                             decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
@@ -271,7 +242,8 @@ class ProfileScreen extends StatelessWidget {
                               image: DecorationImage(
                                 image: user?.photos?[index] == null
                                     ? AssetImage("/assets/avatars/avatar2.png")
-                                    : NetworkImage(user!.photos![index].path!)
+                                    : NetworkImage(
+                                            "http://192.168.0.22:3000/api/${user!.photos![index].path!}")
                                         as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
@@ -285,7 +257,7 @@ class ProfileScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(40),
                                       child: user?.photos?[index] != null
                                           ? Image.network(
-                                              user!.photos![index].path!,
+                                              "http://192.168.0.22:3000/api/${user!.photos![index].path!}",
                                               fit: BoxFit.cover,
                                               height: MediaQuery.of(context)
                                                       .size
@@ -308,6 +280,8 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ],
                   )
+                else
+                  Container()
               ],
             ),
           ),
