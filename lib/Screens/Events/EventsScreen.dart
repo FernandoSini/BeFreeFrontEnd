@@ -46,7 +46,7 @@ class _EventsScreenState extends State<EventsScreen>
         ),
         Container(
           child: Text(
-            "Happening",
+            "Happen",
             style: TextStyle(color: Color(0xFF9a00e6), fontSize: 10),
           ),
         )

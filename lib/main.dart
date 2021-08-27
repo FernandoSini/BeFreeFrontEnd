@@ -15,6 +15,7 @@ import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:be_free_v1/Providers/UserPhotoProvider.dart';
 import 'package:be_free_v1/Providers/YourEventsProvider.dart';
 import 'package:be_free_v1/Screens/Splash/Splash.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Providers/EventsStatusProvider.dart';
@@ -46,10 +47,10 @@ void main() {
         ChangeNotifierProvider(create: (context) => SearchUserProvider()),
         ChangeNotifierProvider(create: (context) => LikesReceivedProvider()),
       ],
-      // child: DevicePreview(
-      //   builder: (_) => MyApp(),
-      // ),
-      child: MyApp(),
+      child: DevicePreview(
+        builder: (_) => MyApp(),
+      ),
+      // child: MyApp(),
     ),
   );
 }
@@ -60,8 +61,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'BeFree',
       debugShowCheckedModeBanner: false,
-      // builder: DevicePreview.appBuilder,
-      // locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      locale: DevicePreview.locale(context),
       home: Splash(),
       // routes: {"/login": (context) => LoginScreen()},
     );

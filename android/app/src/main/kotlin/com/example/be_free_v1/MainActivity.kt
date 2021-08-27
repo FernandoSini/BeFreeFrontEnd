@@ -1,4 +1,4 @@
-package com.example.be_free_v1
+package com.fernandosini.be_free_v1
 
 import io.flutter.embedding.android.FlutterActivity
 

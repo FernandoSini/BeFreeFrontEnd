@@ -204,7 +204,7 @@ class _YourEventsState extends State<YourEvents> {
                                             bottom: 15, left: 10),
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.42,
+                                                0.4,
                                         child: ElevatedButton(
                                           onPressed: () {},
                                           style: ElevatedButton.styleFrom(
@@ -229,7 +229,7 @@ class _YourEventsState extends State<YourEvents> {
                                             bottom: 15, right: 10),
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.42,
+                                                0.4,
                                         child: ElevatedButton(
                                           onPressed: () {
                                             setState(() {

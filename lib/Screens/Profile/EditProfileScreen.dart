@@ -534,7 +534,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             Container(
               height: 55,
-              margin: EdgeInsets.only(left: 40, right: 40),
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 15),
               child: ElevatedButton(
                 child: updateUser.isLoading
                     ? Container(

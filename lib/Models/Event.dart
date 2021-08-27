@@ -123,9 +123,10 @@ class Event {
         json['event_description'] == null ? null : json["event_description"];
     startDate = json["start_date"] == null
         ? null
-        : DateTime.tryParse(json["start_date"]);
-    endDate =
-        json["end_date"] == null ? null : DateTime.tryParse(json["end_date"]);
+        : DateTime.tryParse(json["start_date"])!.toLocal();
+    endDate = json["end_date"] == null
+        ? null
+        : DateTime.tryParse(json["end_date"])!.toLocal();
     eventLocation =
         json['event_location'] == null ? null : json["event_location"];
     eventPhoto = json['event_cover'] != null
@@ -138,30 +139,26 @@ class Event {
     if (this.users != null) {
       data['users'] = this.users!.map((v) => v.toJson()).toList().toString();
     }
-    if(this.eventStatus!=null)
-    data['event_status'] = EnumToString.convertToString(this.eventStatus);
-    if(this.id!=null)
-    data['_id'] = this.id!;
+    if (this.eventStatus != null)
+      data['event_status'] = EnumToString.convertToString(this.eventStatus);
+    if (this.id != null) data['_id'] = this.id!;
     if (this.eventOwner != null) {
       data['event_owner'] = this.eventOwner!.id!;
     }
-    if(this.eventName!=null)
-    data['event_name'] = this.eventName!;
-    if(this.eventDescription!=null)
-    data['event_description'] = this.eventDescription!;
+    if (this.eventName != null) data['event_name'] = this.eventName!;
+    if (this.eventDescription != null)
+      data['event_description'] = this.eventDescription!;
     // data['start_date'] =
     //     DateFormat("dd-MM-yyyy HH:mm:ss").format(this.startDate!).toString();
     // data['end_date'] =
     //     DateFormat("dd-MM-yyyy HH:mm:ss").format(this.endDate!).toString();
-    if(this.startDate!=null)
-    data['start_date'] = this.startDate.toString();
-    if(this.endDate!=null)
-    data['end_date'] = this.endDate.toString();
+    if (this.startDate != null) data['start_date'] = this.startDate!.toString();
+    if (this.endDate != null) data['end_date'] = this.endDate!.toString();
     // if (this.eventPhoto != null) {
     //   data['event_cover'] = this.eventPhoto!.toJson().toString();
     // }
-    if(this.eventLocation!=null)
-    data['event_location'] = this.eventLocation!;
+    if (this.eventLocation != null)
+      data['event_location'] = this.eventLocation!;
     return data;
   }
 }

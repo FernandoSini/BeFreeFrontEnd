@@ -1,9 +1,11 @@
+import 'package:be_free_v1/Models/MessageStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/LikesReceivedProvider.dart';
 import 'package:be_free_v1/Providers/MatchProvider.dart';
 import 'package:be_free_v1/Screens/Chat/ChatScreen.dart';
 import 'package:be_free_v1/Screens/Profile/ProfileScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class MatchesScreen extends StatefulWidget {
@@ -16,7 +18,7 @@ class MatchesScreen extends StatefulWidget {
 
 class _MatchesScreenState extends State<MatchesScreen> {
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<MatchProvider>(context, listen: false)
           .getMatches(widget.user!.token!, widget.user!.id!);
@@ -45,6 +47,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.height);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -165,7 +168,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     }
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
-                      
                       physics: BouncingScrollPhysics(),
                       itemCount: matchProvider.matchData?.length,
                       itemBuilder: (context, index) => InkWell(
@@ -229,43 +231,112 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Container(
-                                              margin: EdgeInsets.only(left: 10),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 20),
-                                                    child: matchProvider
+                                              margin: EdgeInsets.only(
+                                                  left: 10, right: 20),
+                                              child: Container(
+                                                margin: EdgeInsets.only(
+                                                  bottom: 20,
+                                                ),
+                                                child: matchProvider
+                                                            .matches![index]
+                                                            .user1
+                                                            ?.id ==
+                                                        widget.user?.id
+                                                    ? Container(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.7,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              "${matchProvider.matches?[index].user2?.username} ",
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 18,
+                                                                color: Colors
+                                                                        .pinkAccent[
+                                                                    400],
+                                                              ),
+                                                            ),
+                                                            if (matchProvider
                                                                 .matches![index]
-                                                                .user1
-                                                                ?.id ==
-                                                            widget.user?.id
-                                                        ? Text(
-                                                            "${matchProvider.matches?[index].user2?.username} ${matchProvider.matches?[index].user2?.lastname}",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 18,
-                                                              color: Colors
-                                                                      .pinkAccent[
-                                                                  400],
+                                                                .messages!
+                                                                .isNotEmpty)
+                                                              Container(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .only(
+                                                                  top: 3,
+                                                                ),
+                                                                child: Text(
+                                                                  DateFormat("HH:mm").format(matchProvider
+                                                                      .matches![
+                                                                          index]
+                                                                      .messages!
+                                                                      .last
+                                                                      .timestamp!
+                                                                      .toLocal()),
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.7,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Container(
+                                                              child: Text(
+                                                                "${matchProvider.matches?[index].user1?.username} ",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 18,
+                                                                  color: Colors
+                                                                          .pinkAccent[
+                                                                      400],
+                                                                ),
+                                                              ),
                                                             ),
-                                                          )
-                                                        : Text(
-                                                            "${matchProvider.matches?[index].user1?.username} ${matchProvider.matches?[index].user1?.lastname}",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 18,
-                                                              color: Colors
-                                                                      .pinkAccent[
-                                                                  400],
-                                                            ),
-                                                          ),
-                                                  ),
-                                                ],
+                                                            if (matchProvider
+                                                                .matches![index]
+                                                                .messages!
+                                                                .isNotEmpty)
+                                                              Container(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .only(
+                                                                  top: 3,
+                                                                ),
+                                                                child: Text(
+                                                                  DateFormat("HH:mm").format(matchProvider
+                                                                      .matches![
+                                                                          index]
+                                                                      .messages!
+                                                                      .last
+                                                                      .timestamp!
+                                                                      .toLocal()),
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
+                                                      ),
                                               ),
                                             ),
                                             Container(
@@ -274,16 +345,46 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                 children: [
                                                   Flexible(
                                                     child: Container(
+                                                      padding: EdgeInsets.only(
+                                                          right: 70),
                                                       margin: EdgeInsets.only(
                                                           bottom: 10),
                                                       child: matchProvider
                                                               .matches![index]
                                                               .messages!
                                                               .isNotEmpty
-                                                          ? Text(
-                                                              "${matchProvider.matches?[index].messages?.last.content}",
-                                                              style: TextStyle(
-                                                                  fontSize: 18),
+                                                          ? Row(
+                                                              children: [
+                                                                matchProvider
+                                                                            .matches![
+                                                                                index]
+                                                                            .messages!
+                                                                            .last
+                                                                            .messageStatus ==
+                                                                        MessageStatus
+                                                                            .DELIVERED
+                                                                    ? Icon(
+                                                                        Icons
+                                                                            .done_all,
+                                                                        color: Colors
+                                                                            .blueAccent,
+                                                                      )
+                                                                    : Icon(Icons
+                                                                        .done),
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    "${matchProvider.matches?[index].messages?.last.content}",
+                                                                    overflow: matchProvider.matches![index].messages!.last.content!.length >=
+                                                                            15
+                                                                        ? TextOverflow
+                                                                            .ellipsis
+                                                                        : null,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            18),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             )
                                                           : Text(
                                                               "No messages sent/received yet",
@@ -316,7 +417,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     );
                   } else {
                     return Container(
-                      
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

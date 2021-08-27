@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:be_free_v1/Models/Match.dart';
 import 'package:be_free_v1/Models/Message.dart';
 import 'package:be_free_v1/Models/MessageStatus.dart';
@@ -9,16 +6,12 @@ import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/MessagesProvider.dart';
 import 'package:be_free_v1/Screens/Chat/component/YourMessageCard.dart';
 import 'package:be_free_v1/Widget/FullScreenWidget.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:stomp_dart_client/stomp.dart';
-import 'package:stomp_dart_client/stomp_config.dart';
-import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
 import 'component/ReplyCard.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -36,27 +29,37 @@ class _ChatScreenState extends State<ChatScreen> {
   StompClient? stompClient;
   TextEditingController controllerMessage = TextEditingController(text: "");
   ScrollController _scrollController = ScrollController();
-
+  double? scrollPosition = 0;
   late IO.Socket socket;
   StreamController get controller => StreamController<Message>();
 
   void connect() {
-    socket = IO.io("http://192.168.0.22:3000/match/chat",
+    socket = IO.io("http://192.168.0.22:3000/api/match/chat",
         IO.OptionBuilder().setTransports(['websocket', 'polling']).build());
     socket.onConnect((data) {
       print("connected: " + socket.id! + " data: " + data.toString());
-    
     });
-  
+
     socket.emit("signIn", widget.you!.id);
     socket.onError((data) => print("error:" + data.toString()));
 
-    
-    // _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-    //     duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: Duration(seconds: 1), curve: Curves.bounceIn);
+    }
+    // _scrollController.jumpTo(_scrollController.position.minScrollExtent);
+    // Timer(Duration(seconds: 1), () {
+    //   _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    // });
     socket.on("sendMessage", (data) {
       Provider.of<MessagesProvider>(context, listen: false)
           .setMessages(Message.fromJson(data));
+    });
+  }
+
+  void scrollListener() {
+    setState(() {
+      scrollPosition = _scrollController.position.pixels;
     });
   }
 
@@ -64,11 +67,17 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     connect();
     loadMessages();
+    _scrollController.addListener(scrollListener);
     super.initState();
   }
 
   @override
   void didChangeDependencies() async {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: Duration(seconds: 1), curve: Curves.easeIn);
+      // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
     super.didChangeDependencies();
   }
 
@@ -119,6 +128,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     final messageProvider = context.watch<MessagesProvider>();
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -146,10 +156,8 @@ class _ChatScreenState extends State<ChatScreen> {
                               ? Image.network(
                                   "http://192.168.0.22:3000/api/${widget.user!.avatarProfile!.path!}",
                                   fit: BoxFit.cover,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.5,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.95,
+                                  height: screenSize.height * 0.5,
+                                  width: screenSize.width * 0.95,
                                 )
                               : Image.asset("assets/avatars/avatar2.png"),
                         ),
@@ -184,14 +192,14 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: screenSize.height,
         child: Container(
           child: SingleChildScrollView(
             child: Column(
               children: [
                 if (messageProvider.isLoading)
                   Container(
-                    height: MediaQuery.of(context).size.height,
+                    height: screenSize.height,
                     alignment: Alignment.center,
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation(Colors.purple),
@@ -200,11 +208,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 else
                   Container(
                       height: defaultTargetPlatform == TargetPlatform.iOS
-                          ? MediaQuery.of(context).size.height * 0.77
-                          : MediaQuery.of(context).size.height * 0.79,
+                          ? screenSize.height * 0.77
+                          : screenSize.height * 0.79,
                       clipBehavior: Clip.none,
                       child: Container(
                         child: ListView.builder(
+                          shrinkWrap: true,
                           controller: _scrollController,
                           physics: BouncingScrollPhysics(),
                           itemCount: messageProvider.messages?.length != null
@@ -214,6 +223,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             if (widget.you!.id ==
                                 messageProvider.messages?[index].yourId) {
                               return YourMessageCard(
+                                  messageStatus: messageProvider
+                                      .messages?[index].messageStatus,
                                   content:
                                       messageProvider.messages?[index].content,
                                   timestamp: messageProvider
@@ -239,7 +250,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: Container(
                           child: TextFormField(
                             maxLines: null,
-                            autofocus: true,
+                            // autofocus: true,
                             controller: controllerMessage,
                             scrollPhysics: BouncingScrollPhysics(),
                             keyboardType: TextInputType.text,
