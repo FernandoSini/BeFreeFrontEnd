@@ -47,10 +47,10 @@ void main() {
         ChangeNotifierProvider(create: (context) => SearchUserProvider()),
         ChangeNotifierProvider(create: (context) => LikesReceivedProvider()),
       ],
-      child: DevicePreview(
-        builder: (_) => MyApp(),
-      ),
-      // child: MyApp(),
+      // child: DevicePreview(
+      //   builder: (_) => MyApp(),
+      // ),
+      child: MyApp(),
     ),
   );
 }
