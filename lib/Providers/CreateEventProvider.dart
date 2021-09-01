@@ -76,7 +76,7 @@ class CreateEventProvider extends ChangeNotifier {
         setErrorText(
           json.decode(
             Utf8Decoder(allowMalformed: true).convert(response.bodyBytes),
-          ),
+          )["error"],
         );
         return Future.error(errorData!);
       }
@@ -88,12 +88,12 @@ class CreateEventProvider extends ChangeNotifier {
     }
   }
 
-  void setEventName(value) {
+  void setEventName(String? value) {
     eventName = value;
     notifyListeners();
   }
 
-  void setEventDescription(value) {
+  void setEventDescription(String? value) {
     eventDescription = value;
     notifyListeners();
   }
@@ -103,7 +103,7 @@ class CreateEventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setEventLocation(value) {
+  void setEventLocation(String? value) {
     eventLocation = value;
     notifyListeners();
   }
@@ -118,9 +118,7 @@ class CreateEventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setError(
-    bool? value,
-  ) {
+  void setError(bool? value) {
     err = value;
     notifyListeners();
   }
@@ -130,13 +128,24 @@ class CreateEventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setEventCreated(bool newValue) {
+  void setEventCreated(bool? newValue) {
     eventCreated = newValue;
     notifyListeners();
   }
 
-  void setLoading(bool newValue) {
+  void setLoading(bool? newValue) {
     loading = newValue;
     notifyListeners();
+  }
+
+  void clear() {
+    setLoading(false);
+    setEventCover(null);
+    setEventCreated(null);
+    setEventDescription(null);
+    setEventEndDate(null);
+    setEventStartDate(null);
+    setEventName(null);
+    setEventLocation(null);
   }
 }

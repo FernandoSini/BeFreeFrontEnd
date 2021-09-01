@@ -23,11 +23,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
-        await Provider.of<CreateEventProvider>(context, listen: false);
+        Provider.of<CreateEventProvider>(context, listen: false).clear();
       }
     });
+
     super.initState();
   }
 
@@ -130,13 +131,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   void dispose() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
-        Provider.of<CreateEventProvider>(context, listen: false)
-            .setEventStartDate(null);
-        Provider.of<CreateEventProvider>(context, listen: false)
-            .setEventEndDate(null);
-        Provider.of<CreateEventProvider>(context, listen: false).dispose();
+        Provider.of<CreateEventProvider>(context, listen: false).clear();
       }
     });
+
     super.dispose();
   }
 
@@ -398,24 +396,24 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          onPressed: () async {
-                            await createEventProvider.createEvent(
-                                widget.eventOwner!.token, widget.eventOwner!);
-                            if (createEventProvider.isEventCreated!) {
-                              await showDialogSuccess();
-                              eventNameController.clear();
-                              eventLocationController.clear();
-                              eventDescriptionController.clear();
-                              createEventProvider.setEventName(null);
-                              createEventProvider.setEventLocation(null);
-                              createEventProvider.setEventDescription(null);
-                              createEventProvider.setEventStartDate(null);
-                              createEventProvider.setEventEndDate(null);
-                            }
-                            if (createEventProvider.hasError!) {
-                              await showErrorDialog();
-                            }
-                          },
+                          onPressed: (createEventProvider.endDate == null ||
+                                  createEventProvider.startDate == null)
+                              ? null
+                              : () async {
+                                  await createEventProvider.createEvent(
+                                      widget.eventOwner!.token,
+                                      widget.eventOwner!);
+                                  if (createEventProvider.isEventCreated!) {
+                                    await showDialogSuccess();
+                                    eventNameController.clear();
+                                    eventLocationController.clear();
+                                    eventDescriptionController.clear();
+                                    createEventProvider.clear();
+                                  }
+                                  if (createEventProvider.hasError!) {
+                                    await showErrorDialog();
+                                  }
+                                },
                         );
                       },
                     ),

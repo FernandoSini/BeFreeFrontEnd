@@ -74,6 +74,9 @@ import 'package:be_free_v1/Models/Avatar.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/AvatarProvider.dart';
 import 'package:be_free_v1/Providers/UserPhotoProvider.dart';
+import 'package:be_free_v1/Providers/UserProvider.dart';
+import 'package:be_free_v1/Screens/Base/BaseScreen.dart';
+import 'package:be_free_v1/Screens/Home/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';
@@ -92,7 +95,7 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
   Future<void> _getImageFromCamera(BuildContext context) async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedImage == null) return;
+    if (pickedImage == null) return null;
     final image = io.File(pickedImage.path);
     imageSelected(image, context);
   }
@@ -100,7 +103,7 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
   Future<void> _getImageFromGallery(BuildContext context) async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage == null) return;
+    if (pickedImage == null) return null;
     final image = io.File(pickedImage.path);
 
     imageSelected(image, context);
@@ -121,24 +124,31 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
       ),
     );
     if (imageCropped != null) {
+      Provider.of<AvatarProvider>(context, listen: false)
+          .setImage(imageCropped);
       onImageSelected(imageCropped);
     }
   }
 
   void onImageSelected(io.File image) async {
-    
     if (widget.user?.avatarProfile == null) {
-      await Provider.of<AvatarProvider>(context, listen: false)
+      var newAvatar = await Provider.of<AvatarProvider>(context, listen: false)
           .uploadAvatar(widget.user!.id!, image, widget.user!.token);
       if (Provider.of<AvatarProvider>(context, listen: false).isUploaded) {
+        widget.user!.avatarProfile = newAvatar;
+        Provider.of<UserProvider>(context, listen: false)
+            .updateDataSecurePlace(widget.user);
         await showSuccessDialog();
       } else {
         await showErrorDialog();
       }
     } else {
-      await Provider.of<AvatarProvider>(context, listen: false)
-          .changeAvatar(widget.user!.id!, image, widget.user!.token);
+      var newAvatar = await Provider.of<AvatarProvider>(context, listen: false)
+          .changeAvatar(widget.user!.id!, widget.user!.token);
+      widget.user!.avatarProfile = newAvatar;
       if (Provider.of<AvatarProvider>(context, listen: false).isUpdated) {
+        Provider.of<UserProvider>(context, listen: false)
+            .updateDataSecurePlace(widget.user);
         await showSuccessDialog();
       } else {
         await showErrorDialog();
@@ -245,8 +255,17 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await Provider.of<UserPhotoProvider>(context, listen: false);
+      Provider.of<AvatarProvider>(context, listen: false).setImage(null);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (mounted) Provider.of<AvatarProvider>(context, listen: false).clear();
+    });
+    super.dispose();
   }
 
   @override

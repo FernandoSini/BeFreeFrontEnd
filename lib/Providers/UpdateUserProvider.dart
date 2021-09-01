@@ -182,4 +182,18 @@ class UpdateUserProvider extends ChangeNotifier {
     err = value;
     notifyListeners();
   }
+
+  void clear() {
+    setBirthday(null);
+    setNewAbout(null);
+    setNewCompany(null);
+    setNewEmail(null);
+    setNewFirstName(null);
+    setNewGender(null);
+    setNewLastName(null);
+    setNewUsername(null);
+    setNewJob(null);
+    setNewSchool(null);
+    setNewLivesIn(null);
+  }
 }

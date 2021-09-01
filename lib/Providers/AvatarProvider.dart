@@ -1,3 +1,5 @@
+import 'package:be_free_v1/Models/AvatarProfile.dart';
+import 'package:be_free_v1/Models/User.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -17,8 +19,11 @@ class AvatarProvider extends ChangeNotifier {
   bool get isUploaded => uploaded;
   bool updated = false;
   bool get isUpdated => updated;
+  File? image;
+  File? get imageData => image;
 
-  Future<void> uploadAvatar(String yourId, File? avatar, String? token) async {
+  Future<AvatarProfile?> uploadAvatar(
+      String yourId, File? avatar, String? token) async {
     setLoading(true);
     String url = "http://192.168.0.22:3000/api/users/$yourId/upload/avatar/";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
@@ -46,6 +51,10 @@ class AvatarProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         setLoading(false);
         setUploaded(true);
+        AvatarProfile avatarProfile =
+            AvatarProfile.fromJson(jsonDecode(response.body));
+        notifyListeners();
+        return avatarProfile;
       } else {
         setLoading(false);
         setUploaded(false);
@@ -62,7 +71,7 @@ class AvatarProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> changeAvatar(String yourId, File? avatar, String? token) async {
+  Future<AvatarProfile> changeAvatar(String yourId, String? token) async {
     String url = "http://192.168.0.22:3000/api/users/avatar/update/$yourId";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
@@ -80,8 +89,8 @@ class AvatarProvider extends ChangeNotifier {
 
       var request = new http.MultipartRequest("PUT", Uri.parse(url))
         ..headers.addAll(headers)
-        ..files.add(await http.MultipartFile.fromPath("img", avatar!.path,
-            contentType: avatar.path.endsWith(".jpg")
+        ..files.add(await http.MultipartFile.fromPath("img", imageData!.path,
+            contentType: imageData!.path.endsWith(".jpg")
                 ? MediaType("image", "jpeg")
                 : MediaType("image", "png")));
 
@@ -91,6 +100,10 @@ class AvatarProvider extends ChangeNotifier {
         setError(false);
         setErrorText("");
         setUpdated(true);
+        AvatarProfile avatarProfile =
+            AvatarProfile.fromJson(jsonDecode(response.body));
+        notifyListeners();
+        return avatarProfile;
       } else {
         setLoading(false);
         setError(true);
@@ -98,7 +111,7 @@ class AvatarProvider extends ChangeNotifier {
         setErrorText(jsonDecode(response.body)["error"]);
         return Future.error(errorData);
       }
-    } on Exception catch (e) {
+    } catch (e) {
       setLoading(false);
       setError(true);
       setUpdated(false);
@@ -130,5 +143,14 @@ class AvatarProvider extends ChangeNotifier {
   void setErrorText(String value) {
     errorText = value;
     notifyListeners();
+  }
+
+  void setImage(File? newValue) {
+    image = newValue;
+    notifyListeners();
+  }
+
+  void clear() {
+    setImage(null);
   }
 }

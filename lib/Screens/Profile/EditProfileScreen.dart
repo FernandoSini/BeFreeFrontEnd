@@ -135,13 +135,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
         Provider.of<UpdateUserProvider>(context, listen: false).dispose();
-      }
-    });
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if (mounted) {
+        Provider.of<UpdateUserProvider>(context, listen: false).clear();
         Provider.of<UserProvider>(context, listen: false).dispose();
       }
     });
+
     super.dispose();
   }
 
@@ -549,21 +547,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   var userUpdated = await updateUser.updateUser(
                       widget.userId!, widget.token!);
                   if (updateUser.isUpdated) {
-                    await storage.delete(key: "user");
-                    print(await storage.read(key: "user"));
                     userProvider.updateDataSecurePlace(userUpdated);
                     await showDialogSuccess();
-                    updateUser.setBirthday(null);
-                    updateUser.setNewAbout(null);
-                    updateUser.setNewCompany(null);
-                    updateUser.setNewEmail(null);
-                    updateUser.setNewFirstName(null);
-                    updateUser.setNewGender(null);
-                    updateUser.setNewLastName(null);
-                    updateUser.setNewUsername(null);
-                    updateUser.setNewJob(null);
-                    updateUser.setNewSchool(null);
-                    updateUser.setNewLivesIn(null);
+                    updateUser.clear();
                     controllerAbout.clear();
                     controllerBirthday.clear();
                     controllerCompany.clear();

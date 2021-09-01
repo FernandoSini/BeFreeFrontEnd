@@ -39,11 +39,11 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
-		<key>NSAppTransportSecurity</key>
+		<!-- <key>NSAppTransportSecurity</key>
 		<dict>
 			<key>NSAllowsArbitraryLoads</key>
 			<true />
-		</dict>
+		</dict> -->
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false />
 		<key>NSPhotoLibraryUsageDescription</key>

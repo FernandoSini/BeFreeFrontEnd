@@ -43,6 +43,15 @@ class YourProfileScreen extends StatelessWidget {
             color: Colors.pink[400],
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.exit_to_app_rounded),
+            onPressed: () => _logout(context),
+          )
+        ],
+        actionsIconTheme: IconThemeData(
+          color: Color(0xFF9a00e6),
+        ),
       ),
       body: Responsive.isSmallScreen(context)
           ? Container(
@@ -60,6 +69,44 @@ class YourProfileScreen extends StatelessWidget {
                                 user: userData,
                               ),
                             ),
+                          );
+                        },
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                  "DELETE AVATAR",
+                                  style: TextStyle(
+                                    color: Color(0xFF9a00e6),
+                                  ),
+                                ),
+                                content: Text(
+                                    "Hey, are you sure that you want to delete avatar?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "DELETE",
+                                      style: TextStyle(
+                                          color: Colors.pinkAccent[400]),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "CANCEL",
+                                      style: TextStyle(
+                                        color: Colors.pinkAccent[400],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
                         borderRadius: BorderRadius.circular(65),
@@ -180,29 +227,30 @@ class YourProfileScreen extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  Container(
-                    height: 50,
-                    margin: EdgeInsets.only(left: 80, right: 80),
-                    child: ElevatedButton.icon(
-                      icon: Icon(Icons.exit_to_app_sharp),
-                      label: Text("Logout"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF9a00e6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(22),
-                        ),
-                      ),
-                      onPressed: () => _logout(context),
-                    ),
-                  )
+                  // Container(
+                  //   height: 50,
+                  //   margin: EdgeInsets.only(left: 80, right: 80),
+                  //   child: ElevatedButton.icon(
+                  //     icon: Icon(Icons.exit_to_app_sharp),
+                  //     label: Text("Logout"),
+                  //     style: ElevatedButton.styleFrom(
+                  //       primary: Color(0xFF9a00e6),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(22),
+                  //       ),
+                  //     ),
+                  //     onPressed: () => _logout(context),
+                  //   ),
+                  // )
                 ],
               ),
             )
           : Container(
               child: ListView(
+                physics: NeverScrollableScrollPhysics(),
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 35),
+                    margin: EdgeInsets.only(top: 15),
                     child: Center(
                       child: InkWell(
                         onTap: () {
@@ -332,21 +380,21 @@ class YourProfileScreen extends StatelessWidget {
                   const SizedBox(
                     height: 50,
                   ),
-                  Container(
-                    height: 50,
-                    margin: EdgeInsets.only(left: 80, right: 80),
-                    child: ElevatedButton.icon(
-                      icon: Icon(Icons.exit_to_app_sharp),
-                      label: Text("Logout"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF9a00e6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(22),
-                        ),
-                      ),
-                      onPressed: () => _logout(context),
-                    ),
-                  )
+                  // Container(
+                  //   height: 50,
+                  //   margin: EdgeInsets.only(left: 80, right: 80),
+                  //   child: ElevatedButton.icon(
+                  //     icon: Icon(Icons.exit_to_app_sharp),
+                  //     label: Text("Logout"),
+                  //     style: ElevatedButton.styleFrom(
+                  //       primary: Color(0xFF9a00e6),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(22),
+                  //       ),
+                  //     ),
+                  //     onPressed: () => _logout(context),
+                  //   ),
+                  // )
                 ],
               ),
             ),

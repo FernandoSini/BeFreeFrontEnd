@@ -1,6 +1,7 @@
 import 'package:be_free_v1/Providers/RegisterProvider.dart';
 import 'package:be_free_v1/Screens/Base/BaseScreen.dart';
 import 'package:be_free_v1/Providers/LoginProvider.dart';
+import 'package:be_free_v1/Screens/ForgotPassword/VerifyUserScreen.dart';
 import 'package:be_free_v1/Screens/Register/RegisterScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = TextEditingController(text: "");
   TextEditingController passwordController = TextEditingController(text: "");
-
+  bool isObscure = false;
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
@@ -112,6 +113,22 @@ class _LoginScreenState extends State<LoginScreen> {
               margin: EdgeInsets.only(left: 25, right: 25),
               child: TextFormField(
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                        isObscure ? Icons.visibility : Icons.visibility_off),
+                    color: isObscure ? Colors.grey : Color(0xff9a00e6),
+                    onPressed: () {
+                      if (!isObscure) {
+                        setState(() {
+                          isObscure = true;
+                        });
+                      } else {
+                        setState(() {
+                          isObscure = false;
+                        });
+                      }
+                    },
+                  ),
                   contentPadding: EdgeInsets.only(left: 30, right: 30),
                   labelText: "Password",
                   labelStyle: TextStyle(
@@ -134,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
+                obscureText: isObscure,
                 controller: passwordController,
                 onChanged: (value) {
                   loginProvider.setPassword(value);
@@ -142,7 +159,26 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(
-              height: 50,
+              height: 20,
+            ),
+            Container(
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  primary: Color(0xff9a00e6),
+                ),
+                child: Text("Forgot your password?"),
+                onPressed: () {
+                  loginProvider.setError(false);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => VerifyUserScreen(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 20,
             ),
             Container(
               margin: EdgeInsets.only(left: 25, right: 25),
@@ -179,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   registerProvider.setIsRegistered(false);
                   registerProvider.setHasError(false);
                   var userData = await loginProvider.login(
-                      loginProvider.userNameData!, loginProvider.passwordData!);
+                      loginProvider.userNameData, loginProvider.passwordData);
                   if (loginProvider.isLogged) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(

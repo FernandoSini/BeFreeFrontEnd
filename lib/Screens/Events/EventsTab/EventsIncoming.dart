@@ -33,6 +33,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
     return Container(
       margin: EdgeInsets.only(top: 10, left: 5, right: 5),
       child: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         child: Column(
           children: [
             if (Responsive.isTooLargeScreen(context))
@@ -239,6 +240,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                           });
                     } else {
                       return Container(
+                        height: MediaQuery.of(context).size.height,
                         child: Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation(Colors.red),
@@ -453,6 +455,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                           });
                     } else {
                       return Container(
+                        height: MediaQuery.of(context).size.height,
                         child: Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation(Colors.red),
@@ -667,6 +670,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                           });
                     } else {
                       return Container(
+                        height: MediaQuery.of(context).size.height,
                         child: Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation(Colors.red),
@@ -882,6 +886,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                           });
                     } else {
                       return Container(
+                        height: MediaQuery.of(context).size.height,
                         child: Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation(Colors.red),

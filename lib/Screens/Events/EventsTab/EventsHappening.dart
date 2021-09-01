@@ -32,6 +32,7 @@ class _EventsHappeningState extends State<EventsHappening> {
     return Container(
         margin: EdgeInsets.only(top: 10, right: 5, left: 5),
         child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
           child: Column(
             children: [
               if (Responsive.isTooLargeScreen(context))
@@ -504,7 +505,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                           return Column(
                             children: [
                               const SizedBox(
-                                height: 150,
+                                height: 200,
                               ),
                               Container(
                                 child: Icon(

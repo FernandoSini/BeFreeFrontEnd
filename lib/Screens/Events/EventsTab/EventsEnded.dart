@@ -29,6 +29,7 @@ class _EventsEndedState extends State<EventsEnded> {
     return Container(
         margin: EdgeInsets.only(top: 15, right: 5, left: 5),
         child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
           child: Column(
             children: [
               if (Responsive.isTooLargeScreen(context))
@@ -180,6 +181,7 @@ class _EventsEndedState extends State<EventsEnded> {
                         );
                       } else {
                         return Container(
+                          height: MediaQuery.of(context).size.height,
                           child: Center(
                             child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation(Colors.red),
@@ -339,6 +341,7 @@ class _EventsEndedState extends State<EventsEnded> {
                         );
                       } else {
                         return Container(
+                          height: MediaQuery.of(context).size.height,
                           child: Center(
                             child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation(Colors.red),
@@ -498,6 +501,7 @@ class _EventsEndedState extends State<EventsEnded> {
                         );
                       } else {
                         return Container(
+                          height: MediaQuery.of(context).size.height,
                           child: Center(
                             child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation(Colors.red),
@@ -657,6 +661,7 @@ class _EventsEndedState extends State<EventsEnded> {
                         );
                       } else {
                         return Container(
+                          height: MediaQuery.of(context).size.height,
                           child: Center(
                             child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation(Colors.red),

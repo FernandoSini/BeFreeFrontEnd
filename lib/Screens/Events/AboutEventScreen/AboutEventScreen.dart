@@ -78,7 +78,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   const SizedBox(width: 5),
                   Container(
                     child: Text(
-                      "${widget.event!.eventLocation}",
+                      "${widget.event!.eventLocation != null ? widget.event!.eventLocation : "Without location"}",
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -160,33 +160,39 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                 color: Color(0xFF9a00e6),
               ),
             ),
-            if (widget.event!.eventDescription!.isEmpty)
-              Container()
+            if (widget.event!.eventDescription != null)
+              Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.only(top: 10, left: 15, right: 10),
+                    child: Text(
+                      "Event Description",
+                      softWrap: true,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: "Segoe",
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF9a00e6)),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: widget.event!.eventDescription!.length >= 100
+                        ? MediaQuery.of(context).size.height * 0.4
+                        : MediaQuery.of(context).size.height * 0.08,
+                    margin: EdgeInsets.only(left: 15, right: 10),
+                    child: Text(
+                      widget.event!.eventDescription!.contains("")
+                          ? "Don't have description"
+                          : widget.event!.eventDescription!,
+                      softWrap: true,
+                    ),
+                  ),
+                ],
+              )
             else
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: 10, left: 15, right: 10),
-                child: Text(
-                  "Event Description",
-                  softWrap: true,
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: "Segoe",
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF9a00e6)),
-                ),
-              ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: widget.event!.eventDescription!.length >= 100
-                  ? MediaQuery.of(context).size.height * 0.4
-                  : MediaQuery.of(context).size.height * 0.08,
-              margin: EdgeInsets.only(left: 15, right: 10),
-              child: Text(
-                widget.event!.eventDescription!,
-                softWrap: true,
-              ),
-            ),
+              Container(),
             Container(
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.only(top: 10, left: 15, right: 10),

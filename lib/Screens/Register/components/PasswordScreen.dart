@@ -40,7 +40,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
           physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 20),
+              // margin: EdgeInsets.only(bottom: 10),
               alignment: Alignment.center,
               child: Text(
                 "BeFree",
@@ -54,7 +54,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
             ),
             Container(
               alignment: Alignment.center,
-              padding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+              padding: EdgeInsets.only(left: 40, right: 40, bottom: 10),
               child: Text(
                 registerProvider.hasError ? registerProvider.errorData! : "",
                 style: TextStyle(color: Colors.red),
@@ -66,13 +66,28 @@ class _PasswordScreenState extends State<PasswordScreen> {
             ),
             Container(
               alignment: Alignment.center,
+              margin: EdgeInsets.only(bottom: 10),
               child: Text(
-                "Type your password: ",
+                "Type your password:",
+                softWrap: true,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(left: 50, right: 50),
+              child: Text(
+                "Needs to be 1 Uppercase, " +
+                    "1 symbol, 1 number and more than 6 characters",
+                softWrap: true,
+                maxLines: 3,
+                textAlign: TextAlign.center,
+              ),
+            ),
             const SizedBox(
-              height: 50,
+              height: 25,
             ),
             Container(
               margin: EdgeInsets.only(left: 25, right: 25),

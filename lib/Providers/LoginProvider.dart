@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
 class LoginProvider extends ChangeNotifier {
-  String? username = "";
-  String? password = "";
+  String? username;
+  String? password;
   String? get userNameData => username;
   String? get passwordData => password;
   User? userData = User();
@@ -21,7 +21,7 @@ class LoginProvider extends ChangeNotifier {
   bool loading = false;
   bool get isLoading => loading;
 
-  Future<User?> login(String username, String password) async {
+  Future<User?> login(String? username, String? password) async {
     String url = "http://192.168.0.22:3000/user/login";
     setLoading(true);
     var data = {"username": username, "password": password};

@@ -6,6 +6,7 @@ import 'package:be_free_v1/Providers/LikeProvider.dart';
 import 'package:be_free_v1/Providers/ListUsersProvider.dart';
 import 'package:be_free_v1/Providers/LoginProvider.dart';
 import 'package:be_free_v1/Providers/LikesReceivedProvider.dart';
+import 'package:be_free_v1/Providers/VerifyUserProvider.dart';
 import 'package:be_free_v1/Providers/RegisterProvider.dart';
 import 'package:be_free_v1/Providers/SearchEventProvider.dart';
 import 'package:be_free_v1/Providers/SearchUserProvider.dart';
@@ -21,6 +22,7 @@ import 'package:provider/provider.dart';
 import 'Providers/EventsStatusProvider.dart';
 import 'Providers/MatchProvider.dart';
 import 'Providers/MessagesProvider.dart';
+import 'Providers/RecoverPasswordProvider.dart';
 
 void main() {
   // debugPaintSizeEnabled = true;
@@ -46,6 +48,8 @@ void main() {
         ChangeNotifierProvider(create: (context) => MessagesProvider()),
         ChangeNotifierProvider(create: (context) => SearchUserProvider()),
         ChangeNotifierProvider(create: (context) => LikesReceivedProvider()),
+        ChangeNotifierProvider(create: (context) => RecoverPasswordProvider()),
+        ChangeNotifierProvider(create: (context) => VerifyUserProvider()),
       ],
       // child: DevicePreview(
       //   builder: (_) => MyApp(),
