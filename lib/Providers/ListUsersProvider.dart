@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class ListUsersProvider extends ChangeNotifier {
@@ -23,7 +24,7 @@ class ListUsersProvider extends ChangeNotifier {
     try {
       http.Response response = await http.get(
         Uri.parse(
-            "http://192.168.0.22:3000/api/users/gender/find/different?gender=${EnumToString.convertToString(user?.gender)}"),
+            "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/users/gender/find/different?gender=${EnumToString.convertToString(user?.gender)}"),
         headers: {
           "Authorization": "Bearer ${user?.token}",
           "Content-type": "application/json"

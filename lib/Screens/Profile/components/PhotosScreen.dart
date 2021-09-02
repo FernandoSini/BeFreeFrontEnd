@@ -5,6 +5,7 @@ import 'package:be_free_v1/Screens/Profile/components/ChooseFromScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:be_free_v1/Models/ImageModel.dart';
 import 'package:camera_camera/camera_camera.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PhotosScreen extends StatefulWidget {
@@ -58,7 +59,6 @@ class _PhotosScreenState extends State<PhotosScreen> {
                         ? 0
                         : widget.user!.photos?.length,
                     itemBuilder: (context, index) {
-                      print(widget.user!.photos![index].path);
                       return InkWell(
                         onLongPress: () {
                           setState(() {
@@ -75,7 +75,7 @@ class _PhotosScreenState extends State<PhotosScreen> {
                                 ? null
                                 : DecorationImage(
                                     image: NetworkImage(
-                                      "http://192.168.0.22:3000/api/${widget.user!.photos![index].path!}",
+                                      "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.user!.photos![index].path!}",
                                     ),
                                     fit: BoxFit.cover,
                                   ),

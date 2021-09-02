@@ -6,6 +6,7 @@ import 'package:be_free_v1/Providers/EventsStatusProvider.dart';
 import 'package:be_free_v1/Screens/Events/AboutEventScreen/AboutEventScreen.dart';
 import 'package:be_free_v1/Widget/Responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -111,7 +112,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "http://192.168.0.22:3000/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,
@@ -326,7 +327,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "http://192.168.0.22:3000/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,
@@ -541,7 +542,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "http://192.168.0.22:3000/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,
@@ -756,7 +757,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "http://192.168.0.22:3000/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,

@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -286,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "http://192.168.0.22:3000/api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -547,7 +548,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "http://192.168.0.22:3000/api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -807,7 +808,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "http://192.168.0.22:3000/api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -1066,7 +1067,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .avatarProfile !=
                                                             null
                                                         ? NetworkImage(
-                                                            "http://192.168.0.22:3000/api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                            "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                         : AssetImage(
                                                                 "assets/avatars/avatar2.png")
                                                             as ImageProvider,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:http_parser/http_parser.dart';
@@ -18,9 +19,11 @@ class EventPhotoProvider extends ChangeNotifier {
   bool updated = false;
   bool get isUpdated => updated;
 
-  Future<void> uploadEventCover(String eventId, File? avatar, String? token) async {
+  Future<void> uploadEventCover(
+      String eventId, File? avatar, String? token) async {
     setLoading(true);
-    String url = "http://192.168.0.22:3000/api/event/$eventId/upload/cover";
+    String url =
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/event/$eventId/upload/cover";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
     try {
@@ -36,7 +39,8 @@ class EventPhotoProvider extends ChangeNotifier {
       };
 
       var request = new http.MultipartRequest("PUT", Uri.parse(url))
-        ..headers.addAll(headers)..fields
+        ..headers.addAll(headers)
+        ..fields
         ..files.add(await http.MultipartFile.fromPath("img", avatar!.path,
             contentType: avatar.path.endsWith(".jpg")
                 ? MediaType("image", "jpeg")
@@ -63,7 +67,8 @@ class EventPhotoProvider extends ChangeNotifier {
   }
 
   Future<void> changeAvatar(String yourId, File? avatar, String? token) async {
-    String url = "http://192.168.0.22:3000/api/users/avatar/update/$yourId";
+    String url =
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/users/avatar/update/$yourId";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
     try {

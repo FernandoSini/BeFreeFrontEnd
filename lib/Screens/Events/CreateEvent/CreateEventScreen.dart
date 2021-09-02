@@ -306,13 +306,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                   fontSize: 16,
                                 ),
                               ),
-                              onChanged: (date) {
-                                print('change $date in time zone ' +
-                                    date.timeZoneOffset.inHours.toString());
-                              },
+                              onChanged: (date) {},
                               onConfirm: (date) {
                                 createEventProvider.setEventStartDate(date);
-                                print('confirm $date');
                               },
                               currentTime: DateTime.now(),
                               locale: LocaleType.en,
@@ -350,13 +346,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                   fontSize: 16,
                                 ),
                               ),
-                              onChanged: (date) {
-                                print('change $date in time zone ' +
-                                    date.timeZoneOffset.inHours.toString());
-                              },
+                              onChanged: (date) {},
                               onConfirm: (date) {
                                 createEventProvider.setEventEndDate(date);
-                                print('confirm $date');
                               },
                               currentTime: DateTime.now(),
                               locale: LocaleType.en,

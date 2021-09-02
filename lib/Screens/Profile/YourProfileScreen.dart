@@ -8,23 +8,38 @@ import 'package:be_free_v1/Screens/Profile/EditProfileScreen.dart';
 import 'package:be_free_v1/Widget/Responsive.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class YourProfileScreen extends StatelessWidget {
   YourProfileScreen({this.userData});
   User? userData;
   final storage = new FlutterSecureStorage();
 
-  _logout(context) async {
-    await storage.deleteAll();
-    Provider.of<UserProvider>(context, listen: false).setUser(null);
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => LoginScreen(),
-      ),
-    );
+  Future<bool?> logoutFromServer() async {
+    String? url = "http://${dotenv.env["url"]}/logout";
+    http.Response response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> _logout(context) async {
+    var isSignOut = await logoutFromServer();
+    if (isSignOut!) {
+      await storage.deleteAll();
+      Provider.of<UserProvider>(context, listen: false).setUser(null);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => LoginScreen(),
+        ),
+      );
+    }
   }
 
   @override
@@ -126,7 +141,7 @@ class YourProfileScreen extends StatelessWidget {
                               child: CircleAvatar(
                                 backgroundImage: userData?.avatarProfile != null
                                     ? NetworkImage(
-                                        "http://192.168.0.22:3000/api/${userData?.avatarProfile!.path}")
+                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,
@@ -279,7 +294,7 @@ class YourProfileScreen extends StatelessWidget {
                               child: CircleAvatar(
                                 backgroundImage: userData?.avatarProfile != null
                                     ? NetworkImage(
-                                        "http://192.168.0.22:3000/api/${userData?.avatarProfile!.path}")
+                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,

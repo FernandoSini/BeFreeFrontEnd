@@ -4,6 +4,7 @@ import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class EventsStatusProvider extends ChangeNotifier {
@@ -26,7 +27,7 @@ class EventsStatusProvider extends ChangeNotifier {
         "Authorization": "Bearer $token"
       };
       String url =
-          "http://192.168.0.22:3000/api/events?eventstatus=${EnumToString.convertToString(eventStatus)}";
+          "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/events?eventstatus=${EnumToString.convertToString(eventStatus)}";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,

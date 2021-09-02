@@ -23,18 +23,13 @@ class _SplashState extends State<Splash> {
   void didChangeDependencies() async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
-      // var userData = await storage.read(key: "user");
-      // print(userData);
-      // await storage.deleteAll();
       if (await storage.containsKey(key: "user")) {
         var userData = await storage.read(key: "user");
         if (userData != null) {
-          // token = localData["token"];
           Map<String, dynamic> fromLocalToUser = {};
           fromLocalToUser.addAll(jsonDecode(userData));
           User? user = User.fromJson(fromLocalToUser);
           if (!JwtDecoder.isExpired(user.token!)) {
-            print("token não expirou");
             Timer(
               Duration(seconds: 5),
               () {

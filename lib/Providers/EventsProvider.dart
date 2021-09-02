@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class EventsProvider extends ChangeNotifier {
@@ -23,7 +24,7 @@ class EventsProvider extends ChangeNotifier {
         "Content-type": "application/json",
         "Authorization": "Bearer $token"
       };
-      String url = "http://192.168.0.22:8080/api/events/all";
+      String url = "http://${dotenv.env["url"]}:8080/api/events/all";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,

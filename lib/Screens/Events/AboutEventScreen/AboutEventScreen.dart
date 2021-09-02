@@ -1,6 +1,7 @@
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
 class AboutEventScreen extends StatefulWidget {
@@ -48,7 +49,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   image: widget.event?.eventPhoto == null
                       ? AssetImage("assets/avatars/avatar2.png")
                       : NetworkImage(
-                              "http://192.168.0.22:3000/api/${widget.event!.eventPhoto!.path!}")
+                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.event!.eventPhoto!.path!}")
                           as ImageProvider,
                 ),
               ),
@@ -220,7 +221,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                                   .event?.eventOwner?.avatarProfile !=
                               null
                           ? NetworkImage(
-                              "http://192.168.0.22:3000/api/${widget.event!.eventOwner!.avatarProfile!.path}")
+                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.event!.eventOwner!.avatarProfile!.path}")
                           : AssetImage("assets/avatars/avatar2.png")
                               as ImageProvider,
                       radius: 30,

@@ -4,6 +4,7 @@ import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateUserProvider extends ChangeNotifier {
@@ -40,7 +41,8 @@ class UpdateUserProvider extends ChangeNotifier {
 
   Future<User?> updateUser(String? id, String? token) async {
     setLoading(true);
-    String url = "http://192.168.0.22:3000/api/users/you/edit/$id";
+    String url =
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/users/you/edit/$id";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -74,7 +76,7 @@ class UpdateUserProvider extends ChangeNotifier {
         livesIn: newLivesIn,
         birthday: newBirthday);
     var body = jsonEncode(userToUpdate.toJsonUpdate());
-    print(body);
+
     try {
       http.Response response =
           await http.put(Uri.parse(url), headers: headers, body: body);
@@ -84,7 +86,7 @@ class UpdateUserProvider extends ChangeNotifier {
         setLoading(false);
         setHasError(false);
         setErrorText("");
-        print(response.body);
+
         User user = User.fromJson(
           json.decode(
             Utf8Decoder(allowMalformed: true).convert(response.bodyBytes),

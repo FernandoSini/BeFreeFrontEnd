@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:be_free_v1/Models/Match.dart';
 
@@ -16,7 +17,8 @@ class MatchProvider extends ChangeNotifier {
 
   Future<void> getMatches(String token, String yourId) async {
     matches?.clear();
-    String url = "http://192.168.0.22:3000/api/matches/$yourId";
+    String url =
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/matches/$yourId";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"

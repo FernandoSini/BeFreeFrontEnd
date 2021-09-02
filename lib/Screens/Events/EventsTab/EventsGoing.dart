@@ -3,6 +3,7 @@ import 'package:be_free_v1/Providers/EventsGoingProvider.dart';
 import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
 import 'package:be_free_v1/Widget/Responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
@@ -109,7 +110,7 @@ class _EventsGoingState extends State<EventsGoing> {
                                                   .eventPhoto !=
                                               null
                                           ? NetworkImage(
-                                              "http://192.168.0.22:3000/api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
+                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
                                           : AssetImage(
                                                   "assets/avatars/avatar2.png")
                                               as ImageProvider,
@@ -254,7 +255,7 @@ class _EventsGoingState extends State<EventsGoing> {
                                                   .eventPhoto !=
                                               null
                                           ? NetworkImage(
-                                              "http://192.168.0.22:3000/api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
+                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
                                           : AssetImage(
                                                   "assets/avatars/avatar2.png")
                                               as ImageProvider,
@@ -395,7 +396,7 @@ class _EventsGoingState extends State<EventsGoing> {
                                                   .eventPhoto !=
                                               null
                                           ? NetworkImage(
-                                              "http://192.168.0.22:3000/api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
+                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
                                           : AssetImage(
                                                   "assets/avatars/avatar2.png")
                                               as ImageProvider,
@@ -536,7 +537,7 @@ class _EventsGoingState extends State<EventsGoing> {
                                                   .eventPhoto !=
                                               null
                                           ? NetworkImage(
-                                              "http://192.168.0.22:3000/api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
+                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
                                           : AssetImage(
                                                   "assets/avatars/avatar2.png")
                                               as ImageProvider,

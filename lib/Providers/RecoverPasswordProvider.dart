@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class RecoverPasswordProvider extends ChangeNotifier {
@@ -17,7 +18,8 @@ class RecoverPasswordProvider extends ChangeNotifier {
   String? get dataValue => data;
 
   Future<void> changePassword() async {
-    String? urlReset = "http://192.168.0.22:3000/forgot-password/reset";
+    String? urlReset =
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/forgot-password/reset";
     setUpdating(true);
     var data = {"data": dataValue, "newPassword": newPassword};
     var body = jsonEncode(data);

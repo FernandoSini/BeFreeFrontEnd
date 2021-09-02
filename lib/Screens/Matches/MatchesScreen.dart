@@ -5,6 +5,7 @@ import 'package:be_free_v1/Providers/MatchProvider.dart';
 import 'package:be_free_v1/Screens/Chat/ChatScreen.dart';
 import 'package:be_free_v1/Screens/Profile/ProfileScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +48,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.height);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -115,7 +115,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                             .likesData?[index].avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "http://192.168.0.22:3000/api/${likesReceivedProvider.likesReceived?[index].avatarProfile!.path}")
+                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${likesReceivedProvider.likesReceived?[index].avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 radius: 50,
@@ -204,7 +204,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                           .avatarProfile !=
                                                       null
                                                   ? NetworkImage(
-                                                      "http://192.168.0.22:3000/api/${matchProvider.matches?[index].user2!.avatarProfile!.path}")
+                                                      "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${matchProvider.matches?[index].user2!.avatarProfile!.path}")
                                                   : AssetImage(
                                                           "assets/avatars/avatar2.png")
                                                       as ImageProvider,
@@ -217,7 +217,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                           .avatarProfile !=
                                                       null
                                                   ? NetworkImage(
-                                                      "http://192.168.0.22:3000/api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
+                                                      "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
                                                   : AssetImage(
                                                           "assets/avatars/avatar2.png")
                                                       as ImageProvider,

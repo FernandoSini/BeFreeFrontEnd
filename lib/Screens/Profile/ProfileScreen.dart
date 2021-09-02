@@ -2,6 +2,7 @@ import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Widget/FullScreenWidget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -61,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
                       image: user!.avatarProfile == null
                           ? AssetImage("assets/avatars/avatar2.png")
                           : NetworkImage(
-                                  "http://192.168.0.22:3000/api/${user!.avatarProfile!.path!}")
+                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${user!.avatarProfile!.path!}")
                               as ImageProvider,
                       fit: BoxFit.cover,
                     ),
@@ -243,7 +244,7 @@ class ProfileScreen extends StatelessWidget {
                                 image: user?.photos?[index] == null
                                     ? AssetImage("/assets/avatars/avatar2.png")
                                     : NetworkImage(
-                                            "http://192.168.0.22:3000/api/${user!.photos![index].path!}")
+                                            "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${user!.photos![index].path!}")
                                         as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
@@ -257,7 +258,7 @@ class ProfileScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(40),
                                       child: user?.photos?[index] != null
                                           ? Image.network(
-                                              "http://192.168.0.22:3000/api/${user!.photos![index].path!}",
+                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${user!.photos![index].path!}",
                                               fit: BoxFit.cover,
                                               height: MediaQuery.of(context)
                                                       .size

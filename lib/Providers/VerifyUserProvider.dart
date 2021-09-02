@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class VerifyUserProvider extends ChangeNotifier {
@@ -16,7 +17,8 @@ class VerifyUserProvider extends ChangeNotifier {
   bool? get hasError => erro;
 
   Future<void> verifyIfUserExists() async {
-    String? url = "http://192.168.0.22:3000/forgot-password/verify";
+    String? url =
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/forgot-password/verify";
     setLoading(true);
     var data = {"data": dataValue};
     var body = json.encode(data);

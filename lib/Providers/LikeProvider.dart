@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class LikeProvider extends ChangeNotifier {
@@ -17,14 +18,13 @@ class LikeProvider extends ChangeNotifier {
       String? yourId, String? idPeopleLiked, String? token) async {
     setLoading(true);
     String url =
-        "http://192.168.0.22:3000/api/users/$yourId/like/$idPeopleLiked";
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/users/$yourId/like/$idPeopleLiked";
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         "Authorization": "Bearer $token"
       };
-      http.Response response =
-          await http.put(Uri.parse(url), headers: headers);
+      http.Response response = await http.put(Uri.parse(url), headers: headers);
 
       if (response.statusCode == 200) {
         setLoading(false);

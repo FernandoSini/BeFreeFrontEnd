@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:be_free_v1/Models/User.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
@@ -22,7 +23,7 @@ class LoginProvider extends ChangeNotifier {
   bool get isLoading => loading;
 
   Future<User?> login(String? username, String? password) async {
-    String url = "http://192.168.0.22:3000/user/login";
+    String url = "http://${dotenv.env["url"]}:${dotenv.env["port"]}/user/login";
     setLoading(true);
     var data = {"username": username, "password": password};
     final loginData = jsonEncode(data);

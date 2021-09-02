@@ -115,8 +115,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: Icon(
-                        isObscure ? Icons.visibility : Icons.visibility_off),
-                    color: isObscure ? Colors.grey : Color(0xff9a00e6),
+                        !isObscure ? Icons.visibility : Icons.visibility_off),
+                    color: !isObscure ? Colors.grey : Color(0xff9a00e6),
                     onPressed: () {
                       if (!isObscure) {
                         setState(() {
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 keyboardType: TextInputType.visiblePassword,
-                obscureText: isObscure,
+                obscureText: !isObscure,
                 controller: passwordController,
                 onChanged: (value) {
                   loginProvider.setPassword(value);

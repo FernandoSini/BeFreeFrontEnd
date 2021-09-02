@@ -4,6 +4,7 @@ import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:date_format/date_format.dart';
@@ -110,7 +111,7 @@ class RegisterProvider extends ChangeNotifier {
       "livesIn": livesInValue,
       "job_title": jobValue,
     };
-    String url = "http://192.168.0.22:3000/register";
+    String url = "http://${dotenv.env["url"]}:${dotenv.env["port"]}/register";
     var body = json.encode(dadosLogin);
     try {
       http.Response response = await http.post(Uri.parse(url),

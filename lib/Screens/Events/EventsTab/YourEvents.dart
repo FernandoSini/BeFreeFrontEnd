@@ -7,6 +7,7 @@ import 'package:be_free_v1/Providers/YourEventsProvider.dart';
 import 'package:be_free_v1/Screens/Events/AboutEventScreen/AboutEventScreen.dart';
 import 'package:be_free_v1/Screens/Events/EditEvents/EditEventsScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -119,7 +120,7 @@ class _YourEventsState extends State<YourEvents> {
                                                     .eventPhoto !=
                                                 null
                                             ? NetworkImage(
-                                                "http://192.168.0.22:3000/api/${yourEventsProvider.eventData?[index].eventPhoto?.path}")
+                                                "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${yourEventsProvider.eventData?[index].eventPhoto?.path}")
                                             : AssetImage(
                                                     "assets/avatars/avatar2.png")
                                                 as ImageProvider,

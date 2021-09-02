@@ -10,11 +10,11 @@ import 'package:be_free_v1/Screens/Profile/components/PhotosScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-
 
 class BaseScreen extends StatefulWidget {
   BaseScreen({this.userData});
@@ -80,7 +80,6 @@ class _BaseScreenState extends State<BaseScreen> {
                       Icons.favorite,
                       color: Color(0xffedc967),
                     ),
-                    
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.nightlife),
@@ -88,7 +87,6 @@ class _BaseScreenState extends State<BaseScreen> {
                       Icons.nightlife,
                       color: Colors.blue,
                     ),
-                    
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.whatshot_outlined),
@@ -96,19 +94,17 @@ class _BaseScreenState extends State<BaseScreen> {
                       Icons.whatshot_outlined,
                       color: Colors.pinkAccent[400],
                     ),
-                    
                   ),
                   BottomNavigationBarItem(
                     tooltip: null,
                     icon: Container(
-                      
                       padding: EdgeInsets.only(top: 10),
                       child: Center(
                         child: CircleAvatar(
                           backgroundImage: widget.userData?.avatarProfile !=
                                   null
                               ? NetworkImage(
-                                  "http://192.168.0.22:3000/api/${widget.userData!.avatarProfile!.path}")
+                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.userData!.avatarProfile!.path}")
                               : AssetImage("assets/avatars/avatar2.png")
                                   as ImageProvider,
                           radius: 15,
@@ -127,7 +123,6 @@ class _BaseScreenState extends State<BaseScreen> {
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Container(
                 child: ClipRRect(
-                  
                   child: BottomNavigationBar(
                     type: BottomNavigationBarType.fixed,
                     unselectedItemColor: Colors.grey,
@@ -164,7 +159,7 @@ class _BaseScreenState extends State<BaseScreen> {
                             backgroundImage: widget.userData?.avatarProfile !=
                                     null
                                 ? NetworkImage(
-                                    "http://192.168.0.22:3000/api/${widget.userData!.avatarProfile!.path}")
+                                    "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.userData!.avatarProfile!.path}")
                                 : AssetImage("assets/avatars/avatar2.png")
                                     as ImageProvider,
                           ),
@@ -176,7 +171,6 @@ class _BaseScreenState extends State<BaseScreen> {
                 ),
               ),
             ),
-      
       floatingActionButton: SpeedDial(
         direction: SpeedDialDirection.Up,
         childrenButtonSize: 65,

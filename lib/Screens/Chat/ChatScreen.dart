@@ -9,6 +9,7 @@ import 'package:be_free_v1/Widget/FullScreenWidget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -34,10 +35,11 @@ class _ChatScreenState extends State<ChatScreen> {
   StreamController get controller => StreamController<Message>();
 
   void connect() {
-    socket = IO.io("http://192.168.0.22:3000/api/match/chat",
+    socket = IO.io(
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/match/chat",
         IO.OptionBuilder().setTransports(['websocket', 'polling']).build());
     socket.onConnect((data) {
-      print("connected: " + socket.id! + " data: " + data.toString());
+      // print("connected: " + socket.id! + " data: " + data.toString());
     });
 
     socket.emit("signIn", widget.you!.id);
@@ -84,7 +86,6 @@ class _ChatScreenState extends State<ChatScreen> {
   void loadMessages() {
     socket.emit("loadMessages", widget.match!.matchId!);
     socket.on("carregarMensagens", (data) {
-      print(data);
       if (Provider.of<MessagesProvider>(context, listen: false).messages !=
               null ||
           Provider.of<MessagesProvider>(context, listen: false)
@@ -154,7 +155,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           borderRadius: BorderRadius.circular(30),
                           child: widget.user?.avatarProfile != null
                               ? Image.network(
-                                  "http://192.168.0.22:3000/api/${widget.user!.avatarProfile!.path!}",
+                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.user!.avatarProfile!.path!}",
                                   fit: BoxFit.cover,
                                   height: screenSize.height * 0.5,
                                   width: screenSize.width * 0.95,
@@ -297,9 +298,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   context);
                               messageProvider.setMessages(message);
                               controllerMessage.clear();
-                            } else {
-                              print("is empty");
-                            }
+                            } else {}
                           },
                           backgroundColor: Color(0xff9a00e6),
                         ),

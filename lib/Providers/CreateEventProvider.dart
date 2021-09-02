@@ -4,6 +4,7 @@ import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -31,7 +32,8 @@ class CreateEventProvider extends ChangeNotifier {
 
   Future<void>? createEvent(String? token, User? eventOwner) async {
     setLoading(true);
-    String url = "http://192.168.0.22:3000/api/events/create";
+    String url =
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/events/create";
 
     Map<String, String> headers = {
       "Content-type": "application/json",

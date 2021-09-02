@@ -18,14 +18,16 @@ import 'package:be_free_v1/Providers/YourEventsProvider.dart';
 import 'package:be_free_v1/Screens/Splash/Splash.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'Providers/EventsStatusProvider.dart';
 import 'Providers/MatchProvider.dart';
 import 'Providers/MessagesProvider.dart';
 import 'Providers/RecoverPasswordProvider.dart';
 
-void main() {
+Future<void> main() async {
   // debugPaintSizeEnabled = true;
+  await dotenv.load(fileName: ".env");
   runApp(
     MultiProvider(
       providers: [

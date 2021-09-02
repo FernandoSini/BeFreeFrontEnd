@@ -136,7 +136,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               child: TextFormField(
                 controller: _controller,
                 keyboardType: TextInputType.visiblePassword,
-                obscureText: isObscure,
+                obscureText: !isObscure,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 30, right: 30),
                   labelStyle: TextStyle(
@@ -150,8 +150,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      isObscure ? Icons.visibility : Icons.visibility_off,
-                      color: isObscure ? Colors.grey : Color(0xff9a00e6),
+                      !isObscure ? Icons.visibility : Icons.visibility_off,
+                      color: !isObscure ? Colors.grey : Color(0xff9a00e6),
                     ),
                     onPressed: () {
                       if (!isObscure) {
