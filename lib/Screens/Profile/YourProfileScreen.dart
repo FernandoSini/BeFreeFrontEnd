@@ -20,7 +20,7 @@ class YourProfileScreen extends StatelessWidget {
   final storage = new FlutterSecureStorage();
 
   Future<bool?> logoutFromServer() async {
-    String? url = "http://${dotenv.env["url"]}/logout";
+    String? url = "http://${dotenv.env["url"]}:${dotenv.env["port"]}/logout";
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       return true;
