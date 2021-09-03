@@ -54,6 +54,9 @@ class _EventsGoingState extends State<EventsGoing> {
             if (Responsive.isTooLargeScreen(context))
               Container(
                 height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.only(
+                  bottom: 150,
+                ),
                 child: Consumer<EventsGoingProvider>(
                   builder: (context, eventsGoingProvider, child) {
                     if (!eventsGoingProvider.isLoading) {
@@ -198,6 +201,9 @@ class _EventsGoingState extends State<EventsGoing> {
               )
             else if (Responsive.isLargeScreen(context))
               Container(
+                padding: EdgeInsets.only(
+                  bottom: 150,
+                ),
                 height: MediaQuery.of(context).size.height,
                 child: Consumer<EventsGoingProvider>(
                   builder: (context, eventsGoingProvider, child) {
@@ -344,6 +350,9 @@ class _EventsGoingState extends State<EventsGoing> {
             else if (Responsive.isMediumScreen(context))
               Container(
                 height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.only(
+                    bottom:
+                        150), //essa linha evitou que o card ficasse embaixo do bottom navigation bar
                 child: Consumer<EventsGoingProvider>(
                   builder: (context, eventsGoingProvider, child) {
                     if (!eventsGoingProvider.isLoading) {
@@ -485,6 +494,9 @@ class _EventsGoingState extends State<EventsGoing> {
             else
               Container(
                 height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.only(
+                  bottom: 150,
+                ),
                 child: Consumer<EventsGoingProvider>(
                   builder: (context, eventsGoingProvider, child) {
                     if (!eventsGoingProvider.isLoading) {

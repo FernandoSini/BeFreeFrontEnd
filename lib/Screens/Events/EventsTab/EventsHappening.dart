@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/EventsProvider.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class EventsHappening extends StatefulWidget {
   EventsHappening({this.user});
@@ -28,6 +31,23 @@ class _EventsHappeningState extends State<EventsHappening> {
     super.initState();
   }
 
+  Future<void> goToEvent(String id, String token, String eventId) async {
+    String? url =
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/events/$eventId/go";
+    var data = {"yourId": id};
+    var body = jsonEncode(data);
+    Map<String, String> headers = {
+      "Content-type": "application/json",
+      "Authorization": "Bearer $token"
+    };
+
+    http.Response response =
+        await http.post(Uri.parse(url), headers: headers, body: body);
+    if (response.statusCode == 200) {
+      print("você vai para o evento");
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,6 +59,9 @@ class _EventsHappeningState extends State<EventsHappening> {
               if (Responsive.isTooLargeScreen(context))
                 Container(
                   height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(
+                    bottom: 150,
+                  ),
                   child: Consumer<EventsStatusProvider>(
                     builder: (_, eventsStatusProvider, __) {
                       if (!eventsStatusProvider.isLoading) {
@@ -160,7 +183,8 @@ class _EventsHappeningState extends State<EventsHappening> {
                                   ),
                                   if (!eventsStatusProvider
                                       .eventData![index].users!
-                                      .contains(widget.user))
+                                      .any(
+                                          (user) => user.id == widget.user!.id))
                                     ButtonBar(
                                       alignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -172,7 +196,13 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                   .width *
                                               0.42,
                                           child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              goToEvent(
+                                                  widget.user!.id!,
+                                                  widget.user!.token!,
+                                                  eventsStatusProvider
+                                                      .eventData![index].id!);
+                                            },
                                             style: ElevatedButton.styleFrom(
                                               primary: Colors.blue,
                                             ),
@@ -229,7 +259,8 @@ class _EventsHappeningState extends State<EventsHappening> {
                                     )
                                   else
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 15),
+                                      margin:
+                                          EdgeInsets.only(left: 50, bottom: 15),
                                       width: MediaQuery.of(context).size.width *
                                           0.7,
                                       child: ElevatedButton(
@@ -271,6 +302,9 @@ class _EventsHappeningState extends State<EventsHappening> {
               else if (Responsive.isLargeScreen(context))
                 Container(
                   height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(
+                    bottom: 150,
+                  ),
                   child: Consumer<EventsStatusProvider>(
                     builder: (_, eventsStatusProvider, __) {
                       if (!eventsStatusProvider.isLoading) {
@@ -388,7 +422,8 @@ class _EventsHappeningState extends State<EventsHappening> {
                                   ),
                                   if (!eventsStatusProvider
                                       .eventData![index].users!
-                                      .contains(widget.user))
+                                      .any(
+                                          (user) => user.id == widget.user!.id))
                                     ButtonBar(
                                       alignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -400,7 +435,13 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                   .width *
                                               0.42,
                                           child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              goToEvent(
+                                                  widget.user!.id!,
+                                                  widget.user!.token!,
+                                                  eventsStatusProvider
+                                                      .eventData![index].id!);
+                                            },
                                             style: ElevatedButton.styleFrom(
                                               primary: Colors.blue,
                                             ),
@@ -457,7 +498,8 @@ class _EventsHappeningState extends State<EventsHappening> {
                                     )
                                   else
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 15),
+                                      margin:
+                                          EdgeInsets.only(left: 50, bottom: 15),
                                       width: MediaQuery.of(context).size.width *
                                           0.7,
                                       child: ElevatedButton(
@@ -499,6 +541,9 @@ class _EventsHappeningState extends State<EventsHappening> {
               else if (Responsive.isMediumScreen(context))
                 Container(
                   height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(
+                    bottom: 150,
+                  ),
                   child: Consumer<EventsStatusProvider>(
                     builder: (_, eventsStatusProvider, __) {
                       if (!eventsStatusProvider.isLoading) {
@@ -616,7 +661,8 @@ class _EventsHappeningState extends State<EventsHappening> {
                                   ),
                                   if (!eventsStatusProvider
                                       .eventData![index].users!
-                                      .contains(widget.user))
+                                      .any((user) =>
+                                          user.id == widget.user!.id!))
                                     ButtonBar(
                                       alignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -628,7 +674,13 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                   .width *
                                               0.4,
                                           child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              goToEvent(
+                                                  widget.user!.id!,
+                                                  widget.user!.token!,
+                                                  eventsStatusProvider
+                                                      .eventData![index].id!);
+                                            },
                                             style: ElevatedButton.styleFrom(
                                               primary: Colors.blue,
                                             ),
@@ -685,7 +737,8 @@ class _EventsHappeningState extends State<EventsHappening> {
                                     )
                                   else
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 15),
+                                      margin:
+                                          EdgeInsets.only(left: 50, bottom: 15),
                                       width: MediaQuery.of(context).size.width *
                                           0.7,
                                       child: ElevatedButton(
@@ -727,6 +780,9 @@ class _EventsHappeningState extends State<EventsHappening> {
               else
                 Container(
                   height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(
+                    bottom: 150,
+                  ),
                   child: Consumer<EventsStatusProvider>(
                     builder: (_, eventsStatusProvider, __) {
                       if (!eventsStatusProvider.isLoading) {
@@ -844,7 +900,8 @@ class _EventsHappeningState extends State<EventsHappening> {
                                   ),
                                   if (!eventsStatusProvider
                                       .eventData![index].users!
-                                      .contains(widget.user))
+                                      .any((user) =>
+                                          user.id == widget.user!.id!))
                                     ButtonBar(
                                       alignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -856,7 +913,13 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                   .width *
                                               0.4,
                                           child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              goToEvent(
+                                                  widget.user!.id!,
+                                                  widget.user!.token!,
+                                                  eventsStatusProvider
+                                                      .eventData![index].id!);
+                                            },
                                             style: ElevatedButton.styleFrom(
                                               primary: Colors.blue,
                                             ),
@@ -913,7 +976,8 @@ class _EventsHappeningState extends State<EventsHappening> {
                                     )
                                   else
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 15),
+                                      margin:
+                                          EdgeInsets.only(left: 50, bottom: 15),
                                       width: MediaQuery.of(context).size.width *
                                           0.7,
                                       child: ElevatedButton(

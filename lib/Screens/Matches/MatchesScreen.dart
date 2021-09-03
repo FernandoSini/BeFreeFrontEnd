@@ -70,7 +70,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
       ),
       body: Container(
         child: ListView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           children: [
             Container(
               margin: EdgeInsets.only(top: 20, left: 20, bottom: 10),

@@ -36,6 +36,9 @@ class _EventsEndedState extends State<EventsEnded> {
               if (Responsive.isTooLargeScreen(context))
                 Container(
                   height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(
+                    bottom: 150,
+                  ),
                   child: Consumer<EventsStatusProvider>(
                     builder: (_, eventsStatusProvider, __) {
                       if (!eventsStatusProvider.isLoading) {
@@ -196,6 +199,9 @@ class _EventsEndedState extends State<EventsEnded> {
               else if (Responsive.isLargeScreen(context))
                 Container(
                   height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(
+                    bottom: 150,
+                  ),
                   child: Consumer<EventsStatusProvider>(
                     builder: (_, eventsStatusProvider, __) {
                       if (!eventsStatusProvider.isLoading) {
@@ -356,6 +362,9 @@ class _EventsEndedState extends State<EventsEnded> {
               else if (Responsive.isMediumScreen(context))
                 Container(
                   height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(
+                    bottom: 150,
+                  ),
                   child: Consumer<EventsStatusProvider>(
                     builder: (_, eventsStatusProvider, __) {
                       if (!eventsStatusProvider.isLoading) {
@@ -516,6 +525,9 @@ class _EventsEndedState extends State<EventsEnded> {
               else
                 Container(
                   height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(
+                    bottom: 150,
+                  ),
                   child: Consumer<EventsStatusProvider>(
                     builder: (_, eventsStatusProvider, __) {
                       if (!eventsStatusProvider.isLoading) {

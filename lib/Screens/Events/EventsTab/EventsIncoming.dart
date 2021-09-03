@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class EventsIncoming extends StatefulWidget {
   EventsIncoming({this.user});
@@ -29,6 +32,23 @@ class _EventsIncomingState extends State<EventsIncoming> {
     super.initState();
   }
 
+  Future<void> goToEvent(String id, String token, String eventId) async {
+    String? url =
+        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/events/$eventId/go";
+    var data = {"yourId": id};
+    var body = jsonEncode(data);
+    Map<String, String> headers = {
+      "Content-type": "application/json",
+      "Authorization": "Bearer $token"
+    };
+
+    http.Response response =
+        await http.post(Uri.parse(url), headers: headers, body: body);
+    if (response.statusCode == 200) {
+      print("você vai para o evento");
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,6 +60,9 @@ class _EventsIncomingState extends State<EventsIncoming> {
             if (Responsive.isTooLargeScreen(context))
               Container(
                 height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.only(
+                  bottom: 150,
+                ),
                 child: Consumer<EventsStatusProvider>(
                   builder: (_, eventsStatusProvider, __) {
                     if (!eventsStatusProvider.isLoading) {
@@ -167,71 +190,115 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                     .withOpacity(0.7)),
                                           ),
                                         ),
-                                        ButtonBar(
-                                          alignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  bottom: 15, left: 10),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.42,
-                                              child: ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.blue,
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      child: Icon(
-                                                          Icons.done_outline),
-                                                      margin: EdgeInsets.only(
-                                                          right: 10),
-                                                    ),
-                                                    Text("Going"),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  bottom: 15, right: 10),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.42,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    eventsStatusProvider.events
-                                                        ?.removeAt(index);
-                                                  });
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xFF9a00e6),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      child: Icon(
-                                                          Icons.close_outlined),
-                                                      margin: EdgeInsets.only(
-                                                          right: 10),
-                                                    ),
-                                                    Text("Ignore"),
-                                                  ],
+                                        if (!eventsStatusProvider
+                                            .eventData![index].users!
+                                            .any((user) =>
+                                                user.id == widget.user!.id))
+                                          ButtonBar(
+                                            alignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 15, left: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.42,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    goToEvent(
+                                                        widget.user!.id!,
+                                                        widget.user!.token!,
+                                                        eventsStatusProvider
+                                                            .eventData![index]
+                                                            .id!);
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors.blue,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        child: Icon(
+                                                            Icons.done_outline),
+                                                        margin: EdgeInsets.only(
+                                                            right: 10),
+                                                      ),
+                                                      Text("Going"),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 15, right: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.42,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      eventsStatusProvider
+                                                          .events
+                                                          ?.removeAt(index);
+                                                    });
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Color(0xFF9a00e6),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        child: Icon(Icons
+                                                            .close_outlined),
+                                                        margin: EdgeInsets.only(
+                                                            right: 10),
+                                                      ),
+                                                      Text("Ignore"),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        else
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 50, bottom: 15),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            child: ElevatedButton(
+                                              onPressed: null,
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Color(0xFF9a00e6),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    child: Icon(
+                                                        Icons.done_outline),
+                                                    margin: EdgeInsets.only(
+                                                        right: 10),
+                                                  ),
+                                                  Text("Happening"),
+                                                ],
+                                              ),
                                             ),
-                                          ],
-                                        )
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -255,6 +322,9 @@ class _EventsIncomingState extends State<EventsIncoming> {
             else if (Responsive.isLargeScreen(context))
               Container(
                 height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.only(
+                  bottom: 150,
+                ),
                 child: Consumer<EventsStatusProvider>(
                   builder: (_, eventsStatusProvider, __) {
                     if (!eventsStatusProvider.isLoading) {
@@ -382,71 +452,115 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                     .withOpacity(0.7)),
                                           ),
                                         ),
-                                        ButtonBar(
-                                          alignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  bottom: 15, left: 10),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4,
-                                              child: ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.blue,
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      child: Icon(
-                                                          Icons.done_outline),
-                                                      margin: EdgeInsets.only(
-                                                          right: 10),
-                                                    ),
-                                                    Text("Going"),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  bottom: 15, right: 10),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    eventsStatusProvider.events
-                                                        ?.removeAt(index);
-                                                  });
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xFF9a00e6),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      child: Icon(
-                                                          Icons.close_outlined),
-                                                      margin: EdgeInsets.only(
-                                                          right: 10),
-                                                    ),
-                                                    Text("Ignore"),
-                                                  ],
+                                        if (eventsStatusProvider
+                                            .eventData![index].users!
+                                            .any((user) =>
+                                                user.id == widget.user!.id))
+                                          ButtonBar(
+                                            alignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 15, left: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    goToEvent(
+                                                        widget.user!.id!,
+                                                        widget.user!.token!,
+                                                        eventsStatusProvider
+                                                            .eventData![index]
+                                                            .id!);
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors.blue,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        child: Icon(
+                                                            Icons.done_outline),
+                                                        margin: EdgeInsets.only(
+                                                            right: 10),
+                                                      ),
+                                                      Text("Going"),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 15, right: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      eventsStatusProvider
+                                                          .events
+                                                          ?.removeAt(index);
+                                                    });
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Color(0xFF9a00e6),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        child: Icon(Icons
+                                                            .close_outlined),
+                                                        margin: EdgeInsets.only(
+                                                            right: 10),
+                                                      ),
+                                                      Text("Ignore"),
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        else
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 50, bottom: 15),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            child: ElevatedButton(
+                                              onPressed: null,
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Color(0xFF9a00e6),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    child: Icon(
+                                                        Icons.done_outline),
+                                                    margin: EdgeInsets.only(
+                                                        right: 10),
+                                                  ),
+                                                  Text("Going"),
+                                                ],
+                                              ),
                                             ),
-                                          ],
-                                        )
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -470,6 +584,9 @@ class _EventsIncomingState extends State<EventsIncoming> {
             else if (Responsive.isMediumScreen(context))
               Container(
                 height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.only(
+                  bottom: 150,
+                ),
                 child: Consumer<EventsStatusProvider>(
                   builder: (_, eventsStatusProvider, __) {
                     if (!eventsStatusProvider.isLoading) {
@@ -597,71 +714,115 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                     .withOpacity(0.7)),
                                           ),
                                         ),
-                                        ButtonBar(
-                                          alignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  bottom: 15, left: 10),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4,
-                                              child: ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.blue,
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      child: Icon(
-                                                          Icons.done_outline),
-                                                      margin: EdgeInsets.only(
-                                                          right: 10),
-                                                    ),
-                                                    Text("Going"),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  bottom: 15, right: 10),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    eventsStatusProvider.events
-                                                        ?.removeAt(index);
-                                                  });
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xFF9a00e6),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      child: Icon(
-                                                          Icons.close_outlined),
-                                                      margin: EdgeInsets.only(
-                                                          right: 10),
-                                                    ),
-                                                    Text("Ignore"),
-                                                  ],
+                                        if (!eventsStatusProvider
+                                            .eventData![index].users!
+                                            .any((user) =>
+                                                user.id == widget.user!.id))
+                                          ButtonBar(
+                                            alignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 15, left: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    goToEvent(
+                                                        widget.user!.id!,
+                                                        widget.user!.token!,
+                                                        eventsStatusProvider
+                                                            .eventData![index]
+                                                            .id!);
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors.blue,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        child: Icon(
+                                                            Icons.done_outline),
+                                                        margin: EdgeInsets.only(
+                                                            right: 10),
+                                                      ),
+                                                      Text("Going"),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 15, right: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      eventsStatusProvider
+                                                          .events
+                                                          ?.removeAt(index);
+                                                    });
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Color(0xFF9a00e6),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        child: Icon(Icons
+                                                            .close_outlined),
+                                                        margin: EdgeInsets.only(
+                                                            right: 10),
+                                                      ),
+                                                      Text("Ignore"),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        else
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 50, bottom: 15),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            child: ElevatedButton(
+                                              onPressed: null,
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Color(0xFF9a00e6),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    child: Icon(
+                                                        Icons.done_outline),
+                                                    margin: EdgeInsets.only(
+                                                        right: 10),
+                                                  ),
+                                                  Text("Going"),
+                                                ],
+                                              ),
                                             ),
-                                          ],
-                                        )
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -685,6 +846,9 @@ class _EventsIncomingState extends State<EventsIncoming> {
             else
               Container(
                 height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.only(
+                  bottom: 150,
+                ),
                 child: Consumer<EventsStatusProvider>(
                   builder: (_, eventsStatusProvider, __) {
                     if (!eventsStatusProvider.isLoading) {
@@ -812,72 +976,116 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                     .withOpacity(0.7)),
                                           ),
                                         ),
-                                        ButtonBar(
-                                          alignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  bottom: 15, left: 10),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4,
-                                              child: ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.blue,
+                                        if (!eventsStatusProvider
+                                            .eventData![index].users!
+                                            .any((user) =>
+                                                user.id == widget.user!.id))
+                                          ButtonBar(
+                                            alignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 15, left: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                child: ElevatedButton(
+                                                  onPressed: () async {
+                                                    goToEvent(
+                                                        widget.user!.id!,
+                                                        widget.user!.token!,
+                                                        eventsStatusProvider
+                                                            .eventData![index]
+                                                            .id!);
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors.blue,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        child: Icon(
+                                                            Icons.done_outline),
+                                                        margin: EdgeInsets.only(
+                                                            right: 10),
+                                                      ),
+                                                      Text("Going"),
+                                                    ],
+                                                  ),
                                                 ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      child: Icon(
-                                                          Icons.done_outline),
-                                                      margin: EdgeInsets.only(
-                                                          right: 10),
-                                                    ),
-                                                    Text("Going"),
-                                                  ],
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                  bottom: 15,
                                                 ),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      eventsStatusProvider
+                                                          .events
+                                                          ?.removeAt(index);
+                                                    });
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Color(0xFF9a00e6),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        child: Icon(Icons
+                                                            .close_outlined),
+                                                        margin: EdgeInsets.only(
+                                                            right: 10),
+                                                      ),
+                                                      Text("Ignore"),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        else
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 30, bottom: 15),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            child: ElevatedButton(
+                                              onPressed: null,
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Color(0xFF9a00e6),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    child: Icon(
+                                                        Icons.done_outline),
+                                                    margin: EdgeInsets.only(
+                                                        right: 10),
+                                                  ),
+                                                  Text("Going"),
+                                                ],
                                               ),
                                             ),
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                bottom: 15,
-                                              ),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    eventsStatusProvider.events
-                                                        ?.removeAt(index);
-                                                  });
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xFF9a00e6),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      child: Icon(
-                                                          Icons.close_outlined),
-                                                      margin: EdgeInsets.only(
-                                                          right: 10),
-                                                    ),
-                                                    Text("Ignore"),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
+                                          ),
                                       ],
                                     ),
                                   ),

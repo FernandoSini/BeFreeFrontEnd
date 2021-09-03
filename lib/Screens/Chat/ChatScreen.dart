@@ -242,8 +242,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       )),
                 Container(
                   margin: defaultTargetPlatform == TargetPlatform.android
-                      ? EdgeInsets.only(left: 10, right: 10, top: 10)
-                      : EdgeInsets.only(left: 10, right: 10, top: 10),
+                      ? EdgeInsets.only(left: 10, right: 10, bottom: 10)
+                      : EdgeInsets.only(left: 10, right: 10, bottom: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -284,7 +284,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       Container(
                         color: Colors.transparent,
-                        margin: EdgeInsets.only(left: 10),
+                        margin: EdgeInsets.only(
+                          left: 10,
+                        ),
                         child: FloatingActionButton(
                           isExtended: true,
                           child: Icon(Icons.send),

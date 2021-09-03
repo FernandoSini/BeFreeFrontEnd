@@ -196,7 +196,9 @@ class _YourEventsState extends State<YourEvents> {
                                       ),
                                     ),
                                   )
-                                else
+                                else if (!yourEventsProvider
+                                    .eventData![index].users!
+                                    .any((user) => user.id == widget.user!.id))
                                   ButtonBar(
                                     alignment: MainAxisAlignment.spaceBetween,
                                     children: [
@@ -258,6 +260,30 @@ class _YourEventsState extends State<YourEvents> {
                                       ),
                                     ],
                                   )
+                                else
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(left: 50, bottom: 15),
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                    child: ElevatedButton(
+                                      onPressed: null,
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(0xFF9a00e6),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            child: Icon(Icons.done_outline),
+                                            margin: EdgeInsets.only(right: 10),
+                                          ),
+                                          Text("Going"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
