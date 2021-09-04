@@ -138,6 +138,7 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
         actions: [],
+        leading: IconButton(icon: Icon(Icons.close),onPressed: ()=> Navigator.of(context).pop(messageProvider.messages),),
         iconTheme: IconThemeData(
           color: Color(0xFF9a00e6),
         ),

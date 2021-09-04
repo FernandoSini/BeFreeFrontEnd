@@ -14,9 +14,15 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-class YourProfileScreen extends StatelessWidget {
+class YourProfileScreen extends StatefulWidget {
   YourProfileScreen({this.userData});
   User? userData;
+
+  @override
+  _YourProfileScreenState createState() => _YourProfileScreenState();
+}
+
+class _YourProfileScreenState extends State<YourProfileScreen> {
   final storage = new FlutterSecureStorage();
 
   Future<bool?> logoutFromServer() async {
@@ -78,13 +84,17 @@ class YourProfileScreen extends StatelessWidget {
                     child: Center(
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => ChangeAvatarScreen(
-                                user: userData,
-                              ),
-                            ),
-                          );
+                          Navigator.of(context)
+                              .push(
+                                MaterialPageRoute(
+                                  builder: (_) => ChangeAvatarScreen(
+                                    user: widget.userData,
+                                  ),
+                                ),
+                              )
+                              .then((value) => setState(() {
+                                    widget.userData?.avatarProfile = value;
+                                  }));
                         },
                         onLongPress: () {
                           showDialog(
@@ -132,16 +142,18 @@ class YourProfileScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(80),
                                 border: Border.all(
-                                  color: userData!.gender == Gender.MALE
+                                  color: widget.userData!.gender == Gender.MALE
                                       ? Colors.blue
                                       : Colors.pinkAccent.shade400,
                                   width: 2,
                                 ),
                               ),
                               child: CircleAvatar(
-                                backgroundImage: userData?.avatarProfile != null
+                                backgroundImage: widget
+                                            .userData?.avatarProfile !=
+                                        null
                                     ? NetworkImage(
-                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${userData?.avatarProfile!.path}")
+                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,
@@ -156,9 +168,10 @@ class YourProfileScreen extends StatelessWidget {
                                 width: 35,
                                 child: Icon(Icons.edit, color: Colors.white),
                                 decoration: BoxDecoration(
-                                    color: userData!.gender == Gender.MALE
-                                        ? Colors.blue
-                                        : Colors.pinkAccent.shade400,
+                                    color:
+                                        widget.userData!.gender == Gender.MALE
+                                            ? Colors.blue
+                                            : Colors.pinkAccent.shade400,
                                     borderRadius: BorderRadius.circular(20)),
                               ),
                             ),
@@ -173,8 +186,8 @@ class YourProfileScreen extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${userData?.username}, " +
-                          "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(userData!.birthday!).year}",
+                      "${widget.userData?.username}, " +
+                          "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(widget.userData!.birthday!).year}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -187,7 +200,7 @@ class YourProfileScreen extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${userData?.firstname} ${userData?.lastname}",
+                      "${widget.userData?.firstname} ${widget.userData?.lastname}",
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
@@ -197,7 +210,7 @@ class YourProfileScreen extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${EnumToString.convertToString(userData?.gender)}",
+                      "${EnumToString.convertToString(widget.userData?.gender)}",
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
@@ -228,14 +241,18 @@ class YourProfileScreen extends StatelessWidget {
                         updateUser.setNewJob(null);
                         updateUser.setNewSchool(null);
                         updateUser.setNewLivesIn(null);
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => EditProfileScreen(
-                              userId: userData!.id,
-                              token: userData!.token,
-                            ),
-                          ),
-                        );
+                        Navigator.of(context)
+                            .push(
+                              MaterialPageRoute(
+                                builder: (_) => EditProfileScreen(
+                                  userId: widget.userData!.id,
+                                  token: widget.userData!.token,
+                                ),
+                              ),
+                            )
+                            .then((value) => setState(() {
+                                  widget.userData = value;
+                                }));
                       },
                     ),
                   ),
@@ -269,13 +286,17 @@ class YourProfileScreen extends StatelessWidget {
                     child: Center(
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => ChangeAvatarScreen(
-                                user: userData,
-                              ),
-                            ),
-                          );
+                          Navigator.of(context)
+                              .push(
+                                MaterialPageRoute(
+                                  builder: (_) => ChangeAvatarScreen(
+                                    user: widget.userData,
+                                  ),
+                                ),
+                              )
+                              .then((value) => setState(() {
+                                    widget.userData?.avatarProfile = value;
+                                  }));
                         },
                         borderRadius: BorderRadius.circular(65),
                         child: Stack(
@@ -285,16 +306,18 @@ class YourProfileScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(80),
                                 border: Border.all(
-                                  color: userData!.gender == Gender.MALE
+                                  color: widget.userData!.gender == Gender.MALE
                                       ? Colors.blue
                                       : Colors.pinkAccent.shade400,
                                   width: 2,
                                 ),
                               ),
                               child: CircleAvatar(
-                                backgroundImage: userData?.avatarProfile != null
+                                backgroundImage: widget
+                                            .userData?.avatarProfile !=
+                                        null
                                     ? NetworkImage(
-                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${userData?.avatarProfile!.path}")
+                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,
@@ -309,9 +332,10 @@ class YourProfileScreen extends StatelessWidget {
                                 width: 35,
                                 child: Icon(Icons.edit, color: Colors.white),
                                 decoration: BoxDecoration(
-                                    color: userData!.gender == Gender.MALE
-                                        ? Colors.blue
-                                        : Colors.pinkAccent.shade400,
+                                    color:
+                                        widget.userData!.gender == Gender.MALE
+                                            ? Colors.blue
+                                            : Colors.pinkAccent.shade400,
                                     borderRadius: BorderRadius.circular(20)),
                               ),
                             ),
@@ -326,8 +350,8 @@ class YourProfileScreen extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${userData?.username}, " +
-                          "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(userData!.birthday!).year}",
+                      "${widget.userData?.username}, " +
+                          "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(widget.userData!.birthday!).year}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -340,7 +364,7 @@ class YourProfileScreen extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${userData?.firstname} ${userData?.lastname}",
+                      "${widget.userData?.firstname} ${widget.userData?.lastname}",
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
@@ -350,7 +374,7 @@ class YourProfileScreen extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${EnumToString.convertToString(userData?.gender)}",
+                      "${EnumToString.convertToString(widget.userData?.gender)}",
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
@@ -381,14 +405,18 @@ class YourProfileScreen extends StatelessWidget {
                         updateUser.setNewJob(null);
                         updateUser.setNewSchool(null);
                         updateUser.setNewLivesIn(null);
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => EditProfileScreen(
-                              userId: userData!.id,
-                              token: userData!.token,
-                            ),
-                          ),
-                        );
+                        Navigator.of(context)
+                            .push(
+                              MaterialPageRoute(
+                                builder: (_) => EditProfileScreen(
+                                  userId: widget.userData!.id,
+                                  token: widget.userData!.token,
+                                ),
+                              ),
+                            )
+                            .then((value) => setState(() {
+                                  widget.userData = value;
+                                }));
                       },
                     ),
                   ),

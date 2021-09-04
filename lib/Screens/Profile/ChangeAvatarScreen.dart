@@ -150,6 +150,7 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
         Provider.of<UserProvider>(context, listen: false)
             .updateDataSecurePlace(widget.user);
         await showSuccessDialog();
+        Navigator.of(context).pop(newAvatar);
       } else {
         await showErrorDialog();
       }

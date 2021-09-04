@@ -15,25 +15,15 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController controllerUserName = TextEditingController(text: "");
-
   TextEditingController controllerFirstName = TextEditingController(text: "");
-
   TextEditingController controllerLastName = TextEditingController(text: "");
-
   TextEditingController controllerEmail = TextEditingController(text: "");
-
   TextEditingController controllerAbout = TextEditingController(text: "");
-
   TextEditingController controllerJob = TextEditingController(text: "");
-
   TextEditingController controllerCompany = TextEditingController(text: "");
-
   TextEditingController controllerLivesIn = TextEditingController(text: "");
-
   TextEditingController controllerSchool = TextEditingController(text: "");
-
   TextEditingController controllerBirthday = TextEditingController(text: "");
-
   final FlutterSecureStorage storage = new FlutterSecureStorage();
 
   Future<void> showDialogSuccess() {
@@ -549,6 +539,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   if (updateUser.isUpdated) {
                     userProvider.updateDataSecurePlace(userUpdated);
                     await showDialogSuccess();
+                    Navigator.of(context).pop(userUpdated);
                     updateUser.clear();
                     controllerAbout.clear();
                     controllerBirthday.clear();

@@ -172,19 +172,25 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       itemCount: matchProvider.matchData?.length,
                       itemBuilder: (context, index) => InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => ChatScreen(
-                                user: matchProvider.matches![index].user1?.id ==
-                                        widget.user?.id
-                                    ? matchProvider.matches![index].user2
-                                    : matchProvider.matches![index].user1,
-                                you: widget.user,
-                                match: matchProvider.matches![index],
-                              ),
-                              fullscreenDialog: true,
-                            ),
-                          );
+                          Navigator.of(context)
+                              .push(
+                                MaterialPageRoute(
+                                  builder: (_) => ChatScreen(
+                                    user: matchProvider
+                                                .matches![index].user1?.id ==
+                                            widget.user?.id
+                                        ? matchProvider.matches![index].user2
+                                        : matchProvider.matches![index].user1,
+                                    you: widget.user,
+                                    match: matchProvider.matches![index],
+                                  ),
+                                  fullscreenDialog: true,
+                                ),
+                              )
+                              .then((value) => setState(() {
+                                    matchProvider.matches?[index].messages =
+                                        value;
+                                  }));
                         },
                         child: Container(
                           child: Column(
