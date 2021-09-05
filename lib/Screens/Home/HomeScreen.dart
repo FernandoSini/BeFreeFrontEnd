@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/LikeProvider.dart';
 import 'package:be_free_v1/Providers/ListUsersProvider.dart';
@@ -36,6 +37,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final storage = new FlutterSecureStorage();
+  final Api api = new Api();
+  var urlBackend = "";
   int page = 0;
 
   bool apiLoaded = false;
@@ -82,7 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
             .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
       }
     });
-
+    storage.read(key: api.key).then((value) => setState(() {
+          if (value != null) {
+            urlBackend = value;
+          }
+        }));
     super.didChangeDependencies();
   }
 
@@ -287,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "${urlBackend}api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -548,7 +555,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "${urlBackend}api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -808,7 +815,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "${urlBackend}api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -1067,7 +1074,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .avatarProfile !=
                                                             null
                                                         ? NetworkImage(
-                                                            "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                            "${urlBackend}api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                         : AssetImage(
                                                                 "assets/avatars/avatar2.png")
                                                             as ImageProvider,

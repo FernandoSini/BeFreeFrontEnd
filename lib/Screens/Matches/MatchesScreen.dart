@@ -1,3 +1,4 @@
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/MessageStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/LikesReceivedProvider.dart';
@@ -6,6 +7,7 @@ import 'package:be_free_v1/Screens/Chat/ChatScreen.dart';
 import 'package:be_free_v1/Screens/Profile/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,9 @@ class MatchesScreen extends StatefulWidget {
 }
 
 class _MatchesScreenState extends State<MatchesScreen> {
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
+  var urlBackend = "";
   @override
   void didChangeDependencies() async {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
@@ -28,6 +33,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
       await Provider.of<LikesReceivedProvider>(context, listen: false)
           .getLikesReceived(widget.user!.token!, widget.user!.id!);
     });
+
+    storage.read(key: api.key).then((value) => setState(() {
+          if (value != null) {
+            urlBackend = value;
+          }
+        }));
     super.didChangeDependencies();
   }
 
@@ -115,7 +126,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                             .likesData?[index].avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${likesReceivedProvider.likesReceived?[index].avatarProfile!.path}")
+                                        "${urlBackend}api/${likesReceivedProvider.likesReceived?[index].avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 radius: 50,
@@ -216,7 +227,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                           .avatarProfile !=
                                                       null
                                                   ? NetworkImage(
-                                                      "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${matchProvider.matches?[index].user2!.avatarProfile!.path}")
+                                                      "${urlBackend}api/${matchProvider.matches?[index].user2!.avatarProfile!.path}")
                                                   : AssetImage(
                                                           "assets/avatars/avatar2.png")
                                                       as ImageProvider,
@@ -229,7 +240,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                           .avatarProfile !=
                                                       null
                                                   ? NetworkImage(
-                                                      "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
+                                                      "${urlBackend}api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
                                                   : AssetImage(
                                                           "assets/avatars/avatar2.png")
                                                       as ImageProvider,

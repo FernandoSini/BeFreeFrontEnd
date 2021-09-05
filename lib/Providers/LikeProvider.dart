@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class LikeProvider extends ChangeNotifier {
@@ -13,12 +15,14 @@ class LikeProvider extends ChangeNotifier {
   bool get hasError => err;
   bool like = false;
   bool isLiked = true;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<void> setLike(
       String? yourId, String? idPeopleLiked, String? token) async {
     setLoading(true);
     String url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/users/$yourId/like/$idPeopleLiked";
+        "${await storage.read(key: api.key)}api/users/$yourId/like/$idPeopleLiked";
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",

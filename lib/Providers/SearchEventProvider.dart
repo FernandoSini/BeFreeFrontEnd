@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class SearchEventProvider extends ChangeNotifier {
@@ -18,6 +20,8 @@ class SearchEventProvider extends ChangeNotifier {
   bool get hasError => err;
   List<Event>? events = [];
   List<Event>? get eventData => events;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<void> searchEventByName(String? eventName, String? token) async {
     clearList();
@@ -27,7 +31,7 @@ class SearchEventProvider extends ChangeNotifier {
       "Authorization": "Bearer $token",
     };
     String url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/events/find?eventname=$eventName";
+        "${await storage.read(key: api.key)}api/events/find?eventname=$eventName";
 
     try {
       http.Response response = await http.get(Uri.parse(url), headers: headers);

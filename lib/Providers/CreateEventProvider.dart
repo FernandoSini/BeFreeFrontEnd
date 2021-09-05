@@ -1,10 +1,11 @@
 import 'dart:convert';
-
+import 'package:be_free_v1/Api/api.dart';
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -29,11 +30,13 @@ class CreateEventProvider extends ChangeNotifier {
   String? get errorData => error;
   bool? eventCreated = false;
   bool? get isEventCreated => true;
+  final Api api = new Api();
+  final storage = new FlutterSecureStorage();
 
   Future<void>? createEvent(String? token, User? eventOwner) async {
     setLoading(true);
     String url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/events/create";
+        "${await storage.read(key:api.key)}api/events/create";
 
     Map<String, String> headers = {
       "Content-type": "application/json",

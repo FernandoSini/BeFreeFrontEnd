@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/api.dart';
 import 'package:flutter/material.dart';
 
 import 'package:be_free_v1/Models/User.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginProvider extends ChangeNotifier {
   String? username;
@@ -21,9 +23,11 @@ class LoginProvider extends ChangeNotifier {
   bool get hasError => true;
   bool loading = false;
   bool get isLoading => loading;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<User?> login(String? username, String? password) async {
-    String url = "http://${dotenv.env["url"]}:${dotenv.env["port"]}/user/login";
+    final String url = "${await storage.read(key: api.key)}user/login";
     setLoading(true);
     var data = {"username": username, "password": password};
     final loginData = jsonEncode(data);
@@ -31,9 +35,9 @@ class LoginProvider extends ChangeNotifier {
       http.Response response =
           await http.post(Uri.parse(url), body: loginData, headers: {
         "Content-type": "application/json",
-        'Access-Control-Allow-Methods': '*',
+        // 'Access-Control-Allow-Methods': '*',
         // 'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*'
+        // 'Access-Control-Allow-Headers': '*'
       });
       if (response.statusCode == 200) {
         setLoggedIn(true);

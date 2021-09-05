@@ -1,3 +1,4 @@
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/UpdateUserProvider.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -24,9 +26,11 @@ class YourProfileScreen extends StatefulWidget {
 
 class _YourProfileScreenState extends State<YourProfileScreen> {
   final storage = new FlutterSecureStorage();
+  final Api api = new Api();
+  var urlBackend = "";
 
   Future<bool?> logoutFromServer() async {
-    String? url = "http://${dotenv.env["url"]}:${dotenv.env["port"]}/logout";
+    String? url = "${urlBackend}logout";
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       return true;
@@ -46,6 +50,16 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
         ),
       );
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    storage.read(key: api.key).then((value) => setState(() {
+          if (value != null) {
+            urlBackend = value;
+          }
+        }));
+    super.didChangeDependencies();
   }
 
   @override
@@ -155,7 +169,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             .userData?.avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.userData?.avatarProfile!.path}")
+                                        "${urlBackend}api/${widget.userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,
@@ -273,7 +287,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                     widget.userData?.createdAt =
                                         value.createdAt;
                                     widget.userData?.usertype = value.usertype;
-                                    print(widget.userData?.token);
                                   }
                                 },
                               ),
@@ -348,7 +361,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             .userData?.avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.userData?.avatarProfile!.path}")
+                                        "${urlBackend}api/${widget.userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,

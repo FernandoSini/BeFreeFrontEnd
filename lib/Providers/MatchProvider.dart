@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:be_free_v1/Models/Match.dart';
 
@@ -14,11 +16,13 @@ class MatchProvider extends ChangeNotifier {
   bool get hasError => error;
   String errorText = "";
   String get errorData => errorText;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<void> getMatches(String token, String yourId) async {
     matches?.clear();
     String url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/matches/$yourId";
+        "${await storage.read(key: api.key)}api/matches/$yourId";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"

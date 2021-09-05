@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Screens/Base/BaseScreen.dart';
 import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
@@ -19,10 +20,13 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   final storage = new FlutterSecureStorage();
+  final Api api = new Api();
   @override
   void didChangeDependencies() async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
+      final Api api = new Api();
+      await storage.write(key: api.key, value: api.url);
       if (await storage.containsKey(key: "user")) {
         var userData = await storage.read(key: "user");
         if (userData != null) {

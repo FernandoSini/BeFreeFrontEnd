@@ -1,94 +1,56 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:date_format/date_format.dart';
 
 class RegisterProvider extends ChangeNotifier {
   String? userName;
-
   String? get userNameValue => userName;
   String? firstName;
-
   String? get firstNameValue => firstName;
   String? lastName;
-
   String? get lastNameValue => lastName;
   String? password;
-
   String? get password1 => password;
-
   String? password2text;
-
   String? get password2 => password2text;
-
   String? email;
-
   String? get emailValue => email;
-
   bool get isPasswordValid =>
       password1 == password2 && (password1!.length > 6 || password1 == null);
-
-  // String get newPasswordError {
-  //   if (password1!.isNotEmpty && password1!.length < 6) {
-  //     return "Password too short";
-  //   } else if (password1 != password2) {
-  //     return "Passwords must be the same";
-  //   } else {
-  //     return "";
-  //   }
-  // }
-
   DateTime? birthday;
-
   DateTime? get birthdayValue => birthday;
-
   bool get isAdult => DateTime.now().year - birthday!.year >= 18;
-
   Gender? gender;
-
   Gender? get genderValue => gender;
-
   String? error;
-
   String? get errorData => error;
-
   bool errorValue = false;
-
   bool get hasError => errorValue;
-
   String? school;
-
   String? get schoolValue => school;
-
   String? company;
-
   String? get companyValue => company;
-
   String? livesIn;
-
   String? get livesInValue => livesIn;
-
   String? job;
-
   String? get jobValue => job;
-
   bool loading = false;
-
   bool get isLoading => loading;
-
   bool registered = false;
-
   bool get isRegistered => registered;
-
   String? message;
-
   String? get messageValue => message;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<void> register() async {
     setLoading(true);
@@ -111,7 +73,7 @@ class RegisterProvider extends ChangeNotifier {
       "livesIn": livesInValue,
       "job_title": jobValue,
     };
-    String url = "http://${dotenv.env["url"]}:${dotenv.env["port"]}/register";
+    String url = "${await storage.read(key: api.key)}register";
     var body = json.encode(dadosLogin);
     try {
       http.Response response = await http.post(Uri.parse(url),

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class VerifyUserProvider extends ChangeNotifier {
@@ -15,10 +17,12 @@ class VerifyUserProvider extends ChangeNotifier {
   String? get error => err;
   bool? erro = false;
   bool? get hasError => erro;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<void> verifyIfUserExists() async {
     String? url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/forgot-password/verify";
+        "${await storage.read(key: api.key)}forgot-password/verify";
     setLoading(true);
     var data = {"data": dataValue};
     var body = json.encode(data);

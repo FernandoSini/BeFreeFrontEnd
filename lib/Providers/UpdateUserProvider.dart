@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateUserProvider extends ChangeNotifier {
@@ -38,11 +40,13 @@ class UpdateUserProvider extends ChangeNotifier {
   bool get isLoading => loading;
   bool updated = false;
   bool get isUpdated => updated;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<User?> updateUser(String? id, String? token) async {
     setLoading(true);
     String url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/users/you/edit/$id";
+        "${await storage.read(key:api.key)}api/users/you/edit/$id";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"

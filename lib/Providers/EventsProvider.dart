@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class EventsProvider extends ChangeNotifier {
@@ -15,7 +17,9 @@ class EventsProvider extends ChangeNotifier {
   String get error => errorData;
   bool err = false;
   bool get hasError => err;
-
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
+  
   Future<void> getEvents(String token, EventStatus eventStatus) async {
     events?.clear();
     setLoading(true);
@@ -24,7 +28,7 @@ class EventsProvider extends ChangeNotifier {
         "Content-type": "application/json",
         "Authorization": "Bearer $token"
       };
-      String url = "http://${dotenv.env["url"]}:8080/api/events/all";
+      String url = "${await storage.read(key: api.key)}api/events/all";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,

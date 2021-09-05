@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/EventsProvider.dart';
@@ -8,6 +9,7 @@ import 'package:be_free_v1/Screens/Events/AboutEventScreen/AboutEventScreen.dart
 import 'package:be_free_v1/Widget/Responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +22,9 @@ class EventsHappening extends StatefulWidget {
 }
 
 class _EventsHappeningState extends State<EventsHappening> {
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
+  var eventUrlPhoto = "";
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
@@ -32,8 +37,7 @@ class _EventsHappeningState extends State<EventsHappening> {
   }
 
   Future<void> goToEvent(String id, String token, String eventId) async {
-    String? url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/events/$eventId/go";
+    String? url = "${await storage.read(key: api.key)}api/events/$eventId/go";
     var data = {"yourId": id};
     var body = jsonEncode(data);
     Map<String, String> headers = {
@@ -46,6 +50,16 @@ class _EventsHappeningState extends State<EventsHappening> {
     if (response.statusCode == 200) {
       print("você vai para o evento");
     } else {}
+  }
+
+  @override
+  void didChangeDependencies() {
+    storage.read(key: api.key).then((value) => setState(() {
+          if (value != null) {
+            eventUrlPhoto = value;
+          }
+        }));
+    super.didChangeDependencies();
   }
 
   @override
@@ -131,7 +145,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${eventUrlPhoto}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,
@@ -370,7 +384,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${eventUrlPhoto}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,
@@ -609,7 +623,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${eventUrlPhoto}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,
@@ -848,7 +862,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${eventUrlPhoto}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,

@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class EventsStatusProvider extends ChangeNotifier {
@@ -16,6 +18,8 @@ class EventsStatusProvider extends ChangeNotifier {
   String get error => errorData;
   bool err = false;
   bool get hasError => err;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<void> getEventsByStatus(String token, EventStatus eventStatus) async {
     events?.clear();
@@ -27,7 +31,7 @@ class EventsStatusProvider extends ChangeNotifier {
         "Authorization": "Bearer $token"
       };
       String url =
-          "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/events?eventstatus=${EnumToString.convertToString(eventStatus)}";
+          "${await storage.read(key: api.key)}api/events?eventstatus=${EnumToString.convertToString(eventStatus)}";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,

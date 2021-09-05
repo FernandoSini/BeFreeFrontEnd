@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:http_parser/http_parser.dart';
@@ -31,11 +33,13 @@ class UpdateEventProvider extends ChangeNotifier {
   String? get errorData => error;
   bool? eventUpdated = false;
   bool? get isEventUpdated => eventUpdated;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<void>? updateEvent(User? you, File? avatar, String? eventId) async {
     setLoading(true);
     String url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/event/$eventId/edit";
+        "${await storage.read(key: api.key)}api/event/$eventId/edit";
 
     Map<String, String> headers = {
       "Content-type": "multipart/form-data",

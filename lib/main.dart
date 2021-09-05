@@ -27,7 +27,7 @@ import 'Providers/RecoverPasswordProvider.dart';
 
 Future<void> main() async {
   // debugPaintSizeEnabled = true;
-  await dotenv.load(fileName: ".env");
+  // await dotenv.load(fileName: ".env");
   runApp(
     MultiProvider(
       providers: [

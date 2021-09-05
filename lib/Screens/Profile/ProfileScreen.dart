@@ -1,13 +1,35 @@
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Widget/FullScreenWidget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   ProfileScreen({this.user});
   final User? user;
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
+  var urlBackend = "";
+  
+  @override
+  void didChangeDependencies() {
+    storage.read(key: api.key).then((value) => setState(() {
+          if (value != null) {
+            urlBackend = value;
+          }
+        }));
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
               centerTitle: true,
               iconTheme: IconThemeData(color: Color(0xFF9a00e6)),
               title: Text(
-                "${user?.username}, ${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(user!.birthday!).year}",
+                "${widget.user?.username}, ${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(widget.user!.birthday!).year}",
                 style: TextStyle(
                   fontFamily: "Segoe",
                   color: Colors.pink[400],
@@ -59,10 +81,10 @@ class ProfileScreen extends StatelessWidget {
                     ],
                     color: Colors.blue,
                     image: DecorationImage(
-                      image: user!.avatarProfile == null
+                      image: widget.user!.avatarProfile == null
                           ? AssetImage("assets/avatars/avatar2.png")
                           : NetworkImage(
-                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${user!.avatarProfile!.path!}")
+                                  "${urlBackend}api/${widget.user!.avatarProfile!.path!}")
                               as ImageProvider,
                       fit: BoxFit.cover,
                     ),
@@ -76,13 +98,14 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 5),
-                  height: (user?.about != null && user!.about!.length >= 100)
+                  height: (widget.user?.about != null &&
+                          widget.user!.about!.length >= 100)
                       ? MediaQuery.of(context).size.height * 0.2
                       : MediaQuery.of(context).size.height * 0.2,
                   child: ListView(
                     physics: NeverScrollableScrollPhysics(),
                     children: [
-                      user!.school == null
+                      widget.user!.school == null
                           ? Container()
                           : Container(
                               margin: EdgeInsets.only(top: 10),
@@ -99,7 +122,7 @@ class ProfileScreen extends StatelessWidget {
                                     child: Container(
                                       margin: EdgeInsets.only(left: 5),
                                       child: Text(
-                                        "${user!.school}",
+                                        "${widget.user!.school}",
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ),
@@ -107,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                      user!.job == null
+                      widget.user!.job == null
                           ? Container()
                           : Container(
                               child: Row(
@@ -123,7 +146,7 @@ class ProfileScreen extends StatelessWidget {
                                     child: Container(
                                       margin: EdgeInsets.only(left: 5),
                                       child: Text(
-                                        "${user!.job}",
+                                        "${widget.user!.job}",
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ),
@@ -131,7 +154,7 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                      user!.livesIn == null
+                      widget.user!.livesIn == null
                           ? Container()
                           : Container(
                               child: Row(
@@ -146,9 +169,10 @@ class ProfileScreen extends StatelessWidget {
                                   Flexible(
                                     child: Container(
                                       margin: EdgeInsets.only(left: 5),
-                                      child: user!.livesIn == null
+                                      child: widget.user!.livesIn == null
                                           ? null
-                                          : Text("Lives in: ${user!.livesIn}"),
+                                          : Text(
+                                              "Lives in: ${widget.user!.livesIn}"),
                                     ),
                                   ),
                                 ],
@@ -176,7 +200,7 @@ class ProfileScreen extends StatelessWidget {
                         padding: EdgeInsets.only(left: 30, top: 10, right: 20),
                         // margin: EdgeInsets.only(left: 10, right: 10),
                         child: Text(
-                          "${user?.about ?? "This user hasn't write about him/her"}",
+                          "${widget.user?.about ?? "This user hasn't write about him/her"}",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: Colors.black45),
                           maxLines: 5,
@@ -192,7 +216,7 @@ class ProfileScreen extends StatelessWidget {
                     color: Color(0xFF9a00e6),
                   ),
                 ),
-                if (user!.photos != null)
+                if (widget.user!.photos != null)
                   Column(
                     children: [
                       Container(
@@ -213,14 +237,14 @@ class ProfileScreen extends StatelessWidget {
                         padding: EdgeInsets.only(
                             top: 15, bottom: 15, left: 15, right: 15),
                         clipBehavior: Clip.none,
-                        height: user!.photos!.length > 3
+                        height: widget.user!.photos!.length > 3
                             ? 200
                             : MediaQuery.of(context).size.height * 0.2,
                         width: MediaQuery.of(context).size.width,
                         child: GridView.builder(
                           scrollDirection: Axis.horizontal,
                           physics: BouncingScrollPhysics(),
-                          itemCount: user?.photos?.length,
+                          itemCount: widget.user?.photos?.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2, crossAxisSpacing: 10),
@@ -241,10 +265,10 @@ class ProfileScreen extends StatelessWidget {
                                   color: Color(0xFF9a00e6), width: 2),
                               borderRadius: BorderRadius.circular(40),
                               image: DecorationImage(
-                                image: user?.photos?[index] == null
+                                image: widget.user?.photos?[index] == null
                                     ? AssetImage("/assets/avatars/avatar2.png")
                                     : NetworkImage(
-                                            "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${user!.photos![index].path!}")
+                                            "${urlBackend}api/${widget.user!.photos![index].path!}")
                                         as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
@@ -256,9 +280,9 @@ class ProfileScreen extends StatelessWidget {
                                     tag: "smallImage$index",
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(40),
-                                      child: user?.photos?[index] != null
+                                      child: widget.user?.photos?[index] != null
                                           ? Image.network(
-                                              "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${user!.photos![index].path!}",
+                                              "${urlBackend}api/${widget.user!.photos![index].path!}",
                                               fit: BoxFit.cover,
                                               height: MediaQuery.of(context)
                                                       .size

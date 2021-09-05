@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/LikesReceived.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class LikesReceivedProvider extends ChangeNotifier {
@@ -15,12 +17,14 @@ class LikesReceivedProvider extends ChangeNotifier {
   bool get hasError => error;
   String errorText = "";
   String get errorData => errorText;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<void> getLikesReceived(String token, String yourId) async {
     likesReceived?.clear();
     likesData?.clear();
     String url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/users/likes/received/$yourId";
+        "${await storage.read(key:api.key)}api/users/likes/received/$yourId";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"

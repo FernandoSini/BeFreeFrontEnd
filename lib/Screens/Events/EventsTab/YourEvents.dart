@@ -1,3 +1,4 @@
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
@@ -8,6 +9,7 @@ import 'package:be_free_v1/Screens/Events/AboutEventScreen/AboutEventScreen.dart
 import 'package:be_free_v1/Screens/Events/EditEvents/EditEventsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +21,9 @@ class YourEvents extends StatefulWidget {
 }
 
 class _YourEventsState extends State<YourEvents> {
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
+  var eventUrlPhoto = "";
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
@@ -28,6 +33,16 @@ class _YourEventsState extends State<YourEvents> {
       }
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    storage.read(key: api.key).then((value) => setState(() {
+          if (value != null) {
+            eventUrlPhoto = value;
+          }
+        }));
+    super.didChangeDependencies();
   }
 
   @override
@@ -120,7 +135,7 @@ class _YourEventsState extends State<YourEvents> {
                                                     .eventPhoto !=
                                                 null
                                             ? NetworkImage(
-                                                "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${yourEventsProvider.eventData?[index].eventPhoto?.path}")
+                                                "${eventUrlPhoto}api/${yourEventsProvider.eventData?[index].eventPhoto?.path}")
                                             : AssetImage(
                                                     "assets/avatars/avatar2.png")
                                                 as ImageProvider,

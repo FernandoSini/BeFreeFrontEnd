@@ -1,4 +1,5 @@
 import 'dart:io' as io;
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Screens/Camera/CameraScreen.dart';
 import 'package:be_free_v1/Screens/Profile/components/ChooseFromScreen.dart';
@@ -6,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:be_free_v1/Models/ImageModel.dart';
 import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 class PhotosScreen extends StatefulWidget {
   PhotosScreen({this.user});
@@ -16,6 +19,19 @@ class PhotosScreen extends StatefulWidget {
 }
 
 class _PhotosScreenState extends State<PhotosScreen> {
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
+  var urlBackend = "";
+  @override
+  void didChangeDependencies() {
+    storage.read(key: api.key).then((value) => setState(() {
+          if (value != null) {
+            urlBackend = value;
+          }
+        }));
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +91,7 @@ class _PhotosScreenState extends State<PhotosScreen> {
                                 ? null
                                 : DecorationImage(
                                     image: NetworkImage(
-                                      "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.user!.photos![index].path!}",
+                                      "${urlBackend}api/${widget.user!.photos![index].path!}",
                                     ),
                                     fit: BoxFit.cover,
                                   ),

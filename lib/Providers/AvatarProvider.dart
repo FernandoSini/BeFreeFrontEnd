@@ -1,3 +1,4 @@
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/AvatarProfile.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:http_parser/http_parser.dart';
@@ -22,12 +24,14 @@ class AvatarProvider extends ChangeNotifier {
   bool get isUpdated => updated;
   File? image;
   File? get imageData => image;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<AvatarProfile?> uploadAvatar(
       String yourId, File? avatar, String? token) async {
     setLoading(true);
     String url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/users/$yourId/upload/avatar/";
+        "${await storage.read(key: api.key)}api/users/$yourId/upload/avatar/";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
     try {
@@ -75,7 +79,7 @@ class AvatarProvider extends ChangeNotifier {
 
   Future<AvatarProfile> changeAvatar(String yourId, String? token) async {
     String url =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/users/avatar/update/$yourId";
+        "${await storage.read(key: api.key)}api/users/avatar/update/$yourId";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
     try {

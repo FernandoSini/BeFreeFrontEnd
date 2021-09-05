@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class RecoverPasswordProvider extends ChangeNotifier {
@@ -16,10 +18,11 @@ class RecoverPasswordProvider extends ChangeNotifier {
   bool? get hasErrorUpdate => errorUpdate;
   String? data = "";
   String? get dataValue => data;
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
   Future<void> changePassword() async {
-    String? urlReset =
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/forgot-password/reset";
+    String? urlReset = "${await storage.read(key: api.key)}forgot-password/reset";
     setUpdating(true);
     var data = {"data": dataValue, "newPassword": newPassword};
     var body = jsonEncode(data);

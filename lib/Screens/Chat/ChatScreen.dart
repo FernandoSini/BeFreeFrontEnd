@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Match.dart';
 import 'package:be_free_v1/Models/Message.dart';
 import 'package:be_free_v1/Models/MessageStatus.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -32,11 +34,12 @@ class _ChatScreenState extends State<ChatScreen> {
   ScrollController _scrollController = ScrollController();
   double? scrollPosition = 0;
   late IO.Socket socket;
-  StreamController get controller => StreamController<Message>();
+  var avatarUrl = "";
+  final storage = new FlutterSecureStorage();
+  final Api api = new Api();
 
-  void connect() {
-    socket = IO.io(
-        "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/match/chat",
+  Future<void> connect() async {
+    socket = IO.io("${await storage.read(key: api.key)}/api/match/chat",
         IO.OptionBuilder().setTransports(['websocket', 'polling']).build());
     socket.onConnect((data) {
       // print("connected: " + socket.id! + " data: " + data.toString());
@@ -80,6 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
           duration: Duration(seconds: 1), curve: Curves.easeIn);
       // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
+    avatarUrl = (await storage.read(key: api.key))!;
     super.didChangeDependencies();
   }
 
@@ -159,7 +163,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           borderRadius: BorderRadius.circular(30),
                           child: widget.user?.avatarProfile != null
                               ? Image.network(
-                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.user!.avatarProfile!.path!}",
+                                  "${avatarUrl}api/${widget.user!.avatarProfile!.path!}",
                                   fit: BoxFit.cover,
                                   height: screenSize.height * 0.5,
                                   width: screenSize.width * 0.95,

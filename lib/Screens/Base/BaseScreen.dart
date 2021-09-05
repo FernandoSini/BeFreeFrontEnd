@@ -1,3 +1,4 @@
+import 'package:be_free_v1/Api/api.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:be_free_v1/Screens/Events/CreateEvent/CreateEventScreen.dart';
@@ -27,6 +28,8 @@ class BaseScreen extends StatefulWidget {
 class _BaseScreenState extends State<BaseScreen> {
   int page = 0;
   final storage = new FlutterSecureStorage();
+  final Api api = new Api();
+  var avatarUrl = "";
 
   @override
   void initState() {
@@ -37,6 +40,16 @@ class _BaseScreenState extends State<BaseScreen> {
       }
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    storage.read(key: api.key).then((value) => setState(() {
+          if (value != null) {
+            avatarUrl = value;
+          }
+        }));
+    super.didChangeDependencies();
   }
 
   @override
@@ -104,7 +117,7 @@ class _BaseScreenState extends State<BaseScreen> {
                           backgroundImage: widget.userData?.avatarProfile !=
                                   null
                               ? NetworkImage(
-                                  "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.userData!.avatarProfile!.path}")
+                                  "${avatarUrl}api/${widget.userData!.avatarProfile!.path}")
                               : AssetImage("assets/avatars/avatar2.png")
                                   as ImageProvider,
                           radius: 15,
@@ -159,7 +172,7 @@ class _BaseScreenState extends State<BaseScreen> {
                             backgroundImage: widget.userData?.avatarProfile !=
                                     null
                                 ? NetworkImage(
-                                    "http://${dotenv.env["url"]}:${dotenv.env["port"]}/api/${widget.userData!.avatarProfile!.path}")
+                                    "${avatarUrl}api/${widget.userData!.avatarProfile!.path}")
                                 : AssetImage("assets/avatars/avatar2.png")
                                     as ImageProvider,
                           ),
