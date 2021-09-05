@@ -93,7 +93,9 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                 ),
                               )
                               .then((value) => setState(() {
-                                    widget.userData?.avatarProfile = value;
+                                    if (value != null) {
+                                      widget.userData?.avatarProfile = value;
+                                    }
                                   }));
                         },
                         onLongPress: () {
@@ -250,9 +252,32 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                 ),
                               ),
                             )
-                            .then((value) => setState(() {
-                                  widget.userData = value;
-                                }));
+                            .then(
+                              (value) => setState(
+                                () {
+                                  if (value != null) {
+                                    // widget.userData = value;
+                                    widget.userData?.firstname =
+                                        value.firstname;
+                                    widget.userData?.lastname = value.lastname;
+                                    widget.userData?.username = value.username;
+                                    widget.userData?.birthday = value.birthday;
+                                    widget.userData?.about = value.about;
+                                    widget.userData?.company = value.company;
+                                    widget.userData?.email = value.email;
+                                    widget.userData?.job = value.job;
+                                    widget.userData?.livesIn = value.livesIn;
+                                    widget.userData?.school = value.school;
+                                    widget.userData?.gender = value.gender;
+                                    widget.userData?.photos = value.photos;
+                                    widget.userData?.createdAt =
+                                        value.createdAt;
+                                    widget.userData?.usertype = value.usertype;
+                                    print(widget.userData?.token);
+                                  }
+                                },
+                              ),
+                            );
                       },
                     ),
                   ),
@@ -294,9 +319,15 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                   ),
                                 ),
                               )
-                              .then((value) => setState(() {
-                                    widget.userData?.avatarProfile = value;
-                                  }));
+                              .then(
+                                (value) => setState(
+                                  () {
+                                    if (value != null) {
+                                      widget.userData?.avatarProfile = value;
+                                    }
+                                  },
+                                ),
+                              );
                         },
                         borderRadius: BorderRadius.circular(65),
                         child: Stack(
@@ -407,16 +438,34 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                         updateUser.setNewLivesIn(null);
                         Navigator.of(context)
                             .push(
-                              MaterialPageRoute(
-                                builder: (_) => EditProfileScreen(
-                                  userId: widget.userData!.id,
-                                  token: widget.userData!.token,
-                                ),
-                              ),
-                            )
-                            .then((value) => setState(() {
-                                  widget.userData = value;
-                                }));
+                          MaterialPageRoute(
+                            builder: (_) => EditProfileScreen(
+                              userId: widget.userData!.id,
+                              token: widget.userData!.token,
+                            ),
+                          ),
+                        )
+                            .then(
+                          (value) {
+                            if (value != null) {
+                              // widget.userData = value;
+                              widget.userData?.firstname = value.firstname;
+                              widget.userData?.lastname = value.lastname;
+                              widget.userData?.username = value.username;
+                              widget.userData?.birthday = value.birthday;
+                              widget.userData?.about = value.about;
+                              widget.userData?.company = value.company;
+                              widget.userData?.email = value.email;
+                              widget.userData?.job = value.job;
+                              widget.userData?.livesIn = value.livesIn;
+                              widget.userData?.school = value.school;
+                              widget.userData?.gender = value.gender;
+                              widget.userData?.photos = value.photos;
+                              widget.userData?.createdAt = value.createdAt;
+                              widget.userData?.usertype = value.usertype;
+                            }
+                          },
+                        );
                       },
                     ),
                   ),

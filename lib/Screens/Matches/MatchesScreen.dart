@@ -187,10 +187,16 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                   fullscreenDialog: true,
                                 ),
                               )
-                              .then((value) => setState(() {
-                                    matchProvider.matches?[index].messages =
-                                        value;
-                                  }));
+                              .then(
+                                (value) => setState(
+                                  () {
+                                    if (value != null) {
+                                      matchProvider.matches?[index].messages =
+                                          value;
+                                    }
+                                  },
+                                ),
+                              );
                         },
                         child: Container(
                           child: Column(

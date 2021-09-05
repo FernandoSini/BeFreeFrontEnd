@@ -45,6 +45,7 @@ class UserProvider extends ChangeNotifier {
         await storage.delete(key: "user");
         await storage.write(
             key: "user", value: jsonEncode(userUpdated?.toJson()));
+        user = userUpdated;
         notifyListeners();
       } else {}
     }
