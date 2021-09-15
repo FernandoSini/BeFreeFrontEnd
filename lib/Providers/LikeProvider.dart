@@ -22,7 +22,7 @@ class LikeProvider extends ChangeNotifier {
       String? yourId, String? idPeopleLiked, String? token) async {
     setLoading(true);
     String url =
-        "${await storage.read(key: api.key)}api/users/$yourId/like/$idPeopleLiked";
+        "${api.url}api/users/$yourId/like/$idPeopleLiked";
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",

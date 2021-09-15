@@ -27,7 +27,7 @@ class LoginProvider extends ChangeNotifier {
   final Api api = new Api();
 
   Future<User?> login(String? username, String? password) async {
-    final String url = "${await storage.read(key: api.key)}user/login";
+    final String url = "${api.url}user/login";
     setLoading(true);
     var data = {"username": username, "password": password};
     final loginData = jsonEncode(data);

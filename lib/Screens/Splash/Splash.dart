@@ -25,7 +25,8 @@ class _SplashState extends State<Splash> {
   void didChangeDependencies() async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
-      final Api api = new Api();
+      // await storage.delete(key: api.key);
+
       await storage.write(key: api.key, value: api.url);
       if (await storage.containsKey(key: "user")) {
         var userData = await storage.read(key: "user");
@@ -113,8 +114,8 @@ class _SplashState extends State<Splash> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.red, systemNavigationBarColor: Colors.red),
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarColor: Colors.transparent),
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,

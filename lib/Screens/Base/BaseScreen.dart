@@ -29,7 +29,6 @@ class _BaseScreenState extends State<BaseScreen> {
   int page = 0;
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
-  var avatarUrl = "";
 
   @override
   void initState() {
@@ -40,16 +39,6 @@ class _BaseScreenState extends State<BaseScreen> {
       }
     });
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    storage.read(key: api.key).then((value) => setState(() {
-          if (value != null) {
-            avatarUrl = value;
-          }
-        }));
-    super.didChangeDependencies();
   }
 
   @override
@@ -117,7 +106,7 @@ class _BaseScreenState extends State<BaseScreen> {
                           backgroundImage: widget.userData?.avatarProfile !=
                                   null
                               ? NetworkImage(
-                                  "${avatarUrl}api/${widget.userData!.avatarProfile!.path}")
+                                  "${api.url}api/${widget.userData!.avatarProfile!.path}")
                               : AssetImage("assets/avatars/avatar2.png")
                                   as ImageProvider,
                           radius: 15,
@@ -172,7 +161,7 @@ class _BaseScreenState extends State<BaseScreen> {
                             backgroundImage: widget.userData?.avatarProfile !=
                                     null
                                 ? NetworkImage(
-                                    "${avatarUrl}api/${widget.userData!.avatarProfile!.path}")
+                                    "${api.url}api/${widget.userData!.avatarProfile!.path}")
                                 : AssetImage("assets/avatars/avatar2.png")
                                     as ImageProvider,
                           ),

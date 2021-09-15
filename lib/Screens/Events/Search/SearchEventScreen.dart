@@ -1,3 +1,4 @@
+import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
@@ -16,6 +17,7 @@ class SearchEventScreen extends StatefulWidget {
 
 class _SearchEventScreenState extends State<SearchEventScreen> {
   TextEditingController controllerSearch = TextEditingController(text: "");
+  final Api api = new Api();
 
   // @override
   // void initState() {
@@ -186,8 +188,13 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                                           MediaQuery.of(context).size.width * 1,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                            image: AssetImage(
-                                                "assets/avatars/avatar2.png"),
+                                            image: search.eventData?[index]
+                                                        .eventPhoto !=
+                                                    null
+                                                ? NetworkImage("${api.url}api/${search.eventData?[index].eventPhoto?.path}")
+                                                : AssetImage(
+                                                        "assets/avatars/avatar2.png")
+                                                    as ImageProvider,
                                             fit: BoxFit.cover),
                                       ),
                                     ),

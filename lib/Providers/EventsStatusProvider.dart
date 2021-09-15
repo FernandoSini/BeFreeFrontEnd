@@ -31,7 +31,7 @@ class EventsStatusProvider extends ChangeNotifier {
         "Authorization": "Bearer $token"
       };
       String url =
-          "${await storage.read(key: api.key)}api/events?eventstatus=${EnumToString.convertToString(eventStatus)}";
+          "${api.url}api/events?eventstatus=${EnumToString.convertToString(eventStatus)}";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,

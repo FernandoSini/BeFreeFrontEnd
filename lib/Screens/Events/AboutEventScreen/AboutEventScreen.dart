@@ -2,6 +2,7 @@ import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Event.dart';
 import 'package:be_free_v1/Models/EventStatus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
@@ -16,16 +17,7 @@ class AboutEventScreen extends StatefulWidget {
 class _AboutEventScreenState extends State<AboutEventScreen> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
-  var eventPhotoUrl = "";
-  @override
-  void didChangeDependencies() {
-    storage.read(key: api.key).then((value) => setState(() {
-          if (value != null) {
-            eventPhotoUrl = value;
-          }
-        }));
-    super.didChangeDependencies();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +26,8 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
         elevation: 0,
         iconTheme: IconThemeData(
           color: Colors.pinkAccent[400],
@@ -64,7 +58,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   image: widget.event?.eventPhoto == null
                       ? AssetImage("assets/avatars/avatar2.png")
                       : NetworkImage(
-                              "${eventPhotoUrl}api/${widget.event!.eventPhoto!.path!}")
+                              "${api.url}api/${widget.event!.eventPhoto!.path!}")
                           as ImageProvider,
                 ),
               ),
@@ -236,7 +230,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                                   .event?.eventOwner?.avatarProfile !=
                               null
                           ? NetworkImage(
-                              "${eventPhotoUrl}api/${widget.event!.eventOwner!.avatarProfile!.path}")
+                              "${api.url}api/${widget.event!.eventOwner!.avatarProfile!.path}")
                           : AssetImage("assets/avatars/avatar2.png")
                               as ImageProvider,
                       radius: 30,

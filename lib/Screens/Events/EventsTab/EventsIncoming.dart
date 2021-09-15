@@ -25,7 +25,6 @@ class EventsIncoming extends StatefulWidget {
 class _EventsIncomingState extends State<EventsIncoming> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
-  var eventUrlPhoto = "";
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
@@ -38,8 +37,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
   }
 
   Future<void> goToEvent(String id, String token, String eventId) async {
-    String? url =
-        "http://${await storage.read(key: api.key)}api/events/$eventId/go";
+    String? url = "${api.url}api/events/$eventId/go";
     var data = {"yourId": id};
     var body = jsonEncode(data);
     Map<String, String> headers = {
@@ -54,15 +52,6 @@ class _EventsIncomingState extends State<EventsIncoming> {
     } else {}
   }
 
-  @override
-  void didChangeDependencies() {
-    storage.read(key: api.key).then((value) => setState(() {
-          if (value != null) {
-            eventUrlPhoto = value;
-          }
-        }));
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +139,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "${eventUrlPhoto}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,
@@ -412,7 +401,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "${eventUrlPhoto}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,
@@ -674,7 +663,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "${eventUrlPhoto}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,
@@ -936,7 +925,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "${eventUrlPhoto}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,

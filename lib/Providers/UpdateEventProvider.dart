@@ -39,7 +39,7 @@ class UpdateEventProvider extends ChangeNotifier {
   Future<void>? updateEvent(User? you, File? avatar, String? eventId) async {
     setLoading(true);
     String url =
-        "${await storage.read(key: api.key)}api/event/$eventId/edit";
+        "${api.url}api/event/$eventId/edit";
 
     Map<String, String> headers = {
       "Content-type": "multipart/form-data",

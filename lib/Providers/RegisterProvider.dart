@@ -73,7 +73,7 @@ class RegisterProvider extends ChangeNotifier {
       "livesIn": livesInValue,
       "job_title": jobValue,
     };
-    String url = "${await storage.read(key: api.key)}register";
+    String url = "${api.url}register";
     var body = json.encode(dadosLogin);
     try {
       http.Response response = await http.post(Uri.parse(url),

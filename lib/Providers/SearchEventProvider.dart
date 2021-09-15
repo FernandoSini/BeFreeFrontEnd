@@ -30,9 +30,7 @@ class SearchEventProvider extends ChangeNotifier {
       "Content-type": "application/json",
       "Authorization": "Bearer $token",
     };
-    String url =
-        "${await storage.read(key: api.key)}api/events/find?eventname=$eventName";
-
+    String url = "${api.url}api/events/find?eventname=$eventName";
     try {
       http.Response response = await http.get(Uri.parse(url), headers: headers);
 

@@ -10,6 +10,7 @@ import 'package:be_free_v1/Widget/FullScreenWidget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -33,20 +34,20 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController controllerMessage = TextEditingController(text: "");
   ScrollController _scrollController = ScrollController();
   double? scrollPosition = 0;
-  late IO.Socket socket;
-  var avatarUrl = "";
+  IO.Socket? socket;
+  String? avatarUrl = "";
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
 
   Future<void> connect() async {
-    socket = IO.io("${await storage.read(key: api.key)}/api/match/chat",
+    socket = IO.io("${api.url}api/match/chat",
         IO.OptionBuilder().setTransports(['websocket', 'polling']).build());
-    socket.onConnect((data) {
+    socket?.onConnect((data) {
       // print("connected: " + socket.id! + " data: " + data.toString());
     });
 
-    socket.emit("signIn", widget.you!.id);
-    socket.onError((data) => print("error:" + data.toString()));
+    socket?.emit("signIn", widget.you!.id);
+    socket?.onError((data) => print("error:" + data.toString()));
 
     if (_scrollController.hasClients) {
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
@@ -56,7 +57,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // Timer(Duration(seconds: 1), () {
     //   _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     // });
-    socket.on("sendMessage", (data) {
+    socket?.on("sendMessage", (data) {
       Provider.of<MessagesProvider>(context, listen: false)
           .setMessages(Message.fromJson(data));
     });
@@ -83,13 +84,13 @@ class _ChatScreenState extends State<ChatScreen> {
           duration: Duration(seconds: 1), curve: Curves.easeIn);
       // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
-    avatarUrl = (await storage.read(key: api.key))!;
+    avatarUrl = await storage.read(key: api.key);
     super.didChangeDependencies();
   }
 
   void loadMessages() {
-    socket.emit("loadMessages", widget.match!.matchId!);
-    socket.on("carregarMensagens", (data) {
+    socket?.emit("loadMessages", widget.match!.matchId!);
+    socket?.on("carregarMensagens", (data) {
       if (Provider.of<MessagesProvider>(context, listen: false).messages !=
               null ||
           Provider.of<MessagesProvider>(context, listen: false)
@@ -108,8 +109,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    socket.onDisconnect((data) => print("disconnected"));
-    socket.dispose();
+    socket?.onDisconnect((data) => print("disconnected"));
+    socket?.dispose();
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
         Provider.of<MessagesProvider>(context, listen: false).dispose();
@@ -127,7 +128,7 @@ class _ChatScreenState extends State<ChatScreen> {
         matchId: matchId,
         messageStatus: MessageStatus.RECEIVED,
         timestamp: DateTime.now());
-    socket.emit("sendMessage", message.toJson());
+    socket?.emit("sendMessage", message.toJson());
     return message;
   }
 
@@ -139,6 +140,8 @@ class _ChatScreenState extends State<ChatScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         elevation: 0,
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
         backgroundColor: Colors.transparent,
         centerTitle: true,
         actions: [],
@@ -163,7 +166,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           borderRadius: BorderRadius.circular(30),
                           child: widget.user?.avatarProfile != null
                               ? Image.network(
-                                  "${avatarUrl}api/${widget.user!.avatarProfile!.path!}",
+                                  "${api.url}api/${widget.user!.avatarProfile!.path!}",
                                   fit: BoxFit.cover,
                                   height: screenSize.height * 0.5,
                                   width: screenSize.width * 0.95,

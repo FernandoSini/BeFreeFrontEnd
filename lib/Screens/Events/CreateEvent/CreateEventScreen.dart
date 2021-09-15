@@ -1,6 +1,7 @@
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/CreateEventProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/date_picker_theme.dart';
 import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -143,6 +144,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
         elevation: 0,
         title: Text(
           "Create Event",

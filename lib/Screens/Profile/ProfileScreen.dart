@@ -3,6 +3,7 @@ import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Widget/FullScreenWidget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
@@ -18,17 +19,9 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
-  var urlBackend = "";
+ 
+
   
-  @override
-  void didChangeDependencies() {
-    storage.read(key: api.key).then((value) => setState(() {
-          if (value != null) {
-            urlBackend = value;
-          }
-        }));
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +30,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               defaultTargetPlatform == TargetPlatform.iOS)
           ? AppBar(
               backgroundColor: Colors.transparent,
+              systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarIconBrightness: Brightness.dark),
               elevation: 0,
               centerTitle: true,
               iconTheme: IconThemeData(color: Color(0xFF9a00e6)),
@@ -84,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       image: widget.user!.avatarProfile == null
                           ? AssetImage("assets/avatars/avatar2.png")
                           : NetworkImage(
-                                  "${urlBackend}api/${widget.user!.avatarProfile!.path!}")
+                                  "${api.url}api/${widget.user!.avatarProfile!.path!}")
                               as ImageProvider,
                       fit: BoxFit.cover,
                     ),
@@ -268,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 image: widget.user?.photos?[index] == null
                                     ? AssetImage("/assets/avatars/avatar2.png")
                                     : NetworkImage(
-                                            "${urlBackend}api/${widget.user!.photos![index].path!}")
+                                            "${api.url}api/${widget.user!.photos![index].path!}")
                                         as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
@@ -282,7 +277,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       borderRadius: BorderRadius.circular(40),
                                       child: widget.user?.photos?[index] != null
                                           ? Image.network(
-                                              "${urlBackend}api/${widget.user!.photos![index].path!}",
+                                              "${api.url}api/${widget.user!.photos![index].path!}",
                                               fit: BoxFit.cover,
                                               height: MediaQuery.of(context)
                                                       .size

@@ -30,8 +30,7 @@ class AvatarProvider extends ChangeNotifier {
   Future<AvatarProfile?> uploadAvatar(
       String yourId, File? avatar, String? token) async {
     setLoading(true);
-    String url =
-        "${await storage.read(key: api.key)}api/users/$yourId/upload/avatar/";
+    String url = "${api.url}api/users/$yourId/upload/avatar/";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
     try {
@@ -57,6 +56,7 @@ class AvatarProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         setLoading(false);
         setUploaded(true);
+        setError(false);
         AvatarProfile avatarProfile =
             AvatarProfile.fromJson(jsonDecode(response.body));
         notifyListeners();
@@ -65,7 +65,7 @@ class AvatarProvider extends ChangeNotifier {
         setLoading(false);
         setUploaded(false);
         setError(true);
-        setErrorText(jsonDecode(response.body)["error"]);
+        setErrorText(jsonDecode(response.body)["err"]);
         return Future.error(errorData);
       }
     } on Exception catch (e) {
@@ -78,8 +78,7 @@ class AvatarProvider extends ChangeNotifier {
   }
 
   Future<AvatarProfile> changeAvatar(String yourId, String? token) async {
-    String url =
-        "${await storage.read(key: api.key)}api/users/avatar/update/$yourId";
+    String url = "${api.url}api/users/avatar/update/$yourId";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
     try {
@@ -115,7 +114,7 @@ class AvatarProvider extends ChangeNotifier {
         setLoading(false);
         setError(true);
         setUpdated(false);
-        setErrorText(jsonDecode(response.body)["error"]);
+        setErrorText(jsonDecode(response.body)["err"]);
         return Future.error(errorData);
       }
     } catch (e) {
@@ -159,5 +158,10 @@ class AvatarProvider extends ChangeNotifier {
 
   void clear() {
     setImage(null);
+    setError(false);
+    setErrorText("");
+    setLoading(false);
+    setUpdated(false);
+    setUploaded(false);
   }
 }

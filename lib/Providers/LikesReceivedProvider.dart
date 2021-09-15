@@ -24,7 +24,7 @@ class LikesReceivedProvider extends ChangeNotifier {
     likesReceived?.clear();
     likesData?.clear();
     String url =
-        "${await storage.read(key:api.key)}api/users/likes/received/$yourId";
+        "${api.url}api/users/likes/received/$yourId";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
