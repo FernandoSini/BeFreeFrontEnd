@@ -18,6 +18,7 @@ import 'package:be_free_v1/Providers/YourEventsProvider.dart';
 import 'package:be_free_v1/Screens/Splash/Splash.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'Providers/EventsStatusProvider.dart';
@@ -64,13 +65,19 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BeFree',
-      debugShowCheckedModeBanner: false,
-      builder: DevicePreview.appBuilder,
-      locale: DevicePreview.locale(context),
-      home: Splash(),
-      // routes: {"/login": (context) => LoginScreen()},
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.white,
+          systemNavigationBarIconBrightness:
+              Brightness.dark), //working changing android bottom menu bar
+      child: MaterialApp(
+        title: 'BeFree',
+        debugShowCheckedModeBanner: false,
+        builder: DevicePreview.appBuilder,
+        locale: DevicePreview.locale(context),
+        home: Splash(),
+        // routes: {"/login": (context) => LoginScreen()},
+      ),
     );
   }
 }

@@ -128,6 +128,7 @@ class _BaseScreenState extends State<BaseScreen> {
                   child: BottomNavigationBar(
                     type: BottomNavigationBarType.fixed,
                     unselectedItemColor: Colors.grey,
+                    backgroundColor: Colors.white,
                     currentIndex: page,
                     selectedItemColor: Color(0xFF9a00e6),
                     onTap: (index) {

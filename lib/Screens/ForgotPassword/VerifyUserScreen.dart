@@ -2,6 +2,7 @@ import 'package:be_free_v1/Providers/RecoverPasswordProvider.dart';
 import 'package:be_free_v1/Providers/VerifyUserProvider.dart';
 import 'package:be_free_v1/Screens/ForgotPassword/ForgotPasswordScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class VerifyUserScreen extends StatefulWidget {
@@ -40,6 +41,9 @@ class _VerifyUserScreenState extends State<VerifyUserScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarIconBrightness: Brightness.dark,
+        ),
         iconTheme: IconThemeData(
           color: Color(0xff9a00e6),
         ),
