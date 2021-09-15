@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Models/User.dart';
@@ -8,7 +11,9 @@ import 'package:be_free_v1/Screens/Profile/ChangeAvatarScreen.dart';
 import 'package:be_free_v1/Screens/Profile/EditProfileScreen.dart';
 import 'package:be_free_v1/Widget/Responsive.dart';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
@@ -27,10 +32,9 @@ class YourProfileScreen extends StatefulWidget {
 class _YourProfileScreenState extends State<YourProfileScreen> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
-  var urlBackend = "";
 
   Future<bool?> logoutFromServer() async {
-    String? url = "${urlBackend}logout";
+    String? url = "${api.url}logout";
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       return true;
@@ -52,22 +56,125 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    storage.read(key: api.key).then((value) => setState(() {
-          if (value != null) {
-            urlBackend = value;
-          }
-        }));
-    super.didChangeDependencies();
+  Future<bool?> deleteAvatar(BuildContext context) async {
+    String url = "${api.url}api/users/${widget.userData?.id}/avatar/delete";
+    http.Response response = await http.delete(Uri.parse(url), headers: {
+      "Content-type": "application/json",
+      "Authorization": "Bearer ${widget.userData?.token}"
+    });
+    if (response.statusCode == 200) {
+      await showSuccessDeleteDialog(context);
+      return true;
+    } else {
+      String error = jsonDecode(response.body)["err"];
+      await showDeleteErrorDialog(context, error);
+      return false;
+    }
+  }
+
+  Future<void> showSuccessDeleteDialog(context) async {
+    return showDialog(
+      context: context,
+      builder: (_) {
+        return Container(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text("Success"),
+            actions: [
+              Container(
+                margin: EdgeInsets.only(right: 100),
+                child: TextButton(
+                  child: Text(
+                    "Close",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF9a00e6),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            ],
+            content: Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  Icon(
+                    Icons.check_circle_sharp,
+                    color: Colors.green,
+                    size: 80,
+                  ),
+                  Text("Deleted!"),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> showDeleteErrorDialog(context, String error) async {
+    return showDialog(
+      context: context,
+      builder: (_) {
+        return Container(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text("Error"),
+            actions: [
+              Container(
+                margin: EdgeInsets.only(right: 100),
+                child: TextButton(
+                  child: Text(
+                    "Close",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF9a00e6),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            ],
+            content: Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  Icon(
+                    Icons.cancel_sharp,
+                    color: Colors.red,
+                    size: 80,
+                  ),
+                  Text("$error"),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final updateUser = Provider.of<UpdateUserProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -112,43 +219,118 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                     }
                                   }));
                         },
-                        onLongPress: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text(
-                                  "DELETE AVATAR",
-                                  style: TextStyle(
-                                    color: Color(0xFF9a00e6),
-                                  ),
-                                ),
-                                content: Text(
-                                    "Hey, are you sure that you want to delete avatar?"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      "DELETE",
-                                      style: TextStyle(
-                                          color: Colors.pinkAccent[400]),
+                        onLongPress: () async {
+                          if (Platform.isAndroid) {
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    "Delete Avatar",
+                                    style: TextStyle(
+                                      color: Color(0xFF9a00e6),
                                     ),
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      "CANCEL",
-                                      style: TextStyle(
-                                        color: Colors.pinkAccent[400],
+                                  content: Text(
+                                      "Hey, are you sure that you want to delete avatar?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        var deleted =
+                                            await deleteAvatar(context)
+                                                .then((value) {
+                                          setState(() {
+                                            widget.userData?.avatarProfile =
+                                                null;
+                                          });
+                                          return value;
+                                        });
+                                        if (deleted!) {
+                                          setState(() {
+                                            widget.userData?.avatarProfile =
+                                                null;
+                                          });
+                                          userProvider.updateDataSecurePlace(
+                                              widget.userData);
+                                        }
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color: Colors.pinkAccent[400]),
                                       ),
                                     ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.pinkAccent[400],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: Text(
+                                    "Delete Avatar",
+                                    style: TextStyle(
+                                      color: Color(0xFF9a00e6),
+                                    ),
                                   ),
-                                ],
-                              );
-                            },
-                          );
+                                  content: Text(
+                                      "Hey, are you sure that you want to delete avatar?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        var deleted =
+                                            await deleteAvatar(context)
+                                                .then((value) {
+                                          setState(() {
+                                            widget.userData?.avatarProfile =
+                                                null;
+                                          });
+                                          return value;
+                                        });
+                                        if (deleted!) {
+                                          setState(() {
+                                            widget.userData?.avatarProfile =
+                                                null;
+                                          });
+                                        }
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color: Colors.pinkAccent[400]),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.pinkAccent[400],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
                         borderRadius: BorderRadius.circular(65),
                         child: Stack(
@@ -169,7 +351,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             .userData?.avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "${urlBackend}api/${widget.userData?.avatarProfile!.path}")
+                                        "${api.url}api/${widget.userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,
@@ -342,6 +524,121 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                 ),
                               );
                         },
+                        onLongPress: () async {
+                          if (Platform.isAndroid) {
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    "Delete Avatar",
+                                    style: TextStyle(
+                                      color: Color(0xFF9a00e6),
+                                    ),
+                                  ),
+                                  content: Text(
+                                      "Hey, are you sure that you want to delete avatar?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        var deleted =
+                                            await deleteAvatar(context)
+                                                .then((value) {
+                                          setState(() {
+                                            widget.userData?.avatarProfile =
+                                                null;
+                                          });
+                                          return value;
+                                        });
+
+                                        if (deleted!) {
+                                          setState(() {
+                                            widget.userData?.avatarProfile =
+                                                null;
+                                          });
+                                          userProvider.updateDataSecurePlace(
+                                              widget.userData);
+                                        }
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color: Colors.pinkAccent[400]),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.pinkAccent[400],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: Text(
+                                    "Delete Avatar",
+                                    style: TextStyle(
+                                      color: Color(0xFF9a00e6),
+                                    ),
+                                  ),
+                                  content: Text(
+                                      "Hey, are you sure that you want to delete avatar?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        var deleted =
+                                            await deleteAvatar(context)
+                                                .then((value) {
+                                          setState(() {
+                                            widget.userData?.avatarProfile =
+                                                null;
+                                          });
+                                          return value;
+                                        });
+                                        print(deleted);
+                                        if (deleted!) {
+                                          setState(() {
+                                            widget.userData?.avatarProfile =
+                                                null;
+                                          });
+                                        }
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color: Colors.pinkAccent[400]),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.pinkAccent[400],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
                         borderRadius: BorderRadius.circular(65),
                         child: Stack(
                           clipBehavior: Clip.none,
@@ -361,7 +658,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             .userData?.avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "${urlBackend}api/${widget.userData?.avatarProfile!.path}")
+                                        "${api.url}api/${widget.userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,

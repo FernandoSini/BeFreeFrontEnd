@@ -28,7 +28,7 @@ class YourEventsProvider extends ChangeNotifier {
         "Authorization": "Bearer $token"
       };
       String url =
-          "${await storage.read(key: api.key)}api/events/yourEvents?yourId=$yourId";
+          "${api.url}api/events/yourEvents?yourId=$yourId";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,

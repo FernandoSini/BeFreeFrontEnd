@@ -22,7 +22,7 @@ class VerifyUserProvider extends ChangeNotifier {
 
   Future<void> verifyIfUserExists() async {
     String? url =
-        "${await storage.read(key: api.key)}forgot-password/verify";
+        "${api.url}forgot-password/verify";
     setLoading(true);
     var data = {"data": dataValue};
     var body = json.encode(data);

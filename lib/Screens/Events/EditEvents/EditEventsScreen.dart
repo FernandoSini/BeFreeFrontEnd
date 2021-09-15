@@ -5,6 +5,7 @@ import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/UpdateEventProvider.dart';
 import 'package:be_free_v1/Screens/Events/EditEvents/components/ChooseFromScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -136,6 +137,7 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+      systemOverlayStyle: SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
         elevation: 0,
         title: Text(
           "Edit your events",

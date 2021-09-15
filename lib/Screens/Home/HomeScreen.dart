@@ -38,7 +38,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
-  var urlBackend = "";
+
   int page = 0;
 
   bool apiLoaded = false;
@@ -85,11 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
             .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
       }
     });
-    storage.read(key: api.key).then((value) => setState(() {
-          if (value != null) {
-            urlBackend = value;
-          }
-        }));
     super.didChangeDependencies();
   }
 
@@ -163,9 +158,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        backwardsCompatibility: false,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-        brightness: Brightness.dark,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarIconBrightness:
+              (listProvider.hasError || listProvider.userList!.isEmpty)
+                  ? Brightness.dark
+                  : Brightness.light,
+        ),
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.black),
@@ -294,7 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "${urlBackend}api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "${api.url}api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -555,7 +553,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "${urlBackend}api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "${api.url}api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -815,7 +813,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "${urlBackend}api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "${api.url}api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -1074,7 +1072,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .avatarProfile !=
                                                             null
                                                         ? NetworkImage(
-                                                            "${urlBackend}api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                            "${api.url}api/${listUserProvider.userList?[index].avatarProfile!.path}")
                                                         : AssetImage(
                                                                 "assets/avatars/avatar2.png")
                                                             as ImageProvider,

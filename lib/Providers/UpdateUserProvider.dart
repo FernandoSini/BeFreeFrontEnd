@@ -45,8 +45,7 @@ class UpdateUserProvider extends ChangeNotifier {
 
   Future<User?> updateUser(String? id, String? token) async {
     setLoading(true);
-    String url =
-        "${await storage.read(key:api.key)}api/users/you/edit/$id";
+    String url = "${api.url}api/users/you/edit/$id";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"

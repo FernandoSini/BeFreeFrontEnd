@@ -2,6 +2,7 @@ import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Providers/UpdateUserProvider.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
@@ -140,6 +141,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -256,8 +259,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       borderSide: BorderSide(
                         color: Color(0xFF9a00e6),
                       ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
+                    ),                    focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xFF9a00e6),
                       ),

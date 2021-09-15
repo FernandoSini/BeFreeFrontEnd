@@ -22,7 +22,7 @@ class RecoverPasswordProvider extends ChangeNotifier {
   final Api api = new Api();
 
   Future<void> changePassword() async {
-    String? urlReset = "${await storage.read(key: api.key)}forgot-password/reset";
+    String? urlReset = "${api.url}forgot-password/reset";
     setUpdating(true);
     var data = {"data": dataValue, "newPassword": newPassword};
     var body = jsonEncode(data);

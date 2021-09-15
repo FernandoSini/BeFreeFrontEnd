@@ -78,6 +78,7 @@ import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:be_free_v1/Screens/Base/BaseScreen.dart';
 import 'package:be_free_v1/Screens/Home/HomeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -274,6 +275,8 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(

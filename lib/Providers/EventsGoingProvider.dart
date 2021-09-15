@@ -30,7 +30,7 @@ class EventsGoingProvider extends ChangeNotifier {
         "Authorization": "Bearer $token"
       };
       String url =
-          "${await storage.read(key:api.key)}api/events/goingEvents?userId=$userId";
+          "${api.url}api/events/goingEvents?userId=$userId";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,

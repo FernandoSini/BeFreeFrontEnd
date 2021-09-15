@@ -28,7 +28,7 @@ class ListUsersProvider extends ChangeNotifier {
     try {
       http.Response response = await http.get(
         Uri.parse(
-            "${await storage.read(key: api.key)}api/users/gender/find/different?gender=${EnumToString.convertToString(user?.gender)}"),
+            "${api.url}api/users/gender/find/different?gender=${EnumToString.convertToString(user?.gender)}"),
         headers: {
           "Authorization": "Bearer ${user?.token}",
           "Content-type": "application/json"

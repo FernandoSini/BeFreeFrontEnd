@@ -21,8 +21,7 @@ class MatchProvider extends ChangeNotifier {
 
   Future<void> getMatches(String token, String yourId) async {
     matches?.clear();
-    String url =
-        "${await storage.read(key: api.key)}api/matches/$yourId";
+    String url = "${api.url}api/matches/$yourId";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"

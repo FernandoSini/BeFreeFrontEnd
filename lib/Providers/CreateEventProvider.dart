@@ -36,7 +36,7 @@ class CreateEventProvider extends ChangeNotifier {
   Future<void>? createEvent(String? token, User? eventOwner) async {
     setLoading(true);
     String url =
-        "${await storage.read(key:api.key)}api/events/create";
+        "${api.url}api/events/create";
 
     Map<String, String> headers = {
       "Content-type": "application/json",

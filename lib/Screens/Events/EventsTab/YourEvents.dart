@@ -8,6 +8,7 @@ import 'package:be_free_v1/Providers/YourEventsProvider.dart';
 import 'package:be_free_v1/Screens/Events/AboutEventScreen/AboutEventScreen.dart';
 import 'package:be_free_v1/Screens/Events/EditEvents/EditEventsScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +24,6 @@ class YourEvents extends StatefulWidget {
 class _YourEventsState extends State<YourEvents> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
-  var eventUrlPhoto = "";
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
@@ -35,21 +35,14 @@ class _YourEventsState extends State<YourEvents> {
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    storage.read(key: api.key).then((value) => setState(() {
-          if (value != null) {
-            eventUrlPhoto = value;
-          }
-        }));
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
         elevation: 0,
         iconTheme: IconThemeData(
           color: Colors.pinkAccent[400],
@@ -135,7 +128,7 @@ class _YourEventsState extends State<YourEvents> {
                                                     .eventPhoto !=
                                                 null
                                             ? NetworkImage(
-                                                "${eventUrlPhoto}api/${yourEventsProvider.eventData?[index].eventPhoto?.path}")
+                                                "${api.url}api/${yourEventsProvider.eventData?[index].eventPhoto?.path}")
                                             : AssetImage(
                                                     "assets/avatars/avatar2.png")
                                                 as ImageProvider,

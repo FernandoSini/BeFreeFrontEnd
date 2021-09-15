@@ -20,7 +20,6 @@ class EventsEnded extends StatefulWidget {
 class _EventsEndedState extends State<EventsEnded> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
-  var eventPhotoUrl = "";
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
@@ -28,16 +27,6 @@ class _EventsEndedState extends State<EventsEnded> {
           .getEventsByStatus(widget.user!.token!, EventStatus.ENDED);
     });
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    storage.read(key: api.key).then((value) => setState(() {
-          if (value != null) {
-            eventPhotoUrl = value;
-          }
-        }));
-    super.didChangeDependencies();
   }
 
   @override
@@ -120,7 +109,7 @@ class _EventsEndedState extends State<EventsEnded> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "${eventPhotoUrl}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,
@@ -283,7 +272,7 @@ class _EventsEndedState extends State<EventsEnded> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "${eventPhotoUrl}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,
@@ -446,7 +435,7 @@ class _EventsEndedState extends State<EventsEnded> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "${eventPhotoUrl}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,
@@ -609,7 +598,7 @@ class _EventsEndedState extends State<EventsEnded> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "${eventPhotoUrl}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,

@@ -22,15 +22,6 @@ class _PhotosScreenState extends State<PhotosScreen> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
   var urlBackend = "";
-  @override
-  void didChangeDependencies() {
-    storage.read(key: api.key).then((value) => setState(() {
-          if (value != null) {
-            urlBackend = value;
-          }
-        }));
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +82,7 @@ class _PhotosScreenState extends State<PhotosScreen> {
                                 ? null
                                 : DecorationImage(
                                     image: NetworkImage(
-                                      "${urlBackend}api/${widget.user!.photos![index].path!}",
+                                      "${api.url}api/${widget.user!.photos![index].path!}",
                                     ),
                                     fit: BoxFit.cover,
                                   ),
