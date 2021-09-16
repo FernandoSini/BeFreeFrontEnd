@@ -32,6 +32,15 @@ class MessagesProvider extends ChangeNotifier {
     messages?.add(message!);
     notifyListeners();
   }
+
+  void clearMessages() {
+    messages?.clear();
+    notifyListeners();
+  }
+
+  clear() {
+    clearMessages();
+  }
 }
 // import 'package:flutter/material.dart';
 // import 'package:be_free_v1/Models/Message.dart';

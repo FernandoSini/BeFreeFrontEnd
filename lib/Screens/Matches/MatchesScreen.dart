@@ -199,8 +199,16 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 (value) => setState(
                                   () {
                                     if (value != null) {
-                                      matchProvider.matches?[index].messages =
-                                          value;
+                                      // matchProvider.matches?[index].messages =
+                                      //     value;
+                                      value.forEach((element) {
+                                        if (element.matchId ==
+                                            matchProvider
+                                                .matches?[index].matchId) {
+                                          matchProvider.matches?[index].messages
+                                              ?.add(element);
+                                        }
+                                      });
                                     }
                                   },
                                 ),

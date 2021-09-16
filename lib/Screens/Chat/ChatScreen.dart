@@ -58,8 +58,10 @@ class _ChatScreenState extends State<ChatScreen> {
     //   _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     // });
     socket?.on("sendMessage", (data) {
-      Provider.of<MessagesProvider>(context, listen: false)
-          .setMessages(Message.fromJson(data));
+      if (data["matchId"] == widget.match?.matchId) {
+        Provider.of<MessagesProvider>(context, listen: false)
+            .setMessages(Message.fromJson(data));
+      }
     });
   }
 
