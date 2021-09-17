@@ -82,8 +82,10 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void didChangeDependencies() async {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(seconds: 1), curve: Curves.easeIn);
+      _scrollController.jumpTo(_scrollController.position
+              .maxScrollExtent /* ,
+          duration: Duration(seconds: 1), curve: Curves.easeIn */
+          );
       // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
     avatarUrl = await storage.read(key: api.key);
