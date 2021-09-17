@@ -28,13 +28,13 @@ class _LoginScreenState extends State<LoginScreen> {
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.dark),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.help_outline,
-              color: Color(0xFF9a00e6),
-            ),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.help_outline,
+          //     color: Color(0xFF9a00e6),
+          //   ),
+          //   onPressed: () {},
+          // ),
         ],
       ),
       backgroundColor: Colors.white,
@@ -171,6 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text("Forgot your password?"),
                 onPressed: () {
                   loginProvider.setError(false);
+                  loginProvider.setErrorText("");
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => VerifyUserScreen(),
@@ -229,6 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     loginProvider.setUserName(null);
                     loginProvider.setPassword(null);
                     loginProvider.setError(false);
+                    loginProvider.setErrorText("");
                   }
                 },
               ),
