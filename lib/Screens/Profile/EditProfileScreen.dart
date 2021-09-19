@@ -259,7 +259,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       borderSide: BorderSide(
                         color: Color(0xFF9a00e6),
                       ),
-                    ),                    focusedBorder: UnderlineInputBorder(
+                    ),
+                    focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xFF9a00e6),
                       ),
@@ -423,12 +424,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Center(
                 child: TextFormField(
                   controller: controllerBirthday,
-                  keyboardType: TextInputType.datetime,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9-]'))
+                  ],
                   decoration: InputDecoration(
                     labelText: "Birthday",
                     labelStyle: TextStyle(
                       color: Color(0xFF9a00e6),
                     ),
+                    hintText: "Example: (04-16-1999)(m-d-y)",
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xFF9a00e6),

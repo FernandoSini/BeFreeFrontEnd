@@ -19,9 +19,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
- 
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +33,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               centerTitle: true,
               iconTheme: IconThemeData(color: Color(0xFF9a00e6)),
               title: Text(
-                "${widget.user?.username}, ${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(widget.user!.birthday!).year}",
+                widget.user!.birthday!.contains("/")
+                    ? "${widget.user?.username}, ${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(widget.user!.birthday!).year}"
+                    : "${widget.user?.username}, ${new DateTime.now().year - new DateFormat("dd-mm-yyyy").parse(widget.user!.birthday!).year}",
                 style: TextStyle(
                   fontFamily: "Segoe",
                   color: Colors.pink[400],

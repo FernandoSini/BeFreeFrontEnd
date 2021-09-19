@@ -692,7 +692,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                     alignment: Alignment.center,
                     child: Text(
                       "${widget.userData?.username}, " +
-                          "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(widget.userData!.birthday!).year}",
+                          "${new DateTime.now().year - new DateFormat("dd-mm-yyyy").parse(widget.userData!.birthday!).year}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,

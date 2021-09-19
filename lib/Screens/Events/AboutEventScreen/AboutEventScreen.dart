@@ -18,7 +18,6 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,27 +75,30 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.location_on_outlined,
-                    color: Colors.pinkAccent[400],
-                    size: 30,
-                  ),
-                  const SizedBox(width: 5),
-                  Container(
-                    child: Text(
-                      "${widget.event!.eventLocation != null ? widget.event!.eventLocation : "Without location"}",
-                      style: TextStyle(
-                        fontSize: 15,
+            if (widget.event!.eventLocation != null)
+              Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.location_on_outlined,
+                      color: Colors.pinkAccent[400],
+                      size: 30,
+                    ),
+                    const SizedBox(width: 5),
+                    Container(
+                      child: Text(
+                        "${widget.event!.eventLocation != null ? widget.event!.eventLocation : "Without location"}",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  ],
+                ),
+              )
+            else
+              Container(),
             InkWell(
               onTap: () {},
               borderRadius: BorderRadius.circular(20),
@@ -134,7 +136,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   const SizedBox(width: 5),
                   Container(
                     child: Text(
-                      "${DateFormat("dd/MM/yyyy HH:mm:ss").format(widget.event!.startDate!)}",
+                      "${DateFormat("dd/MM/yyyy HH:mm:ss").format(widget.event!.startDate!.toUtc())}",
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -155,7 +157,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   const SizedBox(width: 5),
                   Container(
                     child: Text(
-                      "${DateFormat("dd/MM/yyyy HH:mm:ss").format(widget.event!.endDate!)}",
+                      "${DateFormat("dd/MM/yyyy HH:mm:ss").format(widget.event!.endDate!.toUtc())}",
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -193,9 +195,9 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                         : MediaQuery.of(context).size.height * 0.08,
                     margin: EdgeInsets.only(left: 15, right: 10),
                     child: Text(
-                      widget.event!.eventDescription!.contains("")
-                          ? "Don't have description"
-                          : widget.event!.eventDescription!,
+                      widget.event!.eventDescription!.isNotEmpty
+                          ? widget.event!.eventDescription!
+                          : "Don't have description",
                       softWrap: true,
                     ),
                   ),
