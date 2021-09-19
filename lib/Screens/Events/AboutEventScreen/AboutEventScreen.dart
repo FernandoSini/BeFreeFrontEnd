@@ -75,30 +75,27 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                 ),
               ),
             ),
-            if (widget.event!.eventLocation != null)
-              Container(
-                margin: EdgeInsets.only(left: 10),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: Colors.pinkAccent[400],
-                      size: 30,
-                    ),
-                    const SizedBox(width: 5),
-                    Container(
-                      child: Text(
-                        "${widget.event!.eventLocation != null ? widget.event!.eventLocation : "Without location"}",
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.pinkAccent[400],
+                    size: 30,
+                  ),
+                  const SizedBox(width: 5),
+                  Container(
+                    child: Text(
+                      "${widget.event!.eventLocation != null ? widget.event!.eventLocation : "Without location"}",
+                      style: TextStyle(
+                        fontSize: 15,
                       ),
                     ),
-                  ],
-                ),
-              )
-            else
-              Container(),
+                  ),
+                ],
+              ),
+            ),
             InkWell(
               onTap: () {},
               borderRadius: BorderRadius.circular(20),
