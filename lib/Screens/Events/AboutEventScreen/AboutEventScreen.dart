@@ -133,7 +133,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   const SizedBox(width: 5),
                   Container(
                     child: Text(
-                      "${DateFormat("dd/MM/yyyy HH:mm:ss").format(widget.event!.startDate!.toUtc())}",
+                      "${DateFormat("dd/MM/yyyy HH:mm:ss").format(widget.event!.startDate!.toLocal())}",
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -154,7 +154,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   const SizedBox(width: 5),
                   Container(
                     child: Text(
-                      "${DateFormat("dd/MM/yyyy HH:mm:ss").format(widget.event!.endDate!.toUtc())}",
+                      "${DateFormat("dd/MM/yyyy HH:mm:ss").format(widget.event!.endDate!.toLocal())}",
                       style: TextStyle(
                         fontSize: 15,
                       ),

@@ -127,6 +127,12 @@ class Event {
     endDate = json["end_date"] == null
         ? null
         : DateTime.tryParse(json["end_date"])!.toLocal();
+    /*  startDate = json["start_date"] == null
+        ? null
+        : DateTime.tryParse(json["start_date"])!.toLocal();
+    endDate = json["end_date"] == null
+        ? null
+        : DateTime.tryParse(json["end_date"])!.toLocal(); */
     eventLocation =
         json['event_location'] == null ? null : json["event_location"];
     eventPhoto = json['event_cover'] != null
@@ -152,8 +158,10 @@ class Event {
     //     DateFormat("dd-MM-yyyy HH:mm:ss").format(this.startDate!).toString();
     // data['end_date'] =
     //     DateFormat("dd-MM-yyyy HH:mm:ss").format(this.endDate!).toString();
-    if (this.startDate != null) data['start_date'] = this.startDate!.toString();
-    if (this.endDate != null) data['end_date'] = this.endDate!.toString();
+    if (this.startDate != null)
+      data['start_date'] = this.startDate!.toUtc().toString();
+    if (this.endDate != null)
+      data['end_date'] = this.endDate!.toUtc().toString();
     // if (this.eventPhoto != null) {
     //   data['event_cover'] = this.eventPhoto!.toJson().toString();
     // }

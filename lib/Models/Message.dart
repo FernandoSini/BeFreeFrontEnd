@@ -110,7 +110,7 @@ class Message {
     data['content'] = this.content;
     data['targetId'] = this.targetId;
     data['matchId'] = this.matchId;
-    data['timestamp'] = this.timestamp.toString();
+    data['timestamp'] = this.timestamp!.toUtc().toString();
     data["message_status"] = EnumToString.convertToString(this.messageStatus);
     return data;
   }
