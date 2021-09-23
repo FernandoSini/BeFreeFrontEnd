@@ -100,7 +100,7 @@ class UpdateUserProvider extends ChangeNotifier {
       } else {
         setLoading(false);
         setHasError(true);
-        setErrorText(jsonDecode(response.body)["error"]);
+        setErrorText(jsonDecode(response.body)["err"]);
         setUpdated(false);
         return Future.error(errorData!);
       }

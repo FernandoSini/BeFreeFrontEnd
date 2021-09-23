@@ -13,8 +13,7 @@ class Match {
   Match.fromJson(Map<String, dynamic> json) {
     matchId = json['_id'];
     user1 = json['user1'] != null ? new User.fromJson(json['user1']) : null;
-    user2 =
-        json['user2'] != null ? new User.fromJson(json['user2']) : null;
+    user2 = json['user2'] != null ? new User.fromJson(json['user2']) : null;
     if (json['messages'] != null) {
       messages = [];
       (json['messages'] as List<dynamic>).forEach((v) {

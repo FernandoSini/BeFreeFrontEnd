@@ -242,6 +242,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           setState(() {
                                             widget.userData?.avatarProfile =
                                                 null;
+                                            userProvider.updateDataSecurePlace(
+                                                widget.userData);
                                           });
                                           return value;
                                         });
@@ -250,8 +252,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             widget.userData?.avatarProfile =
                                                 null;
                                           });
-                                          userProvider.updateDataSecurePlace(
-                                              widget.userData);
                                         }
                                         Navigator.of(context).pop();
                                       },
@@ -298,6 +298,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           setState(() {
                                             widget.userData?.avatarProfile =
                                                 null;
+                                            userProvider.updateDataSecurePlace(
+                                                widget.userData);
                                           });
                                           return value;
                                         });
@@ -384,8 +386,11 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${widget.userData?.username}, " +
-                          "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(widget.userData!.birthday!).year}",
+                      widget.userData!.birthday!.contains("/")
+                          ? "${widget.userData?.username}, " +
+                              "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(widget.userData!.birthday!).year}"
+                          : "${widget.userData?.username}, " +
+                              "${new DateTime.now().year - new DateFormat("dd-mm-yyyy").parse(widget.userData!.birthday!).year}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -547,6 +552,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           setState(() {
                                             widget.userData?.avatarProfile =
                                                 null;
+                                            userProvider.updateDataSecurePlace(
+                                                widget.userData);
                                           });
                                           return value;
                                         });
@@ -556,8 +563,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             widget.userData?.avatarProfile =
                                                 null;
                                           });
-                                          userProvider.updateDataSecurePlace(
-                                              widget.userData);
                                         }
                                         Navigator.of(context).pop();
                                       },
@@ -604,6 +609,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           setState(() {
                                             widget.userData?.avatarProfile =
                                                 null;
+                                                userProvider.updateDataSecurePlace(
+                                                widget.userData);
                                           });
                                           return value;
                                         });
@@ -691,8 +698,11 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${widget.userData?.username}, " +
-                          "${new DateTime.now().year - new DateFormat("dd-mm-yyyy").parse(widget.userData!.birthday!).year}",
+                      widget.userData!.birthday!.contains("/")
+                          ? "${widget.userData?.username}, " +
+                              "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(widget.userData!.birthday!).year}"
+                          : "${widget.userData?.username}, " +
+                              "${new DateTime.now().year - new DateFormat("dd-mm-yyyy").parse(widget.userData!.birthday!).year}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,

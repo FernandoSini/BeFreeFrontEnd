@@ -36,10 +36,10 @@ class UpdateEventProvider extends ChangeNotifier {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
 
-  Future<void>? updateEvent(User? you, File? avatar, String? eventId) async {
+  Future<void>? updateEvent(
+      User? you, File? eventPhoto, String? eventId) async {
     setLoading(true);
-    String url =
-        "${api.url}api/event/$eventId/edit";
+    String url = "${api.url}api/event/$eventId/edit";
 
     Map<String, String> headers = {
       "Content-type": "multipart/form-data",
@@ -68,9 +68,10 @@ class UpdateEventProvider extends ChangeNotifier {
         // });
         request.fields.addAll(event.toJson());
       }
-      if (avatar != null) {
-        request.files.add(await http.MultipartFile.fromPath("img", avatar.path,
-            contentType: avatar.path.endsWith(".jpg")
+      if (eventPhoto != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+            "img", eventPhoto.path,
+            contentType: eventPhoto.path.endsWith(".jpg")
                 ? MediaType("image", "jpeg")
                 : MediaType("image", "png")));
       }
@@ -86,11 +87,9 @@ class UpdateEventProvider extends ChangeNotifier {
         setLoading(false);
         setError(true);
         setEventUpdated(false);
-        setErrorText(
-          json.decode(
-            Utf8Decoder(allowMalformed: true).convert(response.bodyBytes),
-          ),
-        );
+        setErrorText(json.decode(
+          Utf8Decoder(allowMalformed: true).convert(response.bodyBytes),
+        )["err"]);
         return Future.error(errorData!);
       }
     } catch (e) {
@@ -132,9 +131,7 @@ class UpdateEventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setError(
-    bool? value,
-  ) {
+  void setError(bool? value) {
     err = value;
     notifyListeners();
   }
@@ -152,5 +149,18 @@ class UpdateEventProvider extends ChangeNotifier {
   void setLoading(bool newValue) {
     loading = newValue;
     notifyListeners();
+  }
+
+  clear() {
+    setEventCover(null);
+    setEventDescription(null);
+    setEventEndDate(null);
+    setEventStartDate(null);
+    setEventUpdated(false);
+    setError(false);
+    setErrorText(null);
+    setLoading(false);
+    setEventLocation(null);
+    setEventName(null);
   }
 }

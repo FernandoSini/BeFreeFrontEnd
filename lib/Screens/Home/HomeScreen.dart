@@ -1,6 +1,8 @@
 import 'dart:ffi';
 
 import 'package:be_free_v1/Api/Api.dart';
+import 'package:be_free_v1/Models/LikesReceived.dart';
+import 'package:be_free_v1/Models/LikesSent.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/LikeProvider.dart';
 import 'package:be_free_v1/Providers/ListUsersProvider.dart';
@@ -63,6 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (mounted) {
+        await Provider.of<LikeProvider>(context, listen: false).clear();
+      }
       await Provider.of<ListUsersProvider>(context, listen: false)
           .getListOfUsersByYourGender(widget.userData);
 
@@ -92,19 +97,22 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() async {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
+        Provider.of<LikeProvider>(context, listen: false).dispose();
         Provider.of<ListUsersProvider>(context, listen: false).dispose();
+        Provider.of<ListUsersProvider>(context, listen: false).clear();
+        Provider.of<LikeProvider>(context, listen: false).clear();
         Provider.of<UserProvider>(context, listen: false).dispose();
         if (JwtDecoder.isExpired(widget.userData!.token!)) {
           await storage.deleteAll();
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => LoginScreen()));
         }
-      }
+      } else {}
     });
     super.dispose();
   }
 
-  Future<void> showErrorDialog() async {
+  Future<void> showErrorDialog(context) async {
     return showDialog(
       context: context,
       builder: (_) {
@@ -352,11 +360,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 primary: Color(0xFF9a00e6)
                                                     .withOpacity(0.8)),
                                             onPressed: () async {
+                                              setState(() {
+                                                widget.userData?.likesSent?.add(
+                                                    LikesSent.fromJson(
+                                                        listUserProvider
+                                                            .userList![index]
+                                                            .toJson()));
+                                              });
+                                              print(listUserProvider
+                                                  .userList?[index]
+                                                  .likesSent?[index]
+                                                  .id);
                                               likeProvider.setLike(
                                                   widget.userData!.id,
                                                   listUserProvider
                                                       .userList![index].id!,
                                                   widget.userData!.token!);
+
                                               if (likeProvider.isLiked) {
                                                 setState(() {
                                                   listUserProvider.userList!
@@ -365,7 +385,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 });
                                               }
                                               if (likeProvider.hasError) {
-                                                await showErrorDialog();
+                                                await showErrorDialog(context);
                                                 setState(() {
                                                   listUserProvider.userList!
                                                       .remove(listUserProvider
@@ -623,7 +643,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 });
                                               }
                                               if (likeProvider.hasError) {
-                                                await showErrorDialog();
+                                                await showErrorDialog(context);
                                                 setState(() {
                                                   listUserProvider.userList!
                                                       .remove(listUserProvider
@@ -875,7 +895,39 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   listUserProvider
                                                       .userList![index].id!,
                                                   widget.userData!.token!);
+                                              //aqui
+                                              widget.userData?.likesSent?.add(
+                                                  LikesSent.fromJson(
+                                                      listUserProvider
+                                                          .userList![index]
+                                                          .toJsonUpdate()));
+                                              listUserProvider.userList![index]
+                                                  .likesReceived
+                                                  ?.add(LikesReceived.fromJson(
+                                                      widget.userData!
+                                                          .toJsonUpdate()));
+
+                                              print(widget.userData?.likesSent
+                                                  ?.any((element) =>
+                                                      element.id ==
+                                                      listUserProvider
+                                                          .userList![index]
+                                                          .id!));
+
+                                              print(listUserProvider
+                                                  .userList![index].likesSent
+                                                  ?.any((element) =>
+                                                      element.id ==
+                                                      widget.userData?.id));
+                                              //aqui e o maconha são testes para fazermos animações de match
                                               if (likeProvider.isLiked) {
+                                                if (listUserProvider
+                                                    .userList![index].likesSent!
+                                                    .any((element) =>
+                                                        element.id ==
+                                                        widget.userData?.id)) {
+                                                  print("maconha");
+                                                }
                                                 setState(() {
                                                   listUserProvider.userList!
                                                       .remove(listUserProvider
@@ -883,7 +935,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 });
                                               }
                                               if (likeProvider.hasError) {
-                                                await showErrorDialog();
+                                                await showErrorDialog(context);
                                                 setState(() {
                                                   listUserProvider.userList!
                                                       .remove(listUserProvider
@@ -1150,7 +1202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               });
                                             }
                                             if (likeProvider.hasError) {
-                                              await showErrorDialog();
+                                              await showErrorDialog(context);
                                               setState(() {
                                                 listUserProvider.userList!
                                                     .remove(listUserProvider

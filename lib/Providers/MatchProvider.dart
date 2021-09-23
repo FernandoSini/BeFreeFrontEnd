@@ -39,6 +39,7 @@ class MatchProvider extends ChangeNotifier {
           setLoading(false);
           setErrorText("");
           setError(false);
+          notifyListeners();
         }
       } else {
         setError(true);
@@ -67,5 +68,12 @@ class MatchProvider extends ChangeNotifier {
   void setLoading(newValue) {
     loading = newValue;
     notifyListeners();
+  }
+
+  clear() {
+    setError(null);
+    setErrorText(null);
+    setLoading(false);
+    matches?.clear();
   }
 }

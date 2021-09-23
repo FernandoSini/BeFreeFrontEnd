@@ -21,8 +21,7 @@ class LikeProvider extends ChangeNotifier {
   Future<void> setLike(
       String? yourId, String? idPeopleLiked, String? token) async {
     setLoading(true);
-    String url =
-        "${api.url}api/users/$yourId/like/$idPeopleLiked";
+    String url = "${api.url}api/users/$yourId/like/$idPeopleLiked";
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -67,5 +66,11 @@ class LikeProvider extends ChangeNotifier {
   void setLiked(bool value) {
     like = value;
     notifyListeners();
+  }
+
+  clear() {
+    setLiked(false);
+    setLoading(false);
+    setErrorText("");
   }
 }

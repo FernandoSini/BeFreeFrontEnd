@@ -27,8 +27,7 @@ class YourEventsProvider extends ChangeNotifier {
         "Content-type": "application/json",
         "Authorization": "Bearer $token"
       };
-      String url =
-          "${api.url}api/events/yourEvents?yourId=$yourId";
+      String url = "${api.url}api/events/yourEvents?yourId=$yourId";
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,
@@ -44,6 +43,7 @@ class YourEventsProvider extends ChangeNotifier {
           }
         }
         setLoading(false);
+        notifyListeners();
       } else {
         setLoading(false);
         setError(
@@ -69,5 +69,11 @@ class YourEventsProvider extends ChangeNotifier {
     err = errValue;
     errorData = errorText;
     notifyListeners();
+  }
+
+  clear() {
+    setLoading(null);
+    setError(false, "");
+    events?.clear();
   }
 }

@@ -80,4 +80,11 @@ class EventsStatusProvider extends ChangeNotifier {
     err = newValue;
     notifyListeners();
   }
+
+  clear() {
+    setErr(false);
+    setError(null);
+    setLoading(false);
+    events?.clear();
+  }
 }

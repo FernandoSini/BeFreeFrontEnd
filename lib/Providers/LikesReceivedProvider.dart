@@ -23,8 +23,7 @@ class LikesReceivedProvider extends ChangeNotifier {
   Future<void> getLikesReceived(String token, String yourId) async {
     likesReceived?.clear();
     likesData?.clear();
-    String url =
-        "${api.url}api/users/likes/received/$yourId";
+    String url = "${api.url}api/users/likes/received/$yourId";
     Map<String, String> headers = {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -42,6 +41,7 @@ class LikesReceivedProvider extends ChangeNotifier {
           setLoading(false);
           setErrorText("");
           setError(false);
+          notifyListeners();
         }
       } else {
         setError(true);
@@ -70,5 +70,12 @@ class LikesReceivedProvider extends ChangeNotifier {
   void setLoading(newValue) {
     loading = newValue;
     notifyListeners();
+  }
+
+  clear() {
+    setError(false);
+    setErrorText(null);
+    setLoading(false);
+    likesReceived?.clear();
   }
 }

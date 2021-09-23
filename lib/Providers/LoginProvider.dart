@@ -98,4 +98,14 @@ class LoginProvider extends ChangeNotifier {
     error = newValue;
     notifyListeners();
   }
+
+  clear() {
+    setError(false);
+    setErrorText("");
+    setLoading(false);
+    setLoggedIn(false);
+    setUser(null);
+    setUserName(null);
+    setPassword(null);
+  }
 }

@@ -147,6 +147,7 @@
 // }
 
 import 'package:be_free_v1/Models/Gender.dart';
+import 'package:be_free_v1/Models/Match.dart';
 import 'package:be_free_v1/Models/Usertype.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 
@@ -170,9 +171,9 @@ class User {
   String? school;
   String? company;
   List<Photos>? photos;
-  // List<LikesSent>? likesSent;
-  // List<LikesReceived>? likesReceived;
-  List<String>? matches;
+  List<LikesSent>? likesSent;
+  List<LikesReceived>? likesReceived;
+  List<Match>? matches;
   String? role;
   String? createdAt;
   String? token;
@@ -193,8 +194,8 @@ class User {
       this.school,
       this.company,
       this.photos,
-      // this.likesSent,
-      // this.likesReceived,
+      this.likesSent,
+      this.likesReceived,
       this.matches,
       this.role,
       this.createdAt,
@@ -228,19 +229,25 @@ class User {
         photos?.add(new Photos.fromJson(v));
       });
     }
-    // if (json['likesSent'] != null) {
-    //   likesSent = <LikesSent>[];
-    //   json['likesSent'].forEach((v) {
-    //     likesSent?.add(new LikesSent.fromJson(v));
-    //   });
-    // }
-    // if (json['likesReceived'] != null) {
-    //   likesReceived = <LikesReceived>[];
-    //   json['likesReceived'].forEach((v) {
-    //     likesReceived?.add(new LikesReceived.fromJson(v));
-    //   });
-    // }
-    matches = json['matches'] == null ? null : json['matches'].cast<String>();
+    if (json['likesSent'] != null) {
+      likesSent = <LikesSent>[];
+      json['likesSent'].forEach((v) {
+        likesSent?.add(new LikesSent.fromJson(v));
+      });
+    }
+    if (json['likesReceived'] != null) {
+      likesReceived = <LikesReceived>[];
+      json['likesReceived'].forEach((v) {
+        likesReceived?.add(new LikesReceived.fromJson(v));
+      });
+    }
+    if (json['matches'] != null) {
+      matches = <Match>[];
+      json['matches'].forEach((v) {
+        matches?.add(new Match.fromJson(v));
+      });
+    }
+    // matches = json['matches'] == null ? null : json['matches'].cast<String>();
     role = json['role'] == null ? null : json["roles"];
     createdAt = json['createdAt'] == null ? null : json["createdAt"];
     token = json['token'] == null ? null : json["token"];

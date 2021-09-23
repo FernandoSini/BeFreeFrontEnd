@@ -26,7 +26,7 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
       TextEditingController(text: "");
   File? imageData;
 
-  Future<void> showDialogSuccess() {
+  Future<void> showDialogSuccess(context) {
     return showDialog(
       context: context,
       builder: (_) {
@@ -63,7 +63,7 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                     color: Colors.green,
                     size: 80,
                   ),
-                  Text("Event Created Successfully"),
+                  Text("Event Updated Successfully"),
                 ],
               ),
             ),
@@ -73,7 +73,7 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
     );
   }
 
-  Future<void> showErrorDialog() {
+  Future<void> showErrorDialog(context) {
     return showDialog(
       context: context,
       builder: (_) {
@@ -126,6 +126,7 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
         Provider.of<UpdateEventProvider>(context, listen: false).dispose();
+        Provider.of<UpdateEventProvider>(context, listen: false).clear();
       }
     });
     super.dispose();
@@ -137,7 +138,8 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-      systemOverlayStyle: SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
         elevation: 0,
         title: Text(
           "Edit your events",
@@ -146,6 +148,13 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
             color: Colors.pinkAccent[400],
             fontWeight: FontWeight.bold,
           ),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+            updateEventProvider.clear();
+          },
         ),
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.pinkAccent[400]),
@@ -401,7 +410,7 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                               await updateEventProvider.updateEvent(
                                   widget.user!, imageData, widget.event!.id);
                               if (updateEventProvider.isEventUpdated!) {
-                                await showDialogSuccess();
+                                await showDialogSuccess(context);
                                 eventNameController.clear();
                                 eventLocationController.clear();
                                 eventDescriptionController.clear();
@@ -415,7 +424,7 @@ class _EditEventsScreenState extends State<EditEventsScreen> {
                                 });
                               }
                               if (updateEventProvider.hasError!) {
-                                await showErrorDialog();
+                                await showErrorDialog(context);
                               }
                             },
                           );

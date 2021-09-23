@@ -30,6 +30,16 @@ class _EventsEndedState extends State<EventsEnded> {
   }
 
   @override
+  void dispose() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (mounted) {
+        await Provider.of<EventsStatusProvider>(context, listen: false).clear();
+      }
+    });
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.only(top: 15, right: 5, left: 5),

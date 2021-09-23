@@ -28,7 +28,7 @@ class ListUsersProvider extends ChangeNotifier {
     try {
       http.Response response = await http.get(
         Uri.parse(
-            "${api.url}api/users/gender/find/different?gender=${EnumToString.convertToString(user?.gender)}"),
+            "${api.url}api/users/gender/find/different?gender=${EnumToString.convertToString(user?.gender)}&yourId=${user?.id}"),
         headers: {
           "Authorization": "Bearer ${user?.token}",
           "Content-type": "application/json"
@@ -88,5 +88,12 @@ class ListUsersProvider extends ChangeNotifier {
   void setErr(newValue) {
     err = newValue;
     notifyListeners();
+  }
+
+  clear() {
+    setErr(false);
+    setApiLoaded(false);
+    setError("");
+    userListFromAPi?.clear();
   }
 }

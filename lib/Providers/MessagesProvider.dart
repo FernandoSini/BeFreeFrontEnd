@@ -30,6 +30,7 @@ class MessagesProvider extends ChangeNotifier {
 
   void setMessages(Message? message) {
     messages?.add(message!);
+    messages?.sort((a, b) => a.timestamp!.compareTo(b.timestamp!));
     notifyListeners();
   }
 

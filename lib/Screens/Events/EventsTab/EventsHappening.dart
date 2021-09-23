@@ -35,6 +35,16 @@ class _EventsHappeningState extends State<EventsHappening> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (mounted) {
+        await Provider.of<EventsStatusProvider>(context, listen: false).clear();
+      }
+    });
+    super.dispose();
+  }
+
   Future<void> goToEvent(String id, String token, String eventId) async {
     String? url = "${await storage.read(key: api.key)}api/events/$eventId/go";
     var data = {"yourId": id};

@@ -5,6 +5,7 @@ import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
 import 'package:be_free_v1/Screens/Register/components/BirthdayScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_holo_date_picker/date_picker_theme.dart';
 import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,16 @@ class _PasswordScreenState extends State<PasswordScreen> {
   TextEditingController password2Controller = TextEditingController();
 
   TextEditingController emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (mounted) {
+        Provider.of<RegisterProvider>(context, listen: false).clear();
+      }
+    });
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

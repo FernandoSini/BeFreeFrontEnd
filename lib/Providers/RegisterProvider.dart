@@ -188,4 +188,21 @@ class RegisterProvider extends ChangeNotifier {
     message = newValue;
     notifyListeners();
   }
+
+  clear() {
+    setJob(null);
+    setCompany(null);
+    setSchool(null);
+    setFirstName(null);
+    setLastName(null);
+    setBirthiday(DateTime.now());
+    setLivesIn(null);
+    setEmail(null);
+    setGender(null);
+    setUsername(null);
+    setPassword1(null);
+    setPassword2(null);
+    setIsRegistered(false);
+    setHasError(false);
+  }
 }

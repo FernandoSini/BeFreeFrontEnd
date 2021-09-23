@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 20, left: 30, right: 30),
-                  height: MediaQuery.of(context).size.height * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.35,
                   width: MediaQuery.of(context).size.width * 0.3,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(

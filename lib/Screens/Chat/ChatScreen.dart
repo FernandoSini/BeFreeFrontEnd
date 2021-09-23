@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
   double? scrollPosition = 0;
   IO.Socket? socket;
   String? avatarUrl = "";
+  FocusNode _focusNode = new FocusNode();
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
 
@@ -49,10 +51,10 @@ class _ChatScreenState extends State<ChatScreen> {
     socket?.emit("signIn", widget.you!.id);
     socket?.onError((data) => print("error:" + data.toString()));
 
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(seconds: 1), curve: Curves.bounceIn);
-    }
+    // if (_scrollController.hasClients) {
+    //   _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+    //       duration: Duration(seconds: 1), curve: Curves.bounceIn);
+    // }
     // _scrollController.jumpTo(_scrollController.position.minScrollExtent);
     // Timer(Duration(seconds: 1), () {
     //   _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
@@ -73,21 +75,33 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      Provider.of<MessagesProvider>(context, listen: false).clear();
+    });
     connect();
     loadMessages();
     _scrollController.addListener(scrollListener);
+    _focusNode.addListener(_onFocusChange);
     super.initState();
+  }
+
+  void _onFocusChange() {
+    _focusNode.hasFocus;
   }
 
   @override
   void didChangeDependencies() async {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _scrollController.jumpTo(_scrollController.position
-              .maxScrollExtent /* ,
-          duration: Duration(seconds: 1), curve: Curves.easeIn */
-          );
-      // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    });
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (_) {
+        // _scrollController.animateTo(
+        //     _scrollController.position.maxScrollExtent * 1.05,
+        //     duration: Duration(seconds: 1),
+        //     curve: Curves.ease);
+        if(!_focusNode.hasFocus)
+        _scrollController
+            .jumpTo(_scrollController.position.maxScrollExtent * 1.05);
+      },
+    );
     avatarUrl = await storage.read(key: api.key);
     super.didChangeDependencies();
   }
@@ -115,9 +129,13 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     socket?.onDisconnect((data) => print("disconnected"));
     socket?.dispose();
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
+    _scrollController.removeListener(scrollListener);
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
         Provider.of<MessagesProvider>(context, listen: false).dispose();
+        Provider.of<MessagesProvider>(context, listen: false).clear();
       }
     });
     super.dispose();
@@ -209,122 +227,128 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Container(
         height: screenSize.height,
-        child: Container(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                if (messageProvider.isLoading)
-                  Container(
-                    height: screenSize.height,
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Colors.purple),
-                    ),
-                  )
-                else
-                  Container(
-                      height: defaultTargetPlatform == TargetPlatform.iOS
-                          ? screenSize.height * 0.77
-                          : screenSize.height * 0.79,
-                      clipBehavior: Clip.none,
-                      child: Container(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          controller: _scrollController,
-                          physics: BouncingScrollPhysics(),
-                          itemCount: messageProvider.messages?.length != null
-                              ? messageProvider.messages!.length
-                              : 0,
-                          itemBuilder: (context, index) {
-                            if (widget.you!.id ==
-                                messageProvider.messages?[index].yourId) {
-                              return YourMessageCard(
-                                  messageStatus: messageProvider
-                                      .messages?[index].messageStatus,
-                                  content:
-                                      messageProvider.messages?[index].content,
-                                  timestamp: messageProvider
-                                      .messages?[index].timestamp);
-                            } else {
-                              return ReplyCard(
-                                  content:
-                                      messageProvider.messages?[index].content,
-                                  timestamp: messageProvider
-                                      .messages?[index].timestamp);
-                            }
-                          },
-                        ),
-                      )),
+        child: SingleChildScrollView(
+          // physics: NeverScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              if (messageProvider.isLoading)
                 Container(
-                  margin: defaultTargetPlatform == TargetPlatform.android
-                      ? EdgeInsets.only(left: 10, right: 10, bottom: 10)
-                      : EdgeInsets.only(left: 10, right: 10, bottom: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: TextFormField(
-                            maxLines: null,
-                            // autofocus: true,
-                            controller: controllerMessage,
-                            scrollPhysics: BouncingScrollPhysics(),
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: "Message",
-                              contentPadding: EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                                left: 15,
-                                right: 15,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                gapPadding: 5,
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                  width: 2,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                            onChanged: (value) {},
-                          ),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.transparent,
-                        margin: EdgeInsets.only(
-                          left: 10,
-                        ),
-                        child: FloatingActionButton(
-                          isExtended: true,
-                          child: Icon(Icons.send),
-                          onPressed: () async {
-                            if (controllerMessage.text.isNotEmpty) {
-                              var message = await sendMessage(
-                                  widget.you!.id!,
-                                  controllerMessage.text,
-                                  widget.user!.id!,
-                                  widget.match!.matchId!,
-                                  context);
-                              messageProvider.setMessages(message);
-                              controllerMessage.clear();
-                            } else {}
-                          },
-                          backgroundColor: Color(0xff9a00e6),
-                        ),
-                      )
-                    ],
+                  height: screenSize.height,
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Colors.purple),
+                  ),
+                )
+              else
+                Container(
+                  height: defaultTargetPlatform == TargetPlatform.iOS
+                      ? screenSize.height * 0.77
+                      : screenSize.height * 0.78,
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.bottomCenter,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: _scrollController,
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    // padding: !_focusNode.hasFocus
+                    //     ? null
+                    //     : EdgeInsets.only(
+                    //         top: messageProvider.messages!.length > 20
+                    //             ? 100
+                    //             : 350,
+                    //         bottom: 30),
+                    itemCount: messageProvider.messages?.length != null
+                        ? messageProvider.messages!.length
+                        : 0,
+                    itemBuilder: (context, index) {
+                      if (widget.you!.id ==
+                          messageProvider.messages?[index].yourId) {
+                        return YourMessageCard(
+                            messageStatus:
+                                messageProvider.messages?[index].messageStatus,
+                            content: messageProvider.messages?[index].content,
+                            timestamp:
+                                messageProvider.messages?[index].timestamp);
+                      } else {
+                        return ReplyCard(
+                            content: messageProvider.messages?[index].content,
+                            timestamp:
+                                messageProvider.messages?[index].timestamp);
+                      }
+                    },
                   ),
                 ),
-              ],
-            ),
+              Container(
+                margin: defaultTargetPlatform == TargetPlatform.android
+                    ? EdgeInsets.only(left: 10, right: 10, bottom: 10)
+                    : EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        child: TextFormField(
+                          focusNode: _focusNode,
+                          maxLines: null,
+                          // autofocus: true,
+                          controller: controllerMessage,
+                          scrollPhysics: BouncingScrollPhysics(),
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: "Message",
+                            contentPadding: EdgeInsets.only(
+                              top: 10,
+                              bottom: 10,
+                              left: 15,
+                              right: 15,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              gapPadding: 5,
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                          onChanged: (value) {},
+                        ),
+                      ),
+                    ),
+                    Container(
+                      color: Colors.transparent,
+                      margin: EdgeInsets.only(
+                        left: 10,
+                      ),
+                      child: FloatingActionButton(
+                        isExtended: true,
+                        child: Icon(Icons.send),
+                        onPressed: () async {
+                          if (controllerMessage.text.isNotEmpty) {
+                            var message = await sendMessage(
+                                widget.you!.id!,
+                                controllerMessage.text,
+                                widget.user!.id!,
+                                widget.match!.matchId!,
+                                context);
+                            messageProvider.setMessages(message);
+                            controllerMessage.clear();
+                          } else {}
+                        },
+                        backgroundColor: Color(0xff9a00e6),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

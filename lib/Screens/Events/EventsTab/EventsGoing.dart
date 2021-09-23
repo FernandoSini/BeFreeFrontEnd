@@ -36,6 +36,7 @@ class _EventsGoingState extends State<EventsGoing> {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
         Provider.of<EventsGoingProvider>(context, listen: false).dispose();
+        Provider.of<EventsGoingProvider>(context, listen: false).clear();
         if (JwtDecoder.isExpired(widget.user!.token!)) {
           await storage.deleteAll();
           Navigator.of(context).pushReplacement(

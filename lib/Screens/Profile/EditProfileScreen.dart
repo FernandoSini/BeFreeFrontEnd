@@ -27,7 +27,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController controllerBirthday = TextEditingController(text: "");
   final FlutterSecureStorage storage = new FlutterSecureStorage();
 
-  Future<void> showDialogSuccess() {
+  Future<void> showDialogSuccess(context) {
     return showDialog(
       context: context,
       builder: (_) {
@@ -74,7 +74,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Future<void> showErrorDialog() async {
+  Future<void> showErrorDialog(context) async {
     return showDialog(
       context: context,
       builder: (_) {
@@ -424,12 +424,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Center(
                 child: TextFormField(
                   controller: controllerBirthday,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.datetime,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9-]'))
                   ],
                   decoration: InputDecoration(
-                    labelText: "Birthday",
+                    labelText: "Birthday (mon-day-year)",
                     labelStyle: TextStyle(
                       color: Color(0xFF9a00e6),
                     ),
@@ -545,7 +545,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       widget.userId!, widget.token!);
                   if (updateUser.isUpdated) {
                     userProvider.updateDataSecurePlace(userUpdated);
-                    await showDialogSuccess();
+                    await showDialogSuccess(context);
                     Navigator.of(context).pop(userUpdated);
                     updateUser.clear();
                     controllerAbout.clear();
@@ -559,7 +559,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     controllerSchool.clear();
                     controllerUserName.clear();
                   } else {
-                    await showErrorDialog();
+                    await showErrorDialog(context);
                   }
                 },
                 style: ElevatedButton.styleFrom(

@@ -147,7 +147,10 @@ class _BaseScreenState extends State<BaseScreen> {
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.nightlife),
-                        activeIcon: Icon(Icons.nightlife),
+                        activeIcon: Icon(
+                          Icons.nightlife,
+                          color: Color(0xffedc967),
+                        ),
                         label: "Events",
                       ),
                       BottomNavigationBarItem(

@@ -5,6 +5,7 @@ import 'package:be_free_v1/Screens/ForgotPassword/VerifyUserScreen.dart';
 import 'package:be_free_v1/Screens/Register/RegisterScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,6 +17,29 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = TextEditingController(text: "");
   TextEditingController passwordController = TextEditingController(text: "");
   bool isObscure = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      Provider.of<RegisterProvider>(context, listen: false).clear();
+      Provider.of<LoginProvider>(context, listen: false).clear();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (mounted) {
+        Provider.of<RegisterProvider>(context, listen: false).clear();
+        Provider.of<LoginProvider>(context, listen: false).clear();
+      }else{
+        
+      }
+    });
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);

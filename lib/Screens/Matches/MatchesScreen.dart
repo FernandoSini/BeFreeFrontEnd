@@ -42,11 +42,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (mounted) {
         Provider.of<MatchProvider>(context, listen: false).dispose();
+        Provider.of<MatchProvider>(context, listen: false).clear();
       }
     });
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
         Provider.of<LikesReceivedProvider>(context, listen: false).dispose();
+        Provider.of<LikesReceivedProvider>(context, listen: false).clear();
       }
     });
     super.dispose();
@@ -228,7 +230,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                           ? CircleAvatar(
                                               backgroundImage: matchProvider
                                                           .matches?[index]
-                                                          .user2!
+                                                          .user2! //ta aqui o erro
                                                           .avatarProfile !=
                                                       null
                                                   ? NetworkImage(
