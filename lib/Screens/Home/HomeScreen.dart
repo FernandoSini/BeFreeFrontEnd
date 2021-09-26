@@ -467,12 +467,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Container(
                                       margin: EdgeInsets.only(top: 13),
                                       alignment: Alignment.center,
-                                      child: Text(
-                                        "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
+                                      child: listUserProvider
+                                              .userList![index].birthday!
+                                              .contains("/")
+                                          ? Text(
+                                              "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            )
+                                          : Text(
+                                              "${new DateTime.now().year - new DateFormat("dd-mm-yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            ),
                                     ),
                                   ],
                                 ),
@@ -725,12 +734,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Container(
                                       margin: EdgeInsets.only(top: 13),
                                       alignment: Alignment.center,
-                                      child: Text(
-                                        "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
+                                      child: listUserProvider
+                                              .userList![index].birthday!
+                                              .contains("/")
+                                          ? Text(
+                                              "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            )
+                                          : Text(
+                                              "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            ),
                                     ),
                                   ],
                                 ),
@@ -1284,12 +1302,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Container(
                                     margin: EdgeInsets.only(top: 10),
                                     alignment: Alignment.center,
-                                    child: Text(
-                                      "${new DateTime.now().year - new DateFormat("dd-MM-yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    ),
+                                    child: listUserProvider
+                                            .userList![index].birthday!
+                                            .contains("/")
+                                        ? Text(
+                                            "${new DateTime.now().year - new DateFormat("dd/MM/yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20),
+                                          )
+                                        : Text(
+                                            "${new DateTime.now().year - new DateFormat("dd-mm-yyyy").parse(listUserProvider.userList![index].birthday!).year}, years",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20),
+                                          ),
                                   ),
                                 ],
                               ),
