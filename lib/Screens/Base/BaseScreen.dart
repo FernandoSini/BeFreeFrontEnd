@@ -103,12 +103,12 @@ class _BaseScreenState extends State<BaseScreen> {
                       padding: EdgeInsets.only(top: 10),
                       child: Center(
                         child: CircleAvatar(
-                          backgroundImage: widget.userData?.avatarProfile !=
-                                  null
-                              ? NetworkImage(
-                                  "${api.url}api/${widget.userData!.avatarProfile!.path}")
-                              : AssetImage("assets/avatars/avatar2.png")
-                                  as ImageProvider,
+                          backgroundImage:
+                              widget.userData?.avatarProfile != null
+                                  ? NetworkImage(
+                                      "${widget.userData!.avatarProfile!.path}")
+                                  : AssetImage("assets/avatars/avatar2.png")
+                                      as ImageProvider,
                           radius: 15,
                         ),
                       ),
@@ -165,7 +165,7 @@ class _BaseScreenState extends State<BaseScreen> {
                             backgroundImage: widget.userData?.avatarProfile !=
                                     null
                                 ? NetworkImage(
-                                    "${api.url}api/${widget.userData!.avatarProfile!.path}")
+                                    "${widget.userData!.avatarProfile!.path}")
                                 : AssetImage("assets/avatars/avatar2.png")
                                     as ImageProvider,
                           ),

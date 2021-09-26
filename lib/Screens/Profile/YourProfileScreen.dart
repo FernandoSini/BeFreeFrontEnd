@@ -353,7 +353,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             .userData?.avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "${api.url}api/${widget.userData?.avatarProfile!.path}")
+                                        "${widget.userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,
@@ -609,7 +609,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           setState(() {
                                             widget.userData?.avatarProfile =
                                                 null;
-                                                userProvider.updateDataSecurePlace(
+                                            userProvider.updateDataSecurePlace(
                                                 widget.userData);
                                           });
                                           return value;
@@ -665,7 +665,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             .userData?.avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "${api.url}api/${widget.userData?.avatarProfile!.path}")
+                                        "${widget.userData?.avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,
@@ -739,7 +739,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                       icon: Icon(Icons.edit),
                       label: Text("Edit Profile"),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF9a00e6),
+                        // primary: Color(0xFF9a00e6),
+                        primary: Colors.pink[400],
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(22),
                         ),

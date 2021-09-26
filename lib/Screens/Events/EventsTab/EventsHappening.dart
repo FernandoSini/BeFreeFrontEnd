@@ -46,7 +46,7 @@ class _EventsHappeningState extends State<EventsHappening> {
   }
 
   Future<void> goToEvent(String id, String token, String eventId) async {
-    String? url = "${await storage.read(key: api.key)}api/events/$eventId/go";
+    String? url = "${api.url}api/events/$eventId/go";
     var data = {"yourId": id};
     var body = jsonEncode(data);
     Map<String, String> headers = {
@@ -144,7 +144,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,
@@ -383,7 +383,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,
@@ -622,7 +622,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,
@@ -861,7 +861,7 @@ class _EventsHappeningState extends State<EventsHappening> {
                                                       .eventPhoto !=
                                                   null
                                               ? NetworkImage(
-                                                  "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                  "${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                               : AssetImage(
                                                       "assets/avatars/avatar2.png")
                                                   as ImageProvider,

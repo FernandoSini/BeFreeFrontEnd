@@ -35,7 +35,6 @@ class _YourEventsState extends State<YourEvents> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +127,7 @@ class _YourEventsState extends State<YourEvents> {
                                                     .eventPhoto !=
                                                 null
                                             ? NetworkImage(
-                                                "${api.url}api/${yourEventsProvider.eventData?[index].eventPhoto?.path}")
+                                                "${yourEventsProvider.eventData?[index].eventPhoto?.path}")
                                             : AssetImage(
                                                     "assets/avatars/avatar2.png")
                                                 as ImageProvider,

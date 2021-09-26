@@ -139,9 +139,9 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
         widget.user!.avatarProfile = newAvatar;
         Provider.of<UserProvider>(context, listen: false)
             .updateDataSecurePlace(widget.user);
-        await showSuccessDialog();
+        await showSuccessDialog(context);
       } else {
-        await showErrorDialog();
+        await showErrorDialog(context);
       }
     } else {
       var newAvatar = await Provider.of<AvatarProvider>(context, listen: false)
@@ -150,15 +150,15 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
       if (Provider.of<AvatarProvider>(context, listen: false).isUpdated) {
         Provider.of<UserProvider>(context, listen: false)
             .updateDataSecurePlace(widget.user);
-        await showSuccessDialog();
+        await showSuccessDialog(context);
         Navigator.of(context).pop(newAvatar);
       } else {
-        await showErrorDialog();
+        await showErrorDialog(context);
       }
     }
   }
 
-  Future<void> showSuccessDialog() async {
+  Future<void> showSuccessDialog(context) async {
     return showDialog(
       context: context,
       builder: (_) {
@@ -205,7 +205,7 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
     );
   }
 
-  Future<void> showErrorDialog() async {
+  Future<void> showErrorDialog(context) async {
     return showDialog(
       context: context,
       builder: (_) {

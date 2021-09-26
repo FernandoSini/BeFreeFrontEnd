@@ -148,7 +148,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,
@@ -410,7 +410,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,
@@ -672,7 +672,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,
@@ -934,7 +934,7 @@ class _EventsIncomingState extends State<EventsIncoming> {
                                                             .eventPhoto !=
                                                         null
                                                     ? NetworkImage(
-                                                        "${api.url}api/${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
+                                                        "${eventsStatusProvider.eventData?[index].eventPhoto?.path}")
                                                     : AssetImage(
                                                             "assets/avatars/avatar2.png")
                                                         as ImageProvider,

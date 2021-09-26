@@ -300,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "${api.url}api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -573,7 +573,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "${api.url}api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -833,7 +833,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .avatarProfile !=
                                                               null
                                                           ? NetworkImage(
-                                                              "${api.url}api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                              "${listUserProvider.userList?[index].avatarProfile!.path}")
                                                           : AssetImage(
                                                                   "assets/avatars/avatar2.png")
                                                               as ImageProvider,
@@ -1133,7 +1133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .avatarProfile !=
                                                             null
                                                         ? NetworkImage(
-                                                            "${api.url}api/${listUserProvider.userList?[index].avatarProfile!.path}")
+                                                            "${listUserProvider.userList?[index].avatarProfile!.path}")
                                                         : AssetImage(
                                                                 "assets/avatars/avatar2.png")
                                                             as ImageProvider,

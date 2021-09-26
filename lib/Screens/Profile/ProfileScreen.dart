@@ -77,8 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     image: DecorationImage(
                       image: widget.user!.avatarProfile == null
                           ? AssetImage("assets/avatars/avatar2.png")
-                          : NetworkImage(
-                                  "${api.url}api/${widget.user!.avatarProfile!.path!}")
+                          : NetworkImage("${widget.user!.avatarProfile!.path!}")
                               as ImageProvider,
                       fit: BoxFit.cover,
                     ),
@@ -262,7 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 image: widget.user?.photos?[index] == null
                                     ? AssetImage("/assets/avatars/avatar2.png")
                                     : NetworkImage(
-                                            "${api.url}api/${widget.user!.photos![index].path!}")
+                                            "${widget.user!.photos![index].path!}")
                                         as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
@@ -276,7 +275,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       borderRadius: BorderRadius.circular(40),
                                       child: widget.user?.photos?[index] != null
                                           ? Image.network(
-                                              "${api.url}api/${widget.user!.photos![index].path!}",
+                                              "${widget.user!.photos![index].path!}",
                                               fit: BoxFit.cover,
                                               height: MediaQuery.of(context)
                                                       .size

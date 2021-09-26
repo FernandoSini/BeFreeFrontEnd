@@ -117,7 +117,7 @@ class _EventsGoingState extends State<EventsGoing> {
                                                   .eventPhoto !=
                                               null
                                           ? NetworkImage(
-                                              "${api.url}api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
+                                              "${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
                                           : AssetImage(
                                                   "assets/avatars/avatar2.png")
                                               as ImageProvider,
@@ -265,7 +265,7 @@ class _EventsGoingState extends State<EventsGoing> {
                                                   .eventPhoto !=
                                               null
                                           ? NetworkImage(
-                                              "${api.url}api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
+                                              "${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
                                           : AssetImage(
                                                   "assets/avatars/avatar2.png")
                                               as ImageProvider,
@@ -409,7 +409,7 @@ class _EventsGoingState extends State<EventsGoing> {
                                                   .eventPhoto !=
                                               null
                                           ? NetworkImage(
-                                              "${api.url}api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
+                                              "${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
                                           : AssetImage(
                                                   "assets/avatars/avatar2.png")
                                               as ImageProvider,
@@ -553,7 +553,7 @@ class _EventsGoingState extends State<EventsGoing> {
                                                   .eventPhoto !=
                                               null
                                           ? NetworkImage(
-                                              "${api.url}api/${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
+                                              "${eventsGoingProvider.eventData?[index].eventPhoto?.path}")
                                           : AssetImage(
                                                   "assets/avatars/avatar2.png")
                                               as ImageProvider,

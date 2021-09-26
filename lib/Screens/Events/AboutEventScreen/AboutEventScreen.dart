@@ -56,8 +56,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                   fit: BoxFit.cover,
                   image: widget.event?.eventPhoto == null
                       ? AssetImage("assets/avatars/avatar2.png")
-                      : NetworkImage(
-                              "${api.url}api/${widget.event!.eventPhoto!.path!}")
+                      : NetworkImage("${widget.event!.eventPhoto!.path!}")
                           as ImageProvider,
                 ),
               ),
@@ -229,7 +228,7 @@ class _AboutEventScreenState extends State<AboutEventScreen> {
                                   .event?.eventOwner?.avatarProfile !=
                               null
                           ? NetworkImage(
-                              "${api.url}api/${widget.event!.eventOwner!.avatarProfile!.path}")
+                              "${widget.event!.eventOwner!.avatarProfile!.path}")
                           : AssetImage("assets/avatars/avatar2.png")
                               as ImageProvider,
                       radius: 30,

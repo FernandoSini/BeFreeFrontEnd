@@ -97,9 +97,9 @@ class _ChatScreenState extends State<ChatScreen> {
         //     _scrollController.position.maxScrollExtent * 1.05,
         //     duration: Duration(seconds: 1),
         //     curve: Curves.ease);
-        if(!_focusNode.hasFocus)
-        _scrollController
-            .jumpTo(_scrollController.position.maxScrollExtent * 1.05);
+        if (!_focusNode.hasFocus)
+          _scrollController
+              .jumpTo(_scrollController.position.maxScrollExtent * 1.05);
       },
     );
     avatarUrl = await storage.read(key: api.key);
@@ -188,7 +188,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           borderRadius: BorderRadius.circular(30),
                           child: widget.user?.avatarProfile != null
                               ? Image.network(
-                                  "${api.url}api/${widget.user!.avatarProfile!.path!}",
+                                  "${widget.user!.avatarProfile!.path!}",
                                   fit: BoxFit.cover,
                                   height: screenSize.height * 0.5,
                                   width: screenSize.width * 0.95,

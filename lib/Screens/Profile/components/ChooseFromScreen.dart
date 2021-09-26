@@ -1,5 +1,6 @@
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/UserPhotoProvider.dart';
+import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';
@@ -52,101 +53,113 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
   }
 
   void onImageSelected(io.File image) async {
-    await Provider.of<UserPhotoProvider>(context, listen: false)
+    var photo = await Provider.of<UserPhotoProvider>(context, listen: false)
         .uploadImage(widget.user!.id!, image, widget.user!.token);
+    // widget.user?.photos?.add(photo);
     if (Provider.of<UserPhotoProvider>(context, listen: false).isUploaded) {
-      return showDialog(
-        context: context,
-        builder: (_) {
-          return Container(
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              title: Text("Success"),
-              actions: [
-                Container(
-                  margin: EdgeInsets.only(right: 100),
-                  child: TextButton(
-                    child: Text(
-                      "Close",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xFF9a00e6),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                )
-              ],
-              content: Container(
-                height: MediaQuery.of(context).size.height * 0.2,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
-                    Icon(
-                      Icons.check_circle_sharp,
-                      color: Colors.green,
-                      size: 80,
-                    ),
-                    Text("Uploaded Successfully"),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      );
+      // Provider.of<UserProvider>(context, listen: false)
+      //     .updateDataSecurePlace(widget.user);
+      await showSuccessDialog(context);
+      Navigator.of(context).pop(photo);
     }
     if (Provider.of<UserPhotoProvider>(context, listen: false).hasError) {
-      return showDialog(
-        context: context,
-        builder: (_) {
-          return Container(
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              title: Text("Error"),
-              actions: [
-                Container(
-                  margin: EdgeInsets.only(right: 100),
-                  child: TextButton(
-                    child: Text(
-                      "Close",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xFF9a00e6),
-                      ),
+      await showErrorDialog(context);
+    }
+  }
+
+  Future<void> showSuccessDialog(context) async {
+    return showDialog(
+      context: context,
+      builder: (_) {
+        return Container(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text("Success"),
+            actions: [
+              Container(
+                margin: EdgeInsets.only(right: 100),
+                child: TextButton(
+                  child: Text(
+                    "Close",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF9a00e6),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
                   ),
-                )
-              ],
-              content: Container(
-                height: MediaQuery.of(context).size.height * 0.2,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
-                    Icon(
-                      Icons.cancel_sharp,
-                      color: Colors.red,
-                      size: 80,
-                    ),
-                    Text(
-                        "${Provider.of<UserPhotoProvider>(context, listen: false).error}"),
-                  ],
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                 ),
+              )
+            ],
+            content: Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  Icon(
+                    Icons.check_circle_sharp,
+                    color: Colors.green,
+                    size: 80,
+                  ),
+                  Text("Photo uploaded Successfully"),
+                ],
               ),
             ),
-          );
-        },
-      );
-    }
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> showErrorDialog(context) async {
+    return showDialog(
+      context: context,
+      builder: (_) {
+        return Container(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text("Error"),
+            actions: [
+              Container(
+                margin: EdgeInsets.only(right: 100),
+                child: TextButton(
+                  child: Text(
+                    "Close",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF9a00e6),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            ],
+            content: Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  Icon(
+                    Icons.cancel_sharp,
+                    color: Colors.red,
+                    size: 80,
+                  ),
+                  Text(
+                      "${Provider.of<UserPhotoProvider>(context, listen: false).error}"),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -155,6 +168,15 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
       await Provider.of<UserPhotoProvider>(context, listen: false);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (mounted)
+        Provider.of<UserPhotoProvider>(context, listen: false).dispose();
+    });
+    super.dispose();
   }
 
   @override

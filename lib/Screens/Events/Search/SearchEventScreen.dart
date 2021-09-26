@@ -191,7 +191,8 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                                             image: search.eventData?[index]
                                                         .eventPhoto !=
                                                     null
-                                                ? NetworkImage("${api.url}api/${search.eventData?[index].eventPhoto?.path}")
+                                                ? NetworkImage(
+                                                    "${search.eventData?[index].eventPhoto?.path}")
                                                 : AssetImage(
                                                         "assets/avatars/avatar2.png")
                                                     as ImageProvider,

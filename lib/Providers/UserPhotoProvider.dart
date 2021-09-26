@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:be_free_v1/Api/Api.dart';
+import 'package:be_free_v1/Models/Photos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -21,9 +22,8 @@ class UserPhotoProvider extends ChangeNotifier {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
 
-  Future<void> uploadImage(String yourId, File? image, String? token) async {
-    String url =
-        "${api.url}api/users/$yourId/photo/upload";
+  Future<Photos> uploadImage(String yourId, File? image, String? token) async {
+    String url = "${api.url}api/users/$yourId/photo/upload";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
     try {
@@ -49,6 +49,8 @@ class UserPhotoProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         setLoading(false);
         setUploaded(true);
+
+        return Photos.fromJson(jsonDecode(response.body));
       } else {
         setError(true);
         setErrorData(jsonDecode(response.body)["error"]);

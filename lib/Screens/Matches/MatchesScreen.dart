@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/MessageStatus.dart';
 import 'package:be_free_v1/Models/User.dart';
@@ -5,6 +7,7 @@ import 'package:be_free_v1/Providers/LikesReceivedProvider.dart';
 import 'package:be_free_v1/Providers/MatchProvider.dart';
 import 'package:be_free_v1/Screens/Chat/ChatScreen.dart';
 import 'package:be_free_v1/Screens/Profile/ProfileScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -103,6 +106,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     physics: BouncingScrollPhysics(),
                     itemCount: likesReceivedProvider.likesReceived?.length,
                     itemBuilder: (context, index) {
+                      likesReceivedProvider.likesData
+                          ?.whereType<User>()
+                          .toList();
                       if (!likesReceivedProvider.isLoading) {
                         if (likesReceivedProvider.likesData!.isEmpty) {
                           return Container();
@@ -125,7 +131,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                             .likesData?[index].avatarProfile !=
                                         null
                                     ? NetworkImage(
-                                        "${api.url}api/${likesReceivedProvider.likesReceived?[index].avatarProfile!.path}")
+                                        "${likesReceivedProvider.likesReceived?[index].avatarProfile!.path}")
                                     : AssetImage("assets/avatars/avatar2.png")
                                         as ImageProvider,
                                 radius: 50,
@@ -180,260 +186,531 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       scrollDirection: Axis.vertical,
                       physics: BouncingScrollPhysics(),
                       itemCount: matchProvider.matchData?.length,
+                      padding: EdgeInsets.only(bottom: 50),
                       itemBuilder: (context, index) => InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(
-                                MaterialPageRoute(
-                                  builder: (_) => ChatScreen(
-                                    user: matchProvider
-                                                .matches![index].user1?.id ==
-                                            widget.user?.id
-                                        ? matchProvider.matches![index].user2
-                                        : matchProvider.matches![index].user1,
-                                    you: widget.user,
-                                    match: matchProvider.matches![index],
-                                  ),
-                                  fullscreenDialog: true,
-                                ),
-                              )
-                              .then(
-                                (value) => setState(
-                                  () {
-                                    if (value != null) {
-                                      // matchProvider.matches?[index].messages =
-                                      //     value;
-                                      value.forEach((element) {
-                                        if (element.matchId ==
-                                            matchProvider
-                                                .matches?[index].matchId) {
-                                          matchProvider.matches?[index].messages
-                                              ?.add(element);
-                                        }
-                                      });
-                                    }
-                                  },
-                                ),
-                              );
-                        },
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(left: 15),
-                                      child: matchProvider
-                                                  .matches![index].user1?.id ==
-                                              widget.user?.id
-                                          ? CircleAvatar(
-                                              backgroundImage: matchProvider
-                                                          .matches?[index]
-                                                          .user2! //ta aqui o erro
-                                                          .avatarProfile !=
-                                                      null
-                                                  ? NetworkImage(
-                                                      "${api.url}api/${matchProvider.matches?[index].user2!.avatarProfile!.path}")
-                                                  : AssetImage(
-                                                          "assets/avatars/avatar2.png")
-                                                      as ImageProvider,
-                                              radius: 40,
-                                            )
-                                          : CircleAvatar(
-                                              backgroundImage: matchProvider
-                                                          .matches?[index]
-                                                          .user1!
-                                                          .avatarProfile !=
-                                                      null
-                                                  ? NetworkImage(
-                                                      "${api.url}api/${matchProvider.matches?[index].user1!.avatarProfile!.path}")
-                                                  : AssetImage(
-                                                          "assets/avatars/avatar2.png")
-                                                      as ImageProvider,
-                                              radius: 40,
-                                            ),
+                        onLongPress: () async {
+                          if (Platform.isAndroid) {
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    "Delete Match",
+                                    style: TextStyle(
+                                      color: Color(0xFF9a00e6),
                                     ),
-                                    Container(
-                                      child: Flexible(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  left: 10, right: 20),
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                  bottom: 20,
-                                                ),
-                                                child: matchProvider
-                                                            .matches![index]
-                                                            .user1
-                                                            ?.id ==
-                                                        widget.user?.id
-                                                    ? Container(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.7,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              "${matchProvider.matches?[index].user2?.username} ",
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 18,
-                                                                color: Colors
-                                                                        .pinkAccent[
-                                                                    400],
-                                                              ),
-                                                            ),
-                                                            if (matchProvider
-                                                                .matches![index]
-                                                                .messages!
-                                                                .isNotEmpty)
-                                                              Container(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  top: 3,
-                                                                ),
-                                                                child: Text(
-                                                                  DateFormat("HH:mm").format(matchProvider
-                                                                      .matches![
-                                                                          index]
-                                                                      .messages!
-                                                                      .last
-                                                                      .timestamp!
-                                                                      .toLocal()),
-                                                                ),
-                                                              ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    : Container(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.7,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Container(
-                                                              child: Text(
-                                                                "${matchProvider.matches?[index].user1?.username} ",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 18,
-                                                                  color: Colors
-                                                                          .pinkAccent[
-                                                                      400],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            if (matchProvider
-                                                                .matches![index]
-                                                                .messages!
-                                                                .isNotEmpty)
-                                                              Container(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  top: 3,
-                                                                ),
-                                                                child: Text(
-                                                                  DateFormat("HH:mm").format(matchProvider
-                                                                      .matches![
-                                                                          index]
-                                                                      .messages!
-                                                                      .last
-                                                                      .timestamp!
-                                                                      .toLocal()),
-                                                                ),
-                                                              ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(left: 10),
-                                              child: Row(
-                                                children: [
-                                                  Flexible(
-                                                    child: Container(
-                                                      padding: EdgeInsets.only(
-                                                          right: 70),
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 10),
-                                                      child: matchProvider
-                                                              .matches![index]
-                                                              .messages!
-                                                              .isNotEmpty
-                                                          ? Row(
-                                                              children: [
-                                                                matchProvider
-                                                                            .matches![
-                                                                                index]
-                                                                            .messages!
-                                                                            .last
-                                                                            .messageStatus ==
-                                                                        MessageStatus
-                                                                            .DELIVERED
-                                                                    ? Icon(
-                                                                        Icons
-                                                                            .done_all,
-                                                                        color: Colors
-                                                                            .blueAccent,
-                                                                      )
-                                                                    : Icon(Icons
-                                                                        .done),
-                                                                Expanded(
-                                                                  child: Text(
-                                                                    "${matchProvider.matches?[index].messages?.last.content}",
-                                                                    overflow: matchProvider.matches![index].messages!.last.content!.length >=
-                                                                            15
-                                                                        ? TextOverflow
-                                                                            .ellipsis
-                                                                        : null,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            18),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            )
-                                                          : Text(
-                                                              "No messages sent/received yet",
-                                                              style: TextStyle(
-                                                                fontSize: 15,
-                                                              ),
-                                                            ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                  ),
+                                  content: Text(
+                                      "Hey, are you sure that you want to unmatch?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        // var deleted =
+                                        //     await deleteAvatar(context)
+                                        //         .then((value) {
+                                        //   setState(() {
+                                        //     widget.userData?.avatarProfile =
+                                        //         null;
+                                        //     userProvider.updateDataSecurePlace(
+                                        //         widget.userData);
+                                        //   });
+                                        //   return value;
+                                        // });
+
+                                        // if (deleted!) {
+                                        //   setState(() {
+                                        //     widget.userData?.avatarProfile =
+                                        //         null;
+                                        //   });
+                                        // }
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color: Colors.pinkAccent[400]),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.pinkAccent[400],
                                         ),
                                       ),
                                     ),
                                   ],
+                                );
+                              },
+                            );
+                          } else {
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: Text(
+                                    "Delete Match",
+                                    style: TextStyle(
+                                      color: Color(0xFF9a00e6),
+                                    ),
+                                  ),
+                                  content: Text(
+                                      "Hey, are you sure that you want to unmatch?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        // var deleted =
+                                        //     await deleteAvatar(context)
+                                        //         .then((value) {
+                                        //   setState(() {
+                                        //     widget.userData?.avatarProfile =
+                                        //         null;
+                                        //         userProvider.updateDataSecurePlace(
+                                        //         widget.userData);
+                                        //   });
+                                        //   return value;
+                                        // });
+                                        // print(deleted);
+                                        // if (deleted!) {
+                                        //   setState(() {
+                                        //     widget.userData?.avatarProfile =
+                                        //         null;
+                                        //   });
+                                        // }
+                                        setState(() {
+                                          matchProvider.matches
+                                              ?.removeAt(index);
+                                        });
+
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color: Colors.pinkAccent[400]),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.pinkAccent[400],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        onTap: () async {
+                          if (matchProvider.matches![index].user1 == null ||
+                              matchProvider.matches![index].user2 == null) {
+                            if (Platform.isAndroid) {
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      "Warning",
+                                      style: TextStyle(
+                                        color: Color(0xFF9a00e6),
+                                      ),
+                                    ),
+                                    content: Text(
+                                        "Can't chat because this user deleted his/her account"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () async {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          "Okay",
+                                          style: TextStyle(
+                                            color: Colors.pinkAccent[400],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CupertinoAlertDialog(
+                                    title: Text(
+                                      "Warning",
+                                      style: TextStyle(
+                                        color: Color(0xFF9a00e6),
+                                      ),
+                                    ),
+                                    content: Text(
+                                        "Can't chat because this user deleted his/her account"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () async {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          "Okay",
+                                          style: TextStyle(
+                                            color: Colors.pinkAccent[400],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          } else {
+                            Navigator.of(context)
+                                .push(
+                                  MaterialPageRoute(
+                                    builder: (_) => ChatScreen(
+                                      user: matchProvider
+                                                  .matches![index].user1?.id ==
+                                              widget.user?.id
+                                          ? matchProvider.matches![index].user2
+                                          : matchProvider.matches![index].user1,
+                                      you: widget.user,
+                                      match: matchProvider.matches![index],
+                                    ),
+                                    fullscreenDialog: true,
+                                  ),
+                                )
+                                .then(
+                                  (value) => setState(
+                                    () {
+                                      if (value != null) {
+                                        // matchProvider.matches?[index].messages =
+                                        //     value;
+                                        value.forEach((element) {
+                                          if (element.matchId ==
+                                              matchProvider
+                                                  .matches?[index].matchId) {
+                                            matchProvider
+                                                .matches?[index].messages
+                                                ?.add(element);
+                                          }
+                                        });
+                                      }
+                                    },
+                                  ),
+                                );
+                          }
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              if (matchProvider.matches![index].user1 != null &&
+                                  matchProvider.matches![index].user2 != null)
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(left: 15),
+                                        child: matchProvider.matches![index]
+                                                    .user1?.id ==
+                                                widget.user?.id
+                                            ? CircleAvatar(
+                                                backgroundImage: matchProvider
+                                                            .matches?[index]
+                                                            .user2! //ta aqui o erro
+                                                            .avatarProfile !=
+                                                        null
+                                                    ? NetworkImage(
+                                                        "${matchProvider.matches?[index].user2!.avatarProfile!.path}")
+                                                    : AssetImage(
+                                                            "assets/avatars/avatar2.png")
+                                                        as ImageProvider,
+                                                radius: 40,
+                                              )
+                                            : CircleAvatar(
+                                                backgroundImage: matchProvider
+                                                            .matches?[index]
+                                                            .user1!
+                                                            .avatarProfile !=
+                                                        null
+                                                    ? NetworkImage(
+                                                        "${matchProvider.matches?[index].user1!.avatarProfile!.path}")
+                                                    : AssetImage(
+                                                            "assets/avatars/avatar2.png")
+                                                        as ImageProvider,
+                                                radius: 40,
+                                              ),
+                                      ),
+                                      Container(
+                                        child: Flexible(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    left: 10, right: 20),
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                    bottom: 20,
+                                                  ),
+                                                  child:
+                                                      matchProvider
+                                                                  .matches![
+                                                                      index]
+                                                                  .user1
+                                                                  ?.id ==
+                                                              widget.user?.id
+                                                          ? Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.7,
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    "${matchProvider.matches?[index].user2?.username} ",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          18,
+                                                                      color: Colors
+                                                                              .pinkAccent[
+                                                                          400],
+                                                                    ),
+                                                                  ),
+                                                                  if (matchProvider
+                                                                      .matches![
+                                                                          index]
+                                                                      .messages!
+                                                                      .isNotEmpty)
+                                                                    Container(
+                                                                      padding:
+                                                                          EdgeInsets
+                                                                              .only(
+                                                                        top: 3,
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        DateFormat("HH:mm").format(matchProvider
+                                                                            .matches![index]
+                                                                            .messages!
+                                                                            .last
+                                                                            .timestamp!
+                                                                            .toLocal()),
+                                                                      ),
+                                                                    ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          : Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.7,
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Container(
+                                                                    child: Text(
+                                                                      "${matchProvider.matches?[index].user1?.username} ",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        fontSize:
+                                                                            18,
+                                                                        color: Colors
+                                                                            .pinkAccent[400],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  if (matchProvider
+                                                                      .matches![
+                                                                          index]
+                                                                      .messages!
+                                                                      .isNotEmpty)
+                                                                    Container(
+                                                                      padding:
+                                                                          EdgeInsets
+                                                                              .only(
+                                                                        top: 3,
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        DateFormat("HH:mm").format(matchProvider
+                                                                            .matches![index]
+                                                                            .messages!
+                                                                            .last
+                                                                            .timestamp!
+                                                                            .toLocal()),
+                                                                      ),
+                                                                    ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                ),
+                                              ),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 10),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right: 70),
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 10),
+                                                        child:
+                                                            matchProvider
+                                                                    .matches![
+                                                                        index]
+                                                                    .messages!
+                                                                    .isNotEmpty
+                                                                ? Row(
+                                                                    children: [
+                                                                      matchProvider.matches![index].messages!.last.messageStatus ==
+                                                                              MessageStatus.DELIVERED
+                                                                          ? Icon(
+                                                                              Icons.done_all,
+                                                                              color: Colors.blueAccent,
+                                                                            )
+                                                                          : Icon(Icons.done),
+                                                                      Expanded(
+                                                                        child:
+                                                                            Text(
+                                                                          "${matchProvider.matches?[index].messages?.last.content}",
+                                                                          overflow: matchProvider.matches![index].messages!.last.content!.length >= 15
+                                                                              ? TextOverflow.ellipsis
+                                                                              : null,
+                                                                          style:
+                                                                              TextStyle(fontSize: 18),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                : Text(
+                                                                    "No messages sent/received yet",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                    ),
+                                                                  ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              else
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(left: 15),
+                                        child: CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              "assets/avatars/avatar2.png"),
+                                          radius: 40,
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Flexible(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    left: 10, right: 20),
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                    bottom: 20,
+                                                  ),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.7,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          "User deleted",
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18,
+                                                            color: Colors
+                                                                    .pinkAccent[
+                                                                400],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 10),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right: 70),
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 10),
+                                                        child: Text(
+                                                          "User Deleted",
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
                               Divider(
                                 indent: 15,
                                 endIndent: 15,
