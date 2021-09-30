@@ -7,6 +7,7 @@ import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/MessagesProvider.dart';
 import 'package:be_free_v1/Screens/Chat/component/YourMessageCard.dart';
 import 'package:be_free_v1/Widget/FullScreenWidget.dart';
+import 'package:be_free_v1/Widget/Responsive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -93,10 +94,10 @@ class _ChatScreenState extends State<ChatScreen> {
   void didChangeDependencies() async {
     WidgetsBinding.instance?.addPostFrameCallback(
       (_) {
-        // _scrollController.animateTo(
-        //     _scrollController.position.maxScrollExtent * 1.05,
-        //     duration: Duration(seconds: 1),
-        //     curve: Curves.ease);
+        _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent * 1.0,
+            duration: Duration(seconds: 1),
+            curve: Curves.ease);
         if (!_focusNode.hasFocus)
           _scrollController
               .jumpTo(_scrollController.position.maxScrollExtent * 1.05);
@@ -281,7 +282,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               Container(
                 margin: defaultTargetPlatform == TargetPlatform.android
-                    ? EdgeInsets.only(left: 10, right: 10, bottom: 10)
+                    ? EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                        top: Responsive.isSmallScreen(context) ? 0 : 30,
+                        bottom: 10)
                     : EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,

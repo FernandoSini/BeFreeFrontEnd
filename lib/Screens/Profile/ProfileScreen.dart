@@ -209,7 +209,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: Color(0xFF9a00e6),
                   ),
                 ),
-                if (widget.user!.photos != null)
+                if (widget.user!.photos != null &&
+                    widget.user!.photos!.length >
+                        0) //adicionei o widget.user.photos.lenght>0 o padrao é sem
                   Column(
                     children: [
                       Container(

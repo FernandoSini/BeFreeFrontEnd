@@ -100,7 +100,7 @@ class _EventsScreenState extends State<EventsScreen>
           style: TextStyle(
             fontFamily: "Segoe",
             color: Colors.pink[400],
-            fontSize: 30,
+            // fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),

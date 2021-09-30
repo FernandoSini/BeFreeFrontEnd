@@ -182,10 +182,10 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                 fontFamily: "Segoe",
                 color: Colors.pink[400],
-                fontSize: (defaultTargetPlatform == TargetPlatform.android ||
-                        defaultTargetPlatform == TargetPlatform.iOS)
-                    ? 30
-                    : 50,
+                // fontSize: (defaultTargetPlatform == TargetPlatform.android ||
+                //         defaultTargetPlatform == TargetPlatform.iOS)
+                //     ? 30
+                //     : 50,
                 fontWeight: FontWeight.bold,
               ),
             );
