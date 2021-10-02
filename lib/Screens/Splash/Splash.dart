@@ -1,17 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Screens/Base/BaseScreen.dart';
 import 'package:be_free_v1/Screens/Login/LoginScreen.dart';
-import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:universal_html/html.dart' as universal;
+import 'package:http/http.dart' as http;
 
 class Splash extends StatefulWidget {
   @override
@@ -21,53 +19,43 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   final storage = new FlutterSecureStorage();
   final Api api = new Api();
+
+  Future<bool> verifyIfUserExists(String userId) async {
+    String? url = "${api.url}forgot-password/verify";
+
+    var data = {"userId": userId};
+    var body = json.encode(data);
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {"Content-type": "application/json"},
+        body: body,
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
   @override
   void didChangeDependencies() async {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
       // await storage.delete(key: api.key);
 
-      await storage.write(key: api.key, value: api.url);
       if (await storage.containsKey(key: "user")) {
         var userData = await storage.read(key: "user");
         if (userData != null) {
           Map<String, dynamic> fromLocalToUser = {};
           fromLocalToUser.addAll(jsonDecode(userData));
           User? user = User.fromJson(fromLocalToUser);
-          if (!JwtDecoder.isExpired(user.token!)) {
-            Timer(
-              Duration(seconds: 5),
-              () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (_) => BaseScreen(
-                      userData: user,
-                    ),
-                  ),
-                );
-              },
-            );
-          } else {
-            Map<String, String> userData = {
-              "id_user": "",
-              "user_name": "",
-              "first_name": "",
-              "last_name": "",
-              "birthday": "",
-              "gender": "",
-              "email": "",
-              "avatar": "",
-              "images": "",
-              "matches": "",
-              "likeReceived": "",
-              "likesSended": "",
-              "token": "",
-              "job_title": "",
-              "company": ""
-            };
-            userData.keys.forEach((element) async {
-              await storage.delete(key: element);
-            });
+          bool userExists = await verifyIfUserExists(user.id!);
+          if (!userExists) {
             await storage.deleteAll();
             Timer(
               Duration(seconds: 3),
@@ -79,8 +67,56 @@ class _SplashState extends State<Splash> {
                 );
               },
             );
+          } else {
+            if (!JwtDecoder.isExpired(user.token!)) {
+              Timer(
+                Duration(seconds: 5),
+                () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => BaseScreen(
+                        userData: user,
+                      ),
+                    ),
+                  );
+                },
+              );
+            } else {
+              Map<String, String> userData = {
+                "id_user": "",
+                "user_name": "",
+                "first_name": "",
+                "last_name": "",
+                "birthday": "",
+                "gender": "",
+                "email": "",
+                "avatar": "",
+                "images": "",
+                "matches": "",
+                "likeReceived": "",
+                "likesSended": "",
+                "token": "",
+                "job_title": "",
+                "company": ""
+              };
+              userData.keys.forEach((element) async {
+                await storage.delete(key: element);
+              });
+              await storage.deleteAll();
+              Timer(
+                Duration(seconds: 3),
+                () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => LoginScreen(),
+                    ),
+                  );
+                },
+              );
+            }
           }
         } else {
+          await storage.deleteAll();
           Timer(
             Duration(seconds: 3),
             () {
@@ -93,6 +129,7 @@ class _SplashState extends State<Splash> {
           );
         }
       } else {
+        await storage.deleteAll();
         Timer(
           Duration(seconds: 3),
           () {
