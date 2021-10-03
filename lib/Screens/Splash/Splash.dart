@@ -47,7 +47,7 @@ class _SplashState extends State<Splash> {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
       // await storage.delete(key: api.key);
-
+      try{
       if (await storage.containsKey(key: "user")) {
         var userData = await storage.read(key: "user");
         if (userData != null) {
@@ -141,6 +141,20 @@ class _SplashState extends State<Splash> {
           },
         );
       }
+    }catch(e){
+      await storage.deleteAll();
+        Timer(
+          Duration(seconds: 3),
+          () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => LoginScreen(),
+              ),
+            );
+          },
+        );
+      
+    }
     }
     super.didChangeDependencies();
   }

@@ -20,8 +20,6 @@ class UpdateUserProvider extends ChangeNotifier {
   String? get newLivesIn => livesIn;
   String? school;
   String? get newSchool => school;
-  String? birthday;
-  String? get newBirthday => birthday;
   String? email;
   String? get newEmail => email;
   String? job;
@@ -67,17 +65,17 @@ class UpdateUserProvider extends ChangeNotifier {
     //   "birthday": newBirthday == null ? null : newBirthday
     // };
     User? userToUpdate = User(
-        about: newAbout,
-        company: newCompany,
-        job: newJob,
-        gender: newGender,
-        email: newEmail,
-        username: newUsername,
-        firstname: newFirstName,
-        lastname: newLastName,
-        school: newSchool,
-        livesIn: newLivesIn,
-        birthday: newBirthday);
+      about: newAbout,
+      company: newCompany,
+      job: newJob,
+      gender: newGender,
+      email: newEmail,
+      username: newUsername,
+      firstname: newFirstName,
+      lastname: newLastName,
+      school: newSchool,
+      livesIn: newLivesIn,
+    );
     var body = jsonEncode(userToUpdate.toJsonUpdate());
 
     try {
@@ -163,11 +161,6 @@ class UpdateUserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setBirthday(value) {
-    birthday = value;
-    notifyListeners();
-  }
-
   void setLoading(bool value) {
     loading = value;
     notifyListeners();
@@ -189,7 +182,6 @@ class UpdateUserProvider extends ChangeNotifier {
   }
 
   void clear() {
-    setBirthday(null);
     setNewAbout(null);
     setNewCompany(null);
     setNewEmail(null);

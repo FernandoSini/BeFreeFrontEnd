@@ -5,6 +5,7 @@ import 'package:be_free_v1/Api/Api.dart';
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:be_free_v1/Screens/Profile/components/ChooseFromScreen.dart';
+import 'package:be_free_v1/Widget/Responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -73,7 +74,7 @@ class _PhotosScreenState extends State<PhotosScreen> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Column(
                 children: [
-                  const SizedBox(height: 30),
+                   SizedBox(height: Responsive.isSmallScreen(context)?15:30),
                   Icon(
                     Icons.check_circle_sharp,
                     color: Colors.green,
@@ -120,7 +121,7 @@ class _PhotosScreenState extends State<PhotosScreen> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Column(
                 children: [
-                  const SizedBox(height: 30),
+                   SizedBox(height: Responsive.isSmallScreen(context)?15:30),
                   Icon(
                     Icons.cancel_sharp,
                     color: Colors.red,

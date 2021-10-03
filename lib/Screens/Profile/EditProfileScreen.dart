@@ -1,6 +1,7 @@
 import 'package:be_free_v1/Models/Gender.dart';
 import 'package:be_free_v1/Providers/UpdateUserProvider.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
+import 'package:be_free_v1/Widget/Responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -58,7 +59,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Column(
                 children: [
-                  const SizedBox(height: 30),
+                  SizedBox(height: Responsive.isSmallScreen(context) ? 15 : 30),
                   Icon(
                     Icons.check_circle_sharp,
                     color: Colors.green,
@@ -105,7 +106,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Column(
                 children: [
-                  const SizedBox(height: 30),
+                  SizedBox(height: Responsive.isSmallScreen(context) ? 15 : 30),
                   Icon(
                     Icons.cancel_sharp,
                     color: Colors.red,
@@ -188,62 +189,62 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 40, right: 40),
-              child: Center(
-                child: TextFormField(
-                  controller: controllerFirstName,
-                  decoration: InputDecoration(
-                    labelText: "Your first name",
-                    labelStyle: TextStyle(color: Color(0xFF9a00e6)),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF9a00e6),
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF9a00e6),
-                      ),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    updateUser.setNewFirstName(value);
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 40, right: 40),
-              child: Center(
-                child: TextFormField(
-                  controller: controllerLastName,
-                  decoration: InputDecoration(
-                    labelText: "Your last name",
-                    labelStyle: TextStyle(color: Color(0xFF9a00e6)),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF9a00e6),
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF9a00e6),
-                      ),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    updateUser.setNewLastName(value);
-                  },
-                ),
-              ),
-            ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // Container(
+            //   margin: EdgeInsets.only(left: 40, right: 40),
+            //   child: Center(
+            //     child: TextFormField(
+            //       controller: controllerFirstName,
+            //       decoration: InputDecoration(
+            //         labelText: "Your first name",
+            //         labelStyle: TextStyle(color: Color(0xFF9a00e6)),
+            //         enabledBorder: UnderlineInputBorder(
+            //           borderSide: BorderSide(
+            //             color: Color(0xFF9a00e6),
+            //           ),
+            //         ),
+            //         focusedBorder: UnderlineInputBorder(
+            //           borderSide: BorderSide(
+            //             color: Color(0xFF9a00e6),
+            //           ),
+            //         ),
+            //       ),
+            //       onChanged: (value) {
+            //         updateUser.setNewFirstName(value);
+            //       },
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // Container(
+            //   margin: EdgeInsets.only(left: 40, right: 40),
+            //   child: Center(
+            //     child: TextFormField(
+            //       controller: controllerLastName,
+            //       decoration: InputDecoration(
+            //         labelText: "Your last name",
+            //         labelStyle: TextStyle(color: Color(0xFF9a00e6)),
+            //         enabledBorder: UnderlineInputBorder(
+            //           borderSide: BorderSide(
+            //             color: Color(0xFF9a00e6),
+            //           ),
+            //         ),
+            //         focusedBorder: UnderlineInputBorder(
+            //           borderSide: BorderSide(
+            //             color: Color(0xFF9a00e6),
+            //           ),
+            //         ),
+            //       ),
+            //       onChanged: (value) {
+            //         updateUser.setNewLastName(value);
+            //       },
+            //     ),
+            //   ),
+            // ),
             const SizedBox(
               height: 20,
             ),
@@ -420,66 +421,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               height: 20,
             ),
             Container(
-              margin: EdgeInsets.only(left: 40, right: 40),
-              child: Center(
-                child: TextFormField(
-                  controller: controllerBirthday,
-                  keyboardType: TextInputType.datetime,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9-]'))
-                  ],
-                  decoration: InputDecoration(
-                    labelText: "Birthday (mon-day-year)",
-                    labelStyle: TextStyle(
-                      color: Color(0xFF9a00e6),
-                    ),
-                    hintText: "Example: (04-16-1999)(m-d-y)",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF9a00e6),
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF9a00e6),
-                      ),
+              margin: Responsive.isSmallScreen(context)
+                  ? EdgeInsets.only(left: 40, right: 30)
+                  : EdgeInsets.only(left: 50, right: 50),
+              child: Row(
+                children: [
+                  Container(
+                    // padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Male",
+                          style: TextStyle(color: Color(0xFF9a00e6)),
+                        ),
+                        Radio(
+                          value: Gender.MALE,
+                          groupValue: updateUser.gender,
+                          onChanged: (value) {
+                            updateUser.setNewGender(value);
+                          },
+                          focusColor: Colors.white,
+                          hoverColor: Color(0xFF9a00e6),
+                          activeColor: Color(0xFF9a00e6),
+                        ),
+                      ],
                     ),
                   ),
-                  onChanged: (value) {
-                    updateUser.setBirthday(value);
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(left: 40),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Male",
-                        style: TextStyle(color: Color(0xFF9a00e6)),
-                      ),
-                      Radio(
-                        value: Gender.MALE,
-                        groupValue: updateUser.gender,
-                        onChanged: (value) {
-                          updateUser.setNewGender(value);
-                        },
-                        focusColor: Colors.white,
-                        hoverColor: Color(0xFF9a00e6),
-                        activeColor: Color(0xFF9a00e6),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20),
+                  Container(
+                    // padding: EdgeInsets.only(left: 20),
                     child: Row(
                       children: [
                         Text(
@@ -499,9 +468,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ],
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Container(
+                  Container(
                     child: Row(
                       children: [
                         Text(
@@ -521,8 +488,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(
               height: 20,

@@ -1,6 +1,7 @@
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/UserPhotoProvider.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
+import 'package:be_free_v1/Widget/Responsive.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';
@@ -98,7 +99,7 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Column(
                 children: [
-                  const SizedBox(height: 30),
+                  SizedBox(height: Responsive.isSmallScreen(context) ? 15 : 30),
                   Icon(
                     Icons.check_circle_sharp,
                     color: Colors.green,
@@ -145,7 +146,7 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Column(
                 children: [
-                  const SizedBox(height: 30),
+                  SizedBox(height: Responsive.isSmallScreen(context) ? 15 : 30),
                   Icon(
                     Icons.cancel_sharp,
                     color: Colors.red,
