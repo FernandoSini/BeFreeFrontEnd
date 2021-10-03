@@ -47,61 +47,15 @@ class _SplashState extends State<Splash> {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
       // await storage.delete(key: api.key);
-      try{
-      if (await storage.containsKey(key: "user")) {
-        var userData = await storage.read(key: "user");
-        if (userData != null) {
-          Map<String, dynamic> fromLocalToUser = {};
-          fromLocalToUser.addAll(jsonDecode(userData));
-          User? user = User.fromJson(fromLocalToUser);
-          bool userExists = await verifyIfUserExists(user.id!);
-          if (!userExists) {
-            await storage.deleteAll();
-            Timer(
-              Duration(seconds: 3),
-              () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (_) => LoginScreen(),
-                  ),
-                );
-              },
-            );
-          } else {
-            if (!JwtDecoder.isExpired(user.token!)) {
-              Timer(
-                Duration(seconds: 5),
-                () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (_) => BaseScreen(
-                        userData: user,
-                      ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              Map<String, String> userData = {
-                "id_user": "",
-                "user_name": "",
-                "first_name": "",
-                "last_name": "",
-                "birthday": "",
-                "gender": "",
-                "email": "",
-                "avatar": "",
-                "images": "",
-                "matches": "",
-                "likeReceived": "",
-                "likesSended": "",
-                "token": "",
-                "job_title": "",
-                "company": ""
-              };
-              userData.keys.forEach((element) async {
-                await storage.delete(key: element);
-              });
+      try {
+        if (await storage.containsKey(key: "user")) {
+          var userData = await storage.read(key: "user");
+          if (userData != null) {
+            Map<String, dynamic> fromLocalToUser = {};
+            fromLocalToUser.addAll(jsonDecode(userData));
+            User? user = User.fromJson(fromLocalToUser);
+            bool userExists = await verifyIfUserExists(user.id!);
+            if (!userExists) {
               await storage.deleteAll();
               Timer(
                 Duration(seconds: 3),
@@ -113,7 +67,66 @@ class _SplashState extends State<Splash> {
                   );
                 },
               );
+            } else {
+              if (!JwtDecoder.isExpired(user.token!)) {
+                Timer(
+                  Duration(seconds: 5),
+                  () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => BaseScreen(
+                          userData: user,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              } else {
+                Map<String, String> userData = {
+                  "id_user": "",
+                  "user_name": "",
+                  "first_name": "",
+                  "last_name": "",
+                  "birthday": "",
+                  "gender": "",
+                  "email": "",
+                  "avatar": "",
+                  "images": "",
+                  "matches": "",
+                  "likeReceived": "",
+                  "likesSended": "",
+                  "token": "",
+                  "job_title": "",
+                  "company": ""
+                };
+                userData.keys.forEach((element) async {
+                  await storage.delete(key: element);
+                });
+                await storage.deleteAll();
+                Timer(
+                  Duration(seconds: 3),
+                  () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => LoginScreen(),
+                      ),
+                    );
+                  },
+                );
+              }
             }
+          } else {
+            await storage.deleteAll();
+            Timer(
+              Duration(seconds: 3),
+              () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => LoginScreen(),
+                  ),
+                );
+              },
+            );
           }
         } else {
           await storage.deleteAll();
@@ -128,7 +141,7 @@ class _SplashState extends State<Splash> {
             },
           );
         }
-      } else {
+      } catch (e) {
         await storage.deleteAll();
         Timer(
           Duration(seconds: 3),
@@ -141,20 +154,6 @@ class _SplashState extends State<Splash> {
           },
         );
       }
-    }catch(e){
-      await storage.deleteAll();
-        Timer(
-          Duration(seconds: 3),
-          () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => LoginScreen(),
-              ),
-            );
-          },
-        );
-      
-    }
     }
     super.didChangeDependencies();
   }
