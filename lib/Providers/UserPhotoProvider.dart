@@ -23,6 +23,7 @@ class UserPhotoProvider extends ChangeNotifier {
   final Api api = new Api();
 
   Future<Photos> uploadImage(String yourId, File? image, String? token) async {
+    setLoading(true);
     String url = "${api.url}api/users/$yourId/photo/upload";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);

@@ -83,6 +83,7 @@ import 'package:flutter/services.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 
@@ -273,7 +274,39 @@ class _ChangeAvatarScreenState extends State<ChangeAvatarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final avatarProvider = context.watch<AvatarProvider>();
     return Scaffold(
+       bottomSheet: avatarProvider.isLoading 
+          ? BottomSheet(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              onClosing: () {},
+              builder: (context) => Container(
+                height: 150,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      child: Center(
+                        child: LoadingIndicator(
+                          indicatorType: Indicator.ballRotateChase,
+                          colors: [
+                            Colors.red,
+                            Colors.pink.shade400,
+                            Color(0xFF9a00e6),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text("Uploading, please wait a litte."),
+                    )
+                  ],
+                ),
+              ),
+            )
+          : null,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         systemOverlayStyle:

@@ -81,6 +81,7 @@ class AvatarProvider extends ChangeNotifier {
     String url = "${api.url}api/users/avatar/update/$yourId";
     // Map<String, String> imageMap = {"file": basename(image!.path)};
     // var body = jsonEncode(imageMap);
+    setLoading(true);
     try {
       // http.Response response = await http.post(Uri.parse(url),
       //     headers: {

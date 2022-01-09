@@ -143,7 +143,7 @@ class _BaseScreenState extends State<BaseScreen> {
                           Icons.favorite,
                           color: Colors.pink,
                         ),
-                        label: "Find",
+                        label: "",
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.nightlife),
@@ -151,11 +151,11 @@ class _BaseScreenState extends State<BaseScreen> {
                           Icons.nightlife,
                           color: Color(0xffedc967),
                         ),
-                        label: "Events",
+                        label: "",
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.whatshot_outlined),
-                        label: "Matches",
+                        label: "",
                       ),
                       BottomNavigationBarItem(
                         tooltip: null,

@@ -6,6 +6,7 @@ import 'package:be_free_v1/Providers/SearchEventProvider.dart';
 import 'package:be_free_v1/Screens/Events/AboutEventScreen/AboutEventScreen.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class SearchEventScreen extends StatefulWidget {
@@ -108,6 +109,12 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                               await searchProvider.searchEventByName(
                                   controllerSearch.text, widget.user!.token!);
                               controllerSearch.clear();
+                              FocusScopeNode currentFocus =
+                                  FocusScope.of(context);
+
+                              if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                              }
                             }
                           },
                         ),
@@ -491,10 +498,16 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                   } else {
                     return Container(
                       margin: EdgeInsets.only(top: 200),
+                      height: 50,
                       alignment: Alignment.bottomCenter,
                       child: Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(Colors.red),
+                        child: LoadingIndicator(
+                          indicatorType: Indicator.ballRotateChase,
+                          colors: [
+                            Colors.red,
+                            Colors.pink.shade400,
+                            Color(0xFF9a00e6),
+                          ],
                         ),
                       ),
                     );

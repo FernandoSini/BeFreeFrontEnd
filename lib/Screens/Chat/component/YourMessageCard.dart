@@ -77,7 +77,7 @@ class YourMessageCard extends StatelessWidget {
                     SizedBox(
                       width: 5,
                     ),
-                    Icon(
+                   /*  Icon(
                       messageStatus == MessageStatus.DELIVERED
                           ? Icons.done_all
                           : Icons.done,
@@ -85,7 +85,7 @@ class YourMessageCard extends StatelessWidget {
                       color: messageStatus == MessageStatus.DELIVERED
                           ? Colors.blueAccent
                           : null,
-                    ),
+                    ), */
                   ],
                 ),
               ),

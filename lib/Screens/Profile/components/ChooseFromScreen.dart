@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:be_free_v1/Models/User.dart';
 import 'package:be_free_v1/Providers/UserPhotoProvider.dart';
 import 'package:be_free_v1/Providers/UserProvider.dart';
 import 'package:be_free_v1/Widget/Responsive.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 
@@ -57,14 +61,63 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
     var photo = await Provider.of<UserPhotoProvider>(context, listen: false)
         .uploadImage(widget.user!.id!, image, widget.user!.token);
     // widget.user?.photos?.add(photo);
+
     if (Provider.of<UserPhotoProvider>(context, listen: false).isUploaded) {
       // Provider.of<UserProvider>(context, listen: false)
       //     .updateDataSecurePlace(widget.user);
+
       await showSuccessDialog(context);
       Navigator.of(context).pop(photo);
     }
     if (Provider.of<UserPhotoProvider>(context, listen: false).hasError) {
       await showErrorDialog(context);
+    }
+  }
+
+  Future<void> showLoadingDialog(context) async {
+    if (Platform.isAndroid) {
+      return showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            content: Container(
+              height: 200,
+              width: 200,
+              child: Center(
+                child: LoadingIndicator(
+                  indicatorType: Indicator.ballRotateChase,
+                  colors: [
+                    Colors.red,
+                    Colors.pink.shade400,
+                    Color(0xFF9a00e6),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      return showDialog(
+        context: context,
+        builder: (_) {
+          return CupertinoAlertDialog(
+            content: Center(
+              child: LoadingIndicator(
+                indicatorType: Indicator.ballRotateChase,
+                colors: [
+                  Colors.red,
+                  Colors.pink.shade400,
+                  Color(0xFF9a00e6),
+                ],
+              ),
+            ),
+          );
+        },
+      );
     }
   }
 
@@ -182,7 +235,39 @@ class _ChooseFromScreenState extends State<ChooseFromScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userPhotoProvider = context.watch<UserPhotoProvider>();
     return Scaffold(
+      bottomSheet: userPhotoProvider.isLoading
+          ? BottomSheet(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              onClosing: () {},
+              builder: (context) => Container(
+                height: 150,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      child: Center(
+                        child: LoadingIndicator(
+                          indicatorType: Indicator.ballRotateChase,
+                          colors: [
+                            Colors.red,
+                            Colors.pink.shade400,
+                            Color(0xFF9a00e6),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text("Uploading, please wait a litte."),
+                    )
+                  ],
+                ),
+              ),
+            )
+          : null,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

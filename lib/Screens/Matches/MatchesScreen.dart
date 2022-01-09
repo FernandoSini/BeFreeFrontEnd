@@ -581,42 +581,41 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                                 right: 70),
                                                         margin: EdgeInsets.only(
                                                             bottom: 10),
-                                                        child:
-                                                            matchProvider
-                                                                    .matches![
-                                                                        index]
-                                                                    .messages!
-                                                                    .isNotEmpty
-                                                                ? Row(
-                                                                    children: [
-                                                                      matchProvider.matches![index].messages!.last.messageStatus ==
-                                                                              MessageStatus.DELIVERED
-                                                                          ? Icon(
-                                                                              Icons.done_all,
-                                                                              color: Colors.blueAccent,
-                                                                            )
-                                                                          : Icon(Icons.done),
-                                                                      Expanded(
-                                                                        child:
-                                                                            Text(
-                                                                          "${matchProvider.matches?[index].messages?.last.content}",
-                                                                          overflow: matchProvider.matches![index].messages!.last.content!.length >= 15
-                                                                              ? TextOverflow.ellipsis
-                                                                              : null,
-                                                                          style:
-                                                                              TextStyle(fontSize: 18),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  )
-                                                                : Text(
-                                                                    "No messages sent/received yet",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          15,
+                                                        child: matchProvider
+                                                                .matches![index]
+                                                                .messages!
+                                                                .isNotEmpty
+                                                            ? Row(
+                                                                children: [
+                                                                  // matchProvider.matches![index].messages!.last.messageStatus ==
+                                                                  //         MessageStatus.DELIVERED
+                                                                  //     ? Icon(
+                                                                  //         Icons.done_all,
+                                                                  //         color: Colors.blueAccent,
+                                                                  //       )
+                                                                  //     : Icon(Icons.done),
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      "${matchProvider.matches?[index].messages?.last.content}",
+                                                                      overflow: matchProvider.matches![index].messages!.last.content!.length >=
+                                                                              15
+                                                                          ? TextOverflow
+                                                                              .ellipsis
+                                                                          : null,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              18),
                                                                     ),
                                                                   ),
+                                                                ],
+                                                              )
+                                                            : Text(
+                                                                "No messages sent/received yet",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 15,
+                                                                ),
+                                                              ),
                                                       ),
                                                     ),
                                                   ],
